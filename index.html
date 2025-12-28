@@ -516,6 +516,73 @@
       background: linear-gradient(135deg, var(--success), #00B894);
     }
 
+    /* Confirmação de Pagamento - Estilos Revisados */
+    .confirmation-box {
+      background: var(--gray-50);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--gray-200);
+    }
+
+    .method-selection {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .method-option {
+      flex: 1;
+      background: white;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .method-option:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .method-option.selected {
+      border-color: var(--primary);
+      background: linear-gradient(145deg, #F8FAFF, white);
+      box-shadow: 0 4px 12px rgba(0, 102, 255, 0.1);
+    }
+
+    .method-option-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-size: 18px;
+      color: white;
+    }
+
+    #methodEmola .method-option-icon {
+      background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    }
+
+    #methodMpesa .method-option-icon {
+      background: linear-gradient(135deg, #10B981, #059669);
+    }
+
+    .method-option-text {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--dark);
+    }
+
+    textarea.form-input {
+      font-family: 'Courier New', monospace;
+      min-height: 140px;
+    }
+
     /* Support Section - Elegante */
     .support-section {
       background: linear-gradient(135deg, var(--dark), #1E293B);
@@ -695,6 +762,173 @@
 
     .debug-button:hover {
       background: #5a6268;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 420px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 24px 24px 16px;
+      position: relative;
+      text-align: center;
+    }
+
+    .modal-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 28px;
+    }
+
+    .modal-icon.success {
+      background: linear-gradient(135deg, var(--success), #00B894);
+      color: white;
+    }
+
+    .modal-header h3 {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      background: var(--gray-100);
+    }
+
+    .modal-body {
+      padding: 0 24px 24px;
+    }
+
+    .confirmation-message {
+      background: var(--gray-50);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .confirmation-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .confirmation-item:last-child {
+      border-bottom: none;
+    }
+
+    .confirmation-item i {
+      font-size: 20px;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+
+    .confirmation-item strong {
+      display: block;
+      font-size: 15px;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .confirmation-item p {
+      font-size: 14px;
+      color: var(--gray-600);
+      margin: 0;
+    }
+
+    .modal-warning {
+      background: #FFF3CD;
+      border: 1px solid #FFC107;
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #856404;
+    }
+
+    .modal-warning i {
+      color: #FFC107;
+    }
+
+    .modal-footer {
+      padding: 16px 24px 24px;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .modal-button {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .modal-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 102, 255, 0.3);
     }
 
     /* Animations */
@@ -933,6 +1167,76 @@
       </div>
     </div>
 
+    <!-- Confirmação de Pagamento - APENAS MENSAGEM -->
+    <div class="payment-section" id="paymentConfirmationSection">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--success), #00B894);">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="section-title">Enviar Confirmação de Pagamento</div>
+      </div>
+      
+      <div class="confirmation-box">
+        <!-- Seleção do Método -->
+        <div class="form-group">
+          <label class="form-label">Método utilizado:</label>
+          <div class="method-selection">
+            <div class="method-option" onclick="selectPaymentMethod('emola')" id="methodEmola">
+              <div class="method-option-icon">
+                <i class="fas fa-wallet"></i>
+              </div>
+              <div class="method-option-text">eMola</div>
+            </div>
+            <div class="method-option" onclick="selectPaymentMethod('mpesa')" id="methodMpesa">
+              <div class="method-option-icon">
+                <i class="fas fa-money-bill-wave"></i>
+              </div>
+              <div class="method-option-text">M-Pesa</div>
+            </div>
+          </div>
+          <div class="input-hint">
+            <i class="fas fa-info-circle"></i>
+            Selecione o método que usou para pagar
+          </div>
+          <input type="hidden" id="selectedMethod" value="">
+        </div>
+        
+        <!-- Campo para Mensagem/ID da Transação -->
+        <div class="form-group">
+          <label class="form-label">Mensagem de Confirmação / ID da Transação:</label>
+          <textarea id="transactionMessage" 
+                    class="form-input" 
+                    rows="4"
+                    placeholder="Cole aqui a MENSAGEM COMPLETA de confirmação que recebeu após o pagamento..."
+                    oninput="validateConfirmationForm()"
+                    style="padding: 16px; resize: vertical; min-height: 120px; font-family: monospace; font-size: 14px;"></textarea>
+          <div class="input-hint">
+            <i class="fas fa-info-circle"></i>
+            <span id="charCount">0/100 caracteres mínimos</span>
+            • Cole a mensagem completa recebida após o pagamento
+          </div>
+        </div>
+        
+        <!-- Requisitos -->
+        <div class="requirements-box">
+          <div class="requirement-item">
+            <i class="fas fa-check-circle" id="methodCheck"></i>
+            <span>Método selecionado</span>
+          </div>
+          <div class="requirement-item">
+            <i class="fas fa-check-circle" id="messageCheck"></i>
+            <span>Mensagem (Colada)</span>
+          </div>
+        
+        
+        <button class="copy-button" id="submitPaymentBtn" onclick="submitPaymentConfirmation()" disabled>
+          <i class="fas fa-paper-plane"></i>
+          <span class="btn-text">ENVIAR CONFIRMAÇÃO</span>
+          <span class="spinner hidden"></span>
+        </button>
+      </div>
+    </div>
+
     <!-- Debug Panel (INVISÍVEL mas funcional) -->
     <div class="debug-panel" id="debugPanel">
       <div class="debug-title">
@@ -986,11 +1290,75 @@
   </div>
 </div>
 
+<!-- Modal de Confirmação -->
+<div class="modal-overlay" id="confirmationModal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-icon success">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>✅ Confirmação Enviada!</h3>
+      <button class="modal-close" onclick="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="confirmation-message">
+        <div class="confirmation-item">
+          <i class="fas fa-clock"></i>
+          <div>
+            <strong>⏳ Aguarde a verificação</strong>
+            <p>Processaremos seu pagamento em até 5 minutos</p>
+          </div>
+        </div>
+        
+        <div class="confirmation-item">
+          <i class="fab fa-whatsapp"></i>
+          <div>
+            <strong>📲 Será notificado no WhatsApp</strong>
+            <p>Enviaremos o voucher assim que confirmado</p>
+          </div>
+        </div>
+        
+        <div class="confirmation-item">
+          <i class="fas fa-mobile-alt"></i>
+          <div>
+            <strong>📞 Número registrado:</strong>
+            <p id="modalWhatsappNumber">+258xxxxxxxx</p>
+          </div>
+        </div>
+        
+        <div class="confirmation-item">
+          <i class="fas fa-receipt"></i>
+          <div>
+            <strong>📄 ID da Transação:</strong>
+            <p id="modalTransactionId">Não identificado</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-warning">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Aguarde a nossa Notificação no whatsApp</span>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="modal-button" onclick="closeModal()">
+        <i class="fas fa-check"></i>
+        ENTENDIDO
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ==================== CONFIGURAÇÃO DO SISTEMA ====================
   const STORAGE_KEY_WHATSAPP = 'predictor_whatsapp_mobile';
   const STORAGE_KEY_LOGS = 'predictor_registration_logs';
   const STORAGE_KEY_COPY_LOGS = 'predictor_copy_logs';
+  const STORAGE_KEY_PAYMENTS = 'predictor_payment_confirmations';
   
   // ==================== VARIÁVEIS GLOBAIS ====================
   const whatsappInput = document.getElementById('whatsapp');
@@ -1004,9 +1372,24 @@
   const mpesaBtn = document.getElementById('mpesaBtn');
   const debugInfo = document.getElementById('debugInfo');
   
+  // Variáveis para Confirmação
+  const transactionMessageInput = document.getElementById('transactionMessage');
+  const submitPaymentBtn = document.getElementById('submitPaymentBtn');
+  const charCount = document.getElementById('charCount');
+  const selectedMethodInput = document.getElementById('selectedMethod');
+  const confirmationModal = document.getElementById('confirmationModal');
+  const modalWhatsappNumber = document.getElementById('modalWhatsappNumber');
+  const modalTransactionId = document.getElementById('modalTransactionId');
+  
+  // Elementos de verificação
+  const methodCheck = document.getElementById('methodCheck');
+  const messageCheck = document.getElementById('messageCheck');
+  const photoCheck = document.getElementById('photoCheck');
+  
   let isWhatsappValid = false;
   let currentWhatsappNumber = '';
   let firebaseAvailable = false;
+  let selectedPaymentMethod = '';
 
   // ==================== INICIALIZAÇÃO ====================
   document.addEventListener('DOMContentLoaded', function() {
@@ -1039,8 +1422,28 @@
       validateWhatsappNumber(true);
     });
     
+    // Atualizar contador de caracteres
+    transactionMessageInput.addEventListener('input', function() {
+      const length = this.value.length;
+      charCount.textContent = `${length}/100 caracteres mínimos`;
+      
+      // Mudar cor conforme atinge o mínimo
+      if (length >= 100) {
+        charCount.style.color = 'var(--success)';
+        charCount.style.fontWeight = '700';
+      } else {
+        charCount.style.color = 'var(--danger)';
+        charCount.style.fontWeight = '600';
+      }
+      
+      validateConfirmationForm();
+    });
+    
     // Focar no campo
     setTimeout(() => whatsappInput.focus(), 400);
+    
+    // Desativar verificação de foto (funcionalidade removida)
+    photoCheck.style.color = 'var(--gray-300)';
     
     console.log('✅ Predictor Mobile Premium carregado no Sketchiware!');
   });
@@ -1138,6 +1541,7 @@
     if (!rawNumber) {
       isWhatsappValid = false;
       updateCopyButtons();
+      validateConfirmationForm();
       return false;
     }
     
@@ -1146,6 +1550,7 @@
       showError('Digite exatamente 9 dígitos');
       isWhatsappValid = false;
       updateCopyButtons();
+      validateConfirmationForm();
       return false;
     }
     
@@ -1156,6 +1561,7 @@
       showError('Use prefixo 82, 83, 84, 85, 86 ou 87');
       isWhatsappValid = false;
       updateCopyButtons();
+      validateConfirmationForm();
       return false;
     }
     
@@ -1168,6 +1574,7 @@
     
     // Atualizar botões
     updateCopyButtons();
+    validateConfirmationForm();
     
     // Mostrar sucesso
     successMessage.style.display = 'block';
@@ -1324,6 +1731,243 @@
     } catch (error) {
       console.error('❌ Erro ao logar cópia:', error);
     }
+  }
+
+  // ==================== SELECIONAR MÉTODO DE PAGAMENTO ====================
+  function selectPaymentMethod(method) {
+    selectedPaymentMethod = method;
+    selectedMethodInput.value = method;
+    
+    // Remover seleção anterior
+    document.querySelectorAll('.method-option').forEach(option => {
+      option.classList.remove('selected');
+    });
+    
+    // Adicionar seleção atual
+    const selectedElement = document.getElementById(`method${method.charAt(0).toUpperCase() + method.slice(1)}`);
+    if (selectedElement) {
+      selectedElement.classList.add('selected');
+    }
+    
+    // Atualizar verificação
+    updateMethodCheck();
+    validateConfirmationForm();
+  }
+
+  // ==================== ATUALIZAR VERIFICAÇÕES ====================
+  function updateMethodCheck() {
+    if (selectedPaymentMethod) {
+      methodCheck.className = 'fas fa-check-circle valid';
+      methodCheck.style.color = 'var(--success)';
+    } else {
+      methodCheck.className = 'fas fa-check-circle invalid';
+      methodCheck.style.color = 'var(--gray-300)';
+    }
+  }
+
+  function updateMessageCheck(hasValidMessage) {
+    if (hasValidMessage) {
+      messageCheck.className = 'fas fa-check-circle valid';
+      messageCheck.style.color = 'var(--success)';
+    } else {
+      messageCheck.className = 'fas fa-check-circle invalid';
+      messageCheck.style.color = 'var(--gray-300)';
+    }
+  }
+
+  // ==================== VALIDAR FORMULÁRIO DE CONFIRMAÇÃO ====================
+  function validateConfirmationForm() {
+    const message = transactionMessageInput.value.trim();
+    const hasValidMessage = message.length >= 100;
+    const hasMethod = selectedPaymentMethod !== '';
+    const hasWhatsapp = isWhatsappValid;
+    
+    // Atualizar ícones de verificação
+    updateMethodCheck();
+    updateMessageCheck(hasValidMessage);
+    
+    // Validar: Precisa de WhatsApp + Método + Mensagem
+    const isValid = hasWhatsapp && hasMethod && hasValidMessage;
+    
+    submitPaymentBtn.disabled = !isValid;
+    
+    if (!hasWhatsapp) {
+      submitPaymentBtn.title = "Digite seu WhatsApp primeiro";
+    } else if (!hasMethod) {
+      submitPaymentBtn.title = "Selecione o método de pagamento";
+    } else if (!hasValidMessage) {
+      submitPaymentBtn.title = "Informe a mensagem de confirmação (100+ caracteres)";
+    } else {
+      submitPaymentBtn.title = "Clique para enviar confirmação";
+    }
+    
+    return isValid;
+  }
+
+  // ==================== ENVIAR CONFIRMAÇÃO DE PAGAMENTO ====================
+  async function submitPaymentConfirmation() {
+    // Validar WhatsApp
+    if (!isWhatsappValid) {
+      showToast('Digite seu WhatsApp primeiro!', 'error');
+      whatsappInput.focus();
+      return;
+    }
+    
+    // Validar método selecionado
+    if (!selectedPaymentMethod) {
+      showToast('Selecione o método de pagamento!', 'error');
+      return;
+    }
+    
+    // Validar que tem mensagem
+    const message = transactionMessageInput.value.trim();
+    const hasValidMessage = message.length >= 100;
+    
+    if (!hasValidMessage) {
+      showToast('Informe a mensagem de confirmação (100+ caracteres)!', 'error');
+      return;
+    }
+    
+    const btnText = submitPaymentBtn.querySelector('.btn-text');
+    const spinner = submitPaymentBtn.querySelector('.spinner');
+    const originalText = btnText.textContent;
+    
+    btnText.textContent = 'ENVIANDO...';
+    spinner.classList.remove('hidden');
+    submitPaymentBtn.disabled = true;
+    
+    try {
+      // Extrair possível ID da transação da mensagem
+      let extractedTransactionId = 'Não identificado';
+      if (message.length > 0) {
+        // Tentar encontrar padrões comuns de ID
+        const idPatterns = [
+          /ID[:\s]*([A-Z0-9]{8,})/i,
+          /Referência[:\s]*([A-Z0-9]{8,})/i,
+          /Transação[:\s]*([A-Z0-9]{8,})/i,
+          /([A-Z][0-9]{9,})/,
+          /([0-9]{10,})/
+        ];
+        
+        for (const pattern of idPatterns) {
+          const match = message.match(pattern);
+          if (match && match[1]) {
+            extractedTransactionId = match[1];
+            break;
+          }
+        }
+        
+        // Se não encontrou, pegar primeiros 20 caracteres
+        if (extractedTransactionId === 'Não identificado') {
+          extractedTransactionId = message.substring(0, 20) + '...';
+        }
+      }
+      
+      // Preparar dados
+      const paymentData = {
+        whatsappNumber: currentWhatsappNumber,
+        paymentMethod: selectedPaymentMethod,
+        transactionMessage: message,
+        transactionId: extractedTransactionId,
+        messageLength: message.length,
+        timestamp: new Date().toISOString(),
+        status: 'pending_verification',
+        amount: '659 MT'
+      };
+      
+      // Salvar localmente
+      savePaymentConfirmation(paymentData);
+      
+      // Enviar para Firebase se disponível
+      if (firebaseAvailable) {
+        try {
+          await firebase.firestore().collection('payment_confirmations').add({
+            ...paymentData,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            source: 'sketchiware'
+          });
+          console.log('✅ Confirmação enviada para Firebase');
+        } catch (firebaseError) {
+          console.warn('⚠️ Firebase falhou, salvando apenas localmente');
+        }
+      }
+      
+      // Mostrar modal de confirmação
+      showConfirmationModal(paymentData);
+      
+      // Resetar formulário
+      resetConfirmationForm();
+      
+    } catch (error) {
+      console.error('❌ Erro ao enviar confirmação:', error);
+      showToast('Erro ao enviar confirmação!', 'error');
+    } finally {
+      btnText.textContent = originalText;
+      spinner.classList.add('hidden');
+      submitPaymentBtn.disabled = false;
+    }
+  }
+
+  // ==================== SALVAR CONFIRMAÇÃO LOCALMENTE ====================
+  function savePaymentConfirmation(paymentData) {
+    try {
+      const payments = JSON.parse(localStorage.getItem(STORAGE_KEY_PAYMENTS) || '[]');
+      
+      payments.push(paymentData);
+      
+      // Manter apenas os últimos 20 registros
+      if (payments.length > 20) {
+        payments.splice(0, payments.length - 20);
+      }
+      
+      localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(payments));
+      
+      console.log('✅ Confirmação salva localmente:', paymentData.transactionId);
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao salvar confirmação:', error);
+      return false;
+    }
+  }
+
+  // ==================== MOSTRAR MODAL DE CONFIRMAÇÃO ====================
+  function showConfirmationModal(paymentData) {
+    // Atualizar informações no modal
+    modalWhatsappNumber.textContent = `+258${paymentData.whatsappNumber}`;
+    modalTransactionId.textContent = paymentData.transactionId || 'Não identificado';
+    
+    // Mostrar modal
+    confirmationModal.style.display = 'flex';
+    
+    // Desabilitar scroll do body
+    document.body.style.overflow = 'hidden';
+  }
+
+  // ==================== FECHAR MODAL ====================
+  function closeModal() {
+    confirmationModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  // ==================== RESETAR FORMULÁRIO ====================
+  function resetConfirmationForm() {
+    // Desmarcar método
+    document.querySelectorAll('.method-option').forEach(option => {
+      option.classList.remove('selected');
+    });
+    selectedPaymentMethod = '';
+    selectedMethodInput.value = '';
+    
+    // Limpar mensagem
+    transactionMessageInput.value = '';
+    charCount.textContent = '0/100 caracteres mínimos';
+    charCount.style.color = 'var(--danger)';
+    
+    // Atualizar verificação
+    updateMethodCheck();
+    updateMessageCheck(false);
+    
+    validateConfirmationForm();
   }
 
   // ==================== COPIAR NÚMERO DO SUPORTE ====================
