@@ -984,6 +984,32 @@
       25% { transform: translateX(-5px); }
       75% { transform: translateX(5px); }
     }
+    
+    /* Requirements Box */
+    .requirements-box {
+      display: flex;
+      gap: 16px;
+      margin: 16px 0;
+      padding: 12px;
+      background: var(--gray-100);
+      border-radius: 10px;
+    }
+    
+    .requirement-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .requirement-item i.valid {
+      color: var(--success);
+    }
+    
+    .requirement-item i.invalid {
+      color: var(--gray-300);
+    }
   </style>
 </head>
 
@@ -1350,6 +1376,8 @@
   const STORAGE_KEY_LOGS = 'predictor_registration_logs';
   const STORAGE_KEY_COPY_LOGS = 'predictor_copy_logs';
   const STORAGE_KEY_PAYMENTS = 'predictor_payment_confirmations';
+  const STORAGE_KEY_SITE_VISITS = 'payment_site_visits_log';
+  const STORAGE_KEY_SESSION = 'payment_site_session';
   
   // ==================== VARIÁVEIS GLOBAIS ====================
   const whatsappInput = document.getElementById('whatsapp');
@@ -1379,8 +1407,14 @@
   let currentWhatsappNumber = '';
   let firebaseAvailable = false;
   let selectedPaymentMethod = '';
+  let currentSessionId = generateSessionId();
 
-  // ==================== INICIALIZAÇÃO DO FIREBASE ====================
+  // ==================== GERAR ID DE SESSÃO ====================
+  function generateSessionId() {
+    return 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+  }
+
+  // ==================== INICIALIZAR FIREBASE ====================
   function initializeFirebase() {
     try {
       if (typeof firebase !== 'undefined') {
@@ -1398,10 +1432,7 @@
           firebase.initializeApp(firebaseConfig);
         }
         firebaseAvailable = true;
-        console.log('✅ Firebase disponível');
-        
-        // REGISTRAR VISITA DO SITE AO CARREGAR A PÁGINA
-        registerSiteVisit();
+        console.log('✅ Firebase disponível para o site de pagamento');
       }
     } catch (error) {
       console.warn('⚠️ Firebase não disponível no Sketchiware, usando localStorage');
@@ -1409,46 +1440,159 @@
     }
   }
 
+  // ==================== VERIFICAR SE DEVE REGISTRAR VISITA ====================
+  function shouldRegisterVisit() {
+    try {
+      const lastVisit = localStorage.getItem('last_site_visit');
+      const now = Date.now();
+      
+      // Se nunca visitou ou visitou há mais de 30 minutos, registra
+      if (!lastVisit || (now - parseInt(lastVisit)) > (30 * 60 * 1000)) {
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      return true; // Em caso de erro, registra
+    }
+  }
+
   // ==================== REGISTRAR VISITA DO SITE ====================
   function registerSiteVisit() {
-    if (!firebaseAvailable) return;
+    if (!firebaseAvailable) {
+      console.log('⚠️ Firebase não disponível, salvando visita localmente');
+      saveSiteVisitLocally();
+      return;
+    }
     
     try {
+      // Dados da visita
       const visitData = {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         userAgent: navigator.userAgent,
         referrer: document.referrer || 'direct',
         url: window.location.href,
-        source: 'payment_site',
-        pageType: 'predictor_mobile_premium',
+        pageType: 'predictor_mobile_premium_payment',
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
         language: navigator.language,
         platform: navigator.platform,
-        // IMPORTANTE: Identifica que é do SITE, não do painel
+        
+        // IDENTIFICADORES EXCLUSIVOS DO SITE DE PAGAMENTO
+        isPaymentSite: true,
         isAdminPanel: false,
-        site: 'predictor_payment_site',
-        visitType: 'site_visit'
+        siteType: 'payment_site',
+        visitSource: 'predictor_payment_page',
+        
+        // Informações de sessão
+        sessionId: currentSessionId,
+        isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+        hasTouch: 'ontouchstart' in window,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        
+        // Informações da visita
+        pageLoaded: true,
+        visitType: 'page_visit',
+        paymentAmount: '659 MT',
+        currency: 'MT'
       };
       
-      firebase.firestore().collection('site_visits').add(visitData)
-        .then(() => {
-          console.log('✅ Visita do SITE registrada no Firebase');
+      // Registrar visita no Firebase
+      firebase.firestore().collection('payment_site_visits').add(visitData)
+        .then((docRef) => {
+          console.log('✅ Visita registrada com ID:', docRef.id);
+          
+          // Salvar localmente que registrou
+          localStorage.setItem('last_site_visit', Date.now().toString());
+          localStorage.setItem('last_session_id', currentSessionId);
         })
         .catch(error => {
-          console.warn('⚠️ Erro ao registrar visita do site:', error);
+          console.warn('⚠️ Erro ao registrar visita no Firebase, salvando localmente:', error);
+          saveSiteVisitLocally(visitData);
         });
     } catch (error) {
-      console.warn('⚠️ Erro ao registrar visita do site:', error);
+      console.warn('⚠️ Erro ao registrar visita:', error);
+      saveSiteVisitLocally();
+    }
+  }
+
+  // ==================== SALVAR VISITA LOCALMENTE (FALLBACK) ====================
+  function saveSiteVisitLocally(visitData = null) {
+    try {
+      const visits = JSON.parse(localStorage.getItem(STORAGE_KEY_SITE_VISITS) || '[]');
+      
+      const visit = visitData || {
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        pageType: 'predictor_mobile_premium_payment',
+        sessionId: currentSessionId,
+        storedLocally: true
+      };
+      
+      visits.push(visit);
+      
+      // Manter apenas os últimos 50 registros
+      if (visits.length > 50) {
+        visits.splice(0, visits.length - 50);
+      }
+      
+      localStorage.setItem(STORAGE_KEY_SITE_VISITS, JSON.stringify(visits));
+      localStorage.setItem('last_site_visit', Date.now().toString());
+      
+      console.log('📊 Visita salva localmente');
+    } catch (error) {
+      console.error('❌ Erro ao salvar visita localmente:', error);
+    }
+  }
+
+  // ==================== REGISTRAR AÇÃO DO USUÁRIO ====================
+  function registerUserAction(action, details = {}) {
+    if (!firebaseAvailable) return;
+    
+    try {
+      const actionData = {
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        sessionId: currentSessionId,
+        action: action,
+        ...details,
+        userAgent: navigator.userAgent,
+        url: window.location.href
+      };
+      
+      firebase.firestore().collection('user_actions').add(actionData)
+        .then(() => {
+          console.log(`✅ Ação registrada: ${action}`);
+        })
+        .catch(error => {
+          console.warn(`⚠️ Erro ao registrar ação ${action}:`, error);
+        });
+    } catch (error) {
+      console.warn(`⚠️ Erro ao registrar ação:`, error);
     }
   }
 
   // ==================== INICIALIZAÇÃO DA APLICAÇÃO ====================
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Predictor App iniciando no Sketchiware...');
+    console.log('🚀 Predictor Payment Site iniciando...');
+    console.log('📱 Sessão ID:', currentSessionId);
     
     // Inicializar Firebase (se disponível)
     initializeFirebase();
+    
+    // REGISTRAR VISITA IMEDIATAMENTE AO CARREGAR A PÁGINA
+    if (shouldRegisterVisit()) {
+      console.log('👣 Registrando nova visita...');
+      registerSiteVisit();
+    } else {
+      console.log('⏱️ Visita já registrada recentemente');
+    }
+    
+    // Registrar evento de carregamento da página
+    registerUserAction('page_load', {
+      pageType: 'payment_page',
+      loadTime: performance.now()
+    });
     
     // Carregar número salvo
     const saved = getSavedWhatsapp();
@@ -1467,11 +1611,40 @@
       
       this.value = formatPhoneNumber(value);
       validateWhatsappNumber();
+      
+      // Registrar ação de digitação
+      if (value.length > 0) {
+        registerUserAction('whatsapp_input', {
+          inputLength: value.length,
+          prefix: value.substring(0, 2)
+        });
+      }
     });
     
     // Validar ao perder foco
     whatsappInput.addEventListener('blur', function() {
       validateWhatsappNumber(true);
+    });
+    
+    // Registrar clique nos campos
+    whatsappInput.addEventListener('focus', function() {
+      registerUserAction('field_focus', { field: 'whatsapp' });
+    });
+    
+    // Registrar visualização dos métodos de pagamento
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    paymentMethods.forEach(method => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const methodName = method.classList.contains('emola') ? 'eMola' : 'M-Pesa';
+            registerUserAction('payment_method_view', { method: methodName });
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      observer.observe(method);
     });
     
     // Atualizar contador de caracteres
@@ -1494,7 +1667,17 @@
     // Focar no campo
     setTimeout(() => whatsappInput.focus(), 400);
     
-    console.log('✅ Predictor Mobile Premium carregado no Sketchiware!');
+    // Registrar tempo na página
+    window.addEventListener('beforeunload', function() {
+      const timeOnPage = Math.round(performance.now() / 1000);
+      registerUserAction('page_exit', {
+        timeOnPage: timeOnPage,
+        whatsappEntered: isWhatsappValid,
+        currentPage: 'payment_page'
+      });
+    });
+    
+    console.log('✅ Predictor Payment Site carregado!');
   });
 
   // ==================== FORMATAR NÚMERO ====================
@@ -1524,7 +1707,8 @@
         timestamp: timestamp,
         amount: '659 MT',
         page: 'predictor_mobile_premium',
-        source: 'sketchiware'
+        source: 'sketchiware',
+        sessionId: currentSessionId
       });
       
       // Manter apenas os últimos 50 registros
@@ -1595,6 +1779,12 @@
     // Salvar localmente
     saveToLocalStorage(rawNumber, 'whatsapp_validation');
     
+    // Registrar ação no Firebase
+    registerUserAction('whatsapp_validated', {
+      phoneNumber: rawNumber,
+      isValid: true
+    });
+    
     // Atualizar botões
     updateCopyButtons();
     validateConfirmationForm();
@@ -1612,7 +1802,8 @@
           amount: '659 MT',
           page: 'predictor_mobile_premium',
           userAgent: navigator.userAgent,
-          source: 'sketchiware'
+          source: 'sketchiware',
+          sessionId: currentSessionId
         });
         console.log('✅ Dados enviados para Firebase');
       } catch (error) {
@@ -1642,6 +1833,12 @@
     errorMessage.style.display = 'block';
     successMessage.style.display = 'none';
     
+    // Registrar erro
+    registerUserAction('validation_error', {
+      field: 'whatsapp',
+      error: message
+    });
+    
     // Animação de shake
     whatsappInput.classList.add('shake');
     setTimeout(() => {
@@ -1666,12 +1863,26 @@
     spinner.classList.remove('hidden');
     button.disabled = true;
     
+    // Registrar início da cópia
+    registerUserAction('copy_started', {
+      method: method,
+      number: number,
+      whatsapp: currentWhatsappNumber
+    });
+    
     try {
       // Copiar para área de transferência
       await navigator.clipboard.writeText(number);
       
       // Registrar ação localmente
       logCopyActionLocally(number, method);
+      
+      // Registrar cópia bem-sucedida
+      registerUserAction('copy_success', {
+        method: method,
+        number: number,
+        whatsapp: currentWhatsappNumber
+      });
       
       // Mostrar toast
       showToast(`✅ ${method} copiado! Nome: LUCAS JOSÉ`, 'success');
@@ -1691,6 +1902,13 @@
     } catch (error) {
       console.error('Erro ao copiar:', error);
       
+      // Registrar erro na cópia
+      registerUserAction('copy_error', {
+        method: method,
+        error: error.message,
+        whatsapp: currentWhatsappNumber
+      });
+      
       // Fallback para input temporário
       try {
         const tempInput = document.createElement('input');
@@ -1702,6 +1920,12 @@
         
         showToast(`✅ ${method} copiado! Nome: LUCAS JOSÉ`, 'success');
         logCopyActionLocally(number, method);
+        
+        // Registrar fallback bem-sucedido
+        registerUserAction('copy_fallback_success', {
+          method: method,
+          number: number
+        });
       } catch (fallbackError) {
         showToast('❌ Erro ao copiar', 'error');
       }
@@ -1724,7 +1948,8 @@
         method: method,
         accountHolder: 'LUCAS JOSÉ',
         timestamp: timestamp,
-        source: 'sketchiware'
+        source: 'sketchiware',
+        sessionId: currentSessionId
       });
       
       // Manter apenas os últimos 50 registros
@@ -1743,7 +1968,8 @@
             method: method,
             accountHolder: 'LUCAS JOSÉ',
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            source: 'sketchiware'
+            source: 'sketchiware',
+            sessionId: currentSessionId
           });
         } catch (firebaseError) {
           console.warn('⚠️ Firebase falhou na cópia');
@@ -1760,6 +1986,11 @@
   function selectPaymentMethod(method) {
     selectedPaymentMethod = method;
     selectedMethodInput.value = method;
+    
+    // Registrar seleção de método
+    registerUserAction('payment_method_selected', {
+      method: method
+    });
     
     // Remover seleção anterior
     document.querySelectorAll('.method-option').forEach(option => {
@@ -1859,6 +2090,13 @@
     spinner.classList.remove('hidden');
     submitPaymentBtn.disabled = true;
     
+    // Registrar início do envio
+    registerUserAction('confirmation_submit_started', {
+      method: selectedPaymentMethod,
+      messageLength: message.length,
+      whatsapp: currentWhatsappNumber
+    });
+    
     try {
       // Extrair possível ID da transação da mensagem
       let extractedTransactionId = 'Não identificado';
@@ -1895,11 +2133,19 @@
         messageLength: message.length,
         timestamp: new Date().toISOString(),
         status: 'pending_verification',
-        amount: '659 MT'
+        amount: '659 MT',
+        sessionId: currentSessionId
       };
       
       // Salvar localmente
       savePaymentConfirmation(paymentData);
+      
+      // Registrar envio bem-sucedido localmente
+      registerUserAction('confirmation_submit_local', {
+        method: selectedPaymentMethod,
+        transactionId: extractedTransactionId,
+        messageLength: message.length
+      });
       
       // Enviar para Firebase se disponível
       if (firebaseAvailable) {
@@ -1910,8 +2156,17 @@
             source: 'sketchiware'
           });
           console.log('✅ Confirmação enviada para Firebase');
+          
+          // Registrar envio bem-sucedido no Firebase
+          registerUserAction('confirmation_submit_firebase', {
+            method: selectedPaymentMethod,
+            transactionId: extractedTransactionId
+          });
         } catch (firebaseError) {
           console.warn('⚠️ Firebase falhou, salvando apenas localmente');
+          registerUserAction('confirmation_submit_firebase_error', {
+            error: firebaseError.message
+          });
         }
       }
       
@@ -1924,6 +2179,12 @@
     } catch (error) {
       console.error('❌ Erro ao enviar confirmação:', error);
       showToast('Erro ao enviar confirmação!', 'error');
+      
+      // Registrar erro no envio
+      registerUserAction('confirmation_submit_error', {
+        error: error.message,
+        method: selectedPaymentMethod
+      });
     } finally {
       btnText.textContent = originalText;
       spinner.classList.add('hidden');
@@ -1964,12 +2225,20 @@
     
     // Desabilitar scroll do body
     document.body.style.overflow = 'hidden';
+    
+    // Registrar visualização do modal
+    registerUserAction('confirmation_modal_viewed', {
+      transactionId: paymentData.transactionId
+    });
   }
 
   // ==================== FECHAR MODAL ====================
   function closeModal() {
     confirmationModal.style.display = 'none';
     document.body.style.overflow = 'auto';
+    
+    // Registrar fechamento do modal
+    registerUserAction('confirmation_modal_closed');
   }
 
   // ==================== RESETAR FORMULÁRIO ====================
@@ -1997,9 +2266,15 @@
   async function copySupportNumber() {
     const supportNumber = '+258866890298';
     
+    // Registrar tentativa de cópia do suporte
+    registerUserAction('support_copy_attempt');
+    
     try {
       await navigator.clipboard.writeText(supportNumber);
       showToast('✅ Número do suporte copiado!', 'success');
+      
+      // Registrar cópia bem-sucedida
+      registerUserAction('support_copy_success');
       
       // Registrar localmente
       logCopyActionLocally(supportNumber, 'support_number');
@@ -2018,6 +2293,7 @@
         showToast('✅ Número do suporte copiado!', 'success');
       } catch (fallbackError) {
         showToast('❌ Erro ao copiar', 'error');
+        registerUserAction('support_copy_error', { error: error.message });
       }
     }
   }
@@ -2042,6 +2318,12 @@
     
     toast.style.display = 'block';
     
+    // Registrar toast exibido
+    registerUserAction('toast_shown', {
+      type: type,
+      message: message
+    });
+    
     // Esconder após 3.5s
     setTimeout(() => {
       toast.style.display = 'none';
@@ -2060,6 +2342,23 @@
   document.addEventListener('submit', function(e) {
     e.preventDefault();
     return false;
+  });
+
+  // ==================== REGISTRAR SCROLL ====================
+  let lastScrollReport = 0;
+  window.addEventListener('scroll', function() {
+    const now = Date.now();
+    if (now - lastScrollReport > 5000) { // Reportar a cada 5 segundos
+      const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent > 25 && scrollPercent < 100) {
+        registerUserAction('page_scroll', {
+          scrollPercent: Math.round(scrollPercent),
+          viewportHeight: window.innerHeight,
+          totalHeight: document.body.scrollHeight
+        });
+        lastScrollReport = now;
+      }
+    }
   });
 
 </script>
