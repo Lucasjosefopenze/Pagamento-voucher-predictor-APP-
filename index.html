@@ -6,7 +6,7 @@
   <title>🚀 Predictor App | Ativação Premium via WhatsApp</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Firebase SDK (opcional - fallback para localStorage) -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
@@ -579,7 +579,7 @@
     }
 
     textarea.form-input {
-      font-family: 'Courier New', monospace;
+      font-family: 'Courier New', Courier, monospace;
       min-height: 140px;
     }
 
@@ -1227,7 +1227,7 @@
             <i class="fas fa-check-circle" id="messageCheck"></i>
             <span>Mensagem (Colada)</span>
           </div>
-        
+        </div>
         
         <button class="copy-button" id="submitPaymentBtn" onclick="submitPaymentConfirmation()" disabled>
           <i class="fas fa-paper-plane"></i>
@@ -1235,15 +1235,6 @@
           <span class="spinner hidden"></span>
         </button>
       </div>
-    </div>
-
-    <!-- Debug Panel (INVISÍVEL mas funcional) -->
-    <div class="debug-panel" id="debugPanel">
-      <div class="debug-title">
-        <span>DEBUG: Dados Armazenados Localmente</span>
-        <button class="debug-button" onclick="showDebugInfo()">Atualizar</button>
-      </div>
-      <div id="debugInfo">Carregando...</div>
     </div>
 
     <!-- Support Section -->
@@ -1370,7 +1361,6 @@
   const toastIcon = document.getElementById('toastIcon');
   const emolaBtn = document.getElementById('emolaBtn');
   const mpesaBtn = document.getElementById('mpesaBtn');
-  const debugInfo = document.getElementById('debugInfo');
   
   // Variáveis para Confirmação
   const transactionMessageInput = document.getElementById('transactionMessage');
@@ -1384,14 +1374,76 @@
   // Elementos de verificação
   const methodCheck = document.getElementById('methodCheck');
   const messageCheck = document.getElementById('messageCheck');
-  const photoCheck = document.getElementById('photoCheck');
   
   let isWhatsappValid = false;
   let currentWhatsappNumber = '';
   let firebaseAvailable = false;
   let selectedPaymentMethod = '';
 
-  // ==================== INICIALIZAÇÃO ====================
+  // ==================== INICIALIZAÇÃO DO FIREBASE ====================
+  function initializeFirebase() {
+    try {
+      if (typeof firebase !== 'undefined') {
+        const firebaseConfig = {
+          apiKey: "AIzaSyDbPB6XBF3J1VY0X0ZQj2SKu8",
+          authDomain: "whatsapp-24492.firebaseapp.com",
+          projectId: "whatsapp-24492",
+          storageBucket: "whatsapp-24492.appspot.com",
+          messagingSenderId: "5299709394245",
+          appId: "1:5299709394245:web:7d46554&c2e",
+          measurementId: "G-FAKLLOK27H"
+        };
+        
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        firebaseAvailable = true;
+        console.log('✅ Firebase disponível');
+        
+        // REGISTRAR VISITA DO SITE AO CARREGAR A PÁGINA
+        registerSiteVisit();
+      }
+    } catch (error) {
+      console.warn('⚠️ Firebase não disponível no Sketchiware, usando localStorage');
+      firebaseAvailable = false;
+    }
+  }
+
+  // ==================== REGISTRAR VISITA DO SITE ====================
+  function registerSiteVisit() {
+    if (!firebaseAvailable) return;
+    
+    try {
+      const visitData = {
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        userAgent: navigator.userAgent,
+        referrer: document.referrer || 'direct',
+        url: window.location.href,
+        source: 'payment_site',
+        pageType: 'predictor_mobile_premium',
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        language: navigator.language,
+        platform: navigator.platform,
+        // IMPORTANTE: Identifica que é do SITE, não do painel
+        isAdminPanel: false,
+        site: 'predictor_payment_site',
+        visitType: 'site_visit'
+      };
+      
+      firebase.firestore().collection('site_visits').add(visitData)
+        .then(() => {
+          console.log('✅ Visita do SITE registrada no Firebase');
+        })
+        .catch(error => {
+          console.warn('⚠️ Erro ao registrar visita do site:', error);
+        });
+    } catch (error) {
+      console.warn('⚠️ Erro ao registrar visita do site:', error);
+    }
+  }
+
+  // ==================== INICIALIZAÇÃO DA APLICAÇÃO ====================
   document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Predictor App iniciando no Sketchiware...');
     
@@ -1442,37 +1494,8 @@
     // Focar no campo
     setTimeout(() => whatsappInput.focus(), 400);
     
-    // Desativar verificação de foto (funcionalidade removida)
-    photoCheck.style.color = 'var(--gray-300)';
-    
     console.log('✅ Predictor Mobile Premium carregado no Sketchiware!');
   });
-
-  // ==================== FIREBASE (OPCIONAL) ====================
-  function initializeFirebase() {
-    try {
-      if (typeof firebase !== 'undefined') {
-        const firebaseConfig = {
-          apiKey: "AIzaSyDbPB6XBF3J1VY0X0ZQj2SKu8",
-          authDomain: "whatsapp-24492.firebaseapp.com",
-          projectId: "whatsapp-24492",
-          storageBucket: "whatsapp-24492.appspot.com",
-          messagingSenderId: "5299709394245",
-          appId: "1:5299709394245:web:7d46554&c2e",
-          measurementId: "G-FAKLLOK27H"
-        };
-        
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        firebaseAvailable = true;
-        console.log('✅ Firebase disponível');
-      }
-    } catch (error) {
-      console.warn('⚠️ Firebase não disponível no Sketchiware, usando localStorage');
-      firebaseAvailable = false;
-    }
-  }
 
   // ==================== FORMATAR NÚMERO ====================
   function formatPhoneNumber(number) {
@@ -2023,20 +2046,6 @@
     setTimeout(() => {
       toast.style.display = 'none';
     }, 3500);
-  }
-
-  // ==================== FUNÇÕES DE DEBUG (mantidas mas não visíveis) ====================
-  function showDebugInfo() {
-    // Esta função ainda existe mas não será chamada automaticamente
-    // Pode ser útil para troubleshooting se necessário
-  }
-
-  function exportData() {
-    // Função mantida para exportação se necessário
-  }
-
-  function clearData() {
-    // Função mantida para limpeza se necessário
   }
 
   // ==================== AUTO-SAVE ====================
