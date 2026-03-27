@@ -6,7 +6,7 @@
   <title>🚀 Predictor App | Ativação Premium via WhatsApp</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Firebase SDK CORRETO -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -1057,6 +1057,7 @@
 
   <div class="content">
 
+    <!-- SEÇÃO WHATSAPP CORRIGIDA -->
     <div class="whatsapp-section">
       <div class="section-header">
         <div class="section-icon"><i class="fab fa-whatsapp"></i></div>
@@ -1066,12 +1067,16 @@
         <label class="form-label">Número para receber o Voucher:</label>
         <div class="input-container">
           <span class="country-code">+258</span>
-          <input type="tel" id="whatsapp" class="form-input" placeholder="84 123 456" maxlength="13" inputmode="numeric" autocomplete="tel" required>
+          <input type="tel" id="whatsapp" class="form-input" placeholder="84 123 456" maxlength="13" inputmode="numeric" autocomplete="tel">
         </div>
         <div class="input-hint"><i class="fas fa-info-circle"></i> Digite 9 dígitos (ex: 84xxxxxxx)</div>
       </div>
-      <div class="status-message status-success" id="successMessage"><i class="fas fa-check-circle"></i> WhatsApp registrado! Pronto para pagamento.</div>
-      <div class="status-message status-error" id="errorMessage"><i class="fas fa-exclamation-circle"></i> <span id="errorText">Digite 9 dígitos válidos</span></div>
+      <div class="status-message status-success" id="successMessage" style="display: none;">
+        <i class="fas fa-check-circle"></i> WhatsApp registrado! Pronto para pagamento.
+      </div>
+      <div class="status-message status-error" id="errorMessage" style="display: none;">
+        <i class="fas fa-exclamation-circle"></i> <span id="errorText"></span>
+      </div>
     </div>
 
     <div class="warning-box">
@@ -1217,8 +1222,8 @@
   const STORAGE_KEY_PAYMENTS = 'predictor_payment_confirmations';
   
   const whatsappInput = document.getElementById('whatsapp');
-  const successMessage = document.getElementById('successMessage');
-  const errorMessage = document.getElementById('errorMessage');
+  const successMsg = document.getElementById('successMessage');
+  const errorMsg = document.getElementById('errorMessage');
   const errorText = document.getElementById('errorText');
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toastMessage');
@@ -1249,10 +1254,8 @@
         firebase.initializeApp(firebaseConfig);
         console.log('🔥 Firebase inicializado');
       }
-      
       db = firebase.firestore();
-      
-      // Testar conexão silenciosamente
+      // Teste silencioso
       db.collection('test').doc('connection').set({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         test: true
@@ -1260,32 +1263,24 @@
         firebaseReady = true;
         console.log('✅ Firebase conectado');
         registerSiteVisit();
-      }).catch(error => {
-        console.warn('⚠️ Firebase offline mode');
-        firebaseReady = false;
-      });
-      
+      }).catch(() => { firebaseReady = false; });
     } catch (error) {
-      console.error('❌ Erro Firebase:', error);
       firebaseReady = false;
     }
   }
 
-  // ==================== REGISTRAR VISITA ====================
   function registerSiteVisit() {
     if (!firebaseReady || !db) return;
     try {
       db.collection('payment_site_visits').add({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         sessionId: currentSessionId,
-        userAgent: navigator.userAgent,
         pageType: 'predictor_payment_page',
         paymentAmount: '659 MT'
       }).catch(() => {});
     } catch (error) {}
   }
 
-  // ==================== REGISTRAR AÇÃO ====================
   function registerUserAction(action, details = {}) {
     if (!firebaseReady || !db) return;
     try {
@@ -1298,7 +1293,6 @@
     } catch (error) {}
   }
 
-  // ==================== SALVAR WHATSAPP ====================
   function saveWhatsappToFirebase(phoneNumber) {
     if (!firebaseReady || !db) return;
     try {
@@ -1312,7 +1306,6 @@
     } catch (error) {}
   }
 
-  // ==================== SALVAR CONFIRMAÇÃO ====================
   async function saveConfirmationToFirebase(paymentData) {
     if (!firebaseReady || !db) return false;
     try {
@@ -1326,65 +1319,56 @@
     }
   }
 
-  // ==================== FORMATAR NÚMERO ====================
+  // ==================== FUNÇÕES DO WHATSAPP ====================
   function formatPhoneNumber(number) {
-    if (!number) return '';
     const cleaned = number.replace(/\D/g, '');
     const match = cleaned.match(/^(\d{2})(\d{3})(\d{0,4})$/);
     if (match) return match[1] + ' ' + match[2] + (match[3] ? ' ' + match[3] : '');
     return cleaned;
   }
 
-  // ==================== SALVAR LOCAL ====================
-  function saveToLocalStorage(phoneNumber) {
-    try {
-      localStorage.setItem(STORAGE_KEY_WHATSAPP, phoneNumber);
-    } catch (error) {}
-  }
+  function validateWhatsapp() {
+    const raw = whatsappInput.value.replace(/\s/g, '');
+    // Esconder mensagens anteriores
+    successMsg.style.display = 'none';
+    errorMsg.style.display = 'none';
 
-  // ==================== VALIDAR WHATSAPP ====================
-  function validateWhatsappNumber(save = false) {
-    const rawNumber = whatsappInput.value.replace(/\s/g, '');
-    successMessage.style.display = 'none';
-    errorMessage.style.display = 'none';
-    
-    if (!rawNumber) {
+    if (!raw) {
       isWhatsappValid = false;
       updateCopyButtons();
       validateConfirmationForm();
       return false;
     }
-    
-    if (rawNumber.length !== 9) {
-      showError('Digite exatamente 9 dígitos');
+
+    if (raw.length !== 9) {
+      errorText.innerText = 'Digite exatamente 9 dígitos';
+      errorMsg.style.display = 'block';
       isWhatsappValid = false;
       updateCopyButtons();
       validateConfirmationForm();
       return false;
     }
-    
-    const validPrefixes = ['82', '83', '84', '85', '86', '87'];
-    const prefix = rawNumber.substring(0, 2);
+
+    const validPrefixes = ['82','83','84','85','86','87'];
+    const prefix = raw.substring(0,2);
     if (!validPrefixes.includes(prefix)) {
-      showError('Use prefixo 82, 83, 84, 85, 86 ou 87');
+      errorText.innerText = 'Use prefixo 82, 83, 84, 85, 86 ou 87';
+      errorMsg.style.display = 'block';
       isWhatsappValid = false;
       updateCopyButtons();
       validateConfirmationForm();
       return false;
     }
-    
-    currentWhatsappNumber = rawNumber;
+
+    // Número válido
+    currentWhatsappNumber = raw;
     isWhatsappValid = true;
-    saveToLocalStorage(rawNumber);
-    
-    if (save) {
-      saveWhatsappToFirebase(rawNumber);
-      registerUserAction('whatsapp_validated', { phoneNumber: rawNumber });
-    }
-    
+    localStorage.setItem(STORAGE_KEY_WHATSAPP, raw);
+    successMsg.style.display = 'block';
     updateCopyButtons();
     validateConfirmationForm();
-    successMessage.style.display = 'block';
+    registerUserAction('whatsapp_validated', { phoneNumber: raw });
+    saveWhatsappToFirebase(raw);
     return true;
   }
 
@@ -1393,34 +1377,23 @@
     mpesaBtn.disabled = !isWhatsappValid;
   }
 
-  function showError(message) {
-    errorText.textContent = message;
-    errorMessage.style.display = 'block';
-    whatsappInput.classList.add('shake');
-    setTimeout(() => whatsappInput.classList.remove('shake'), 500);
-  }
-
+  // ==================== OUTRAS FUNÇÕES ====================
   async function copyNumber(number, button, method) {
     if (!isWhatsappValid) {
       showToast('Digite seu WhatsApp primeiro!', 'error');
       whatsappInput.focus();
       return;
     }
-    
     const btnText = button.querySelector('.btn-text');
     const spinner = button.querySelector('.spinner');
     const originalText = btnText.textContent;
-    
     btnText.textContent = 'COPIANDO...';
     spinner.classList.remove('hidden');
     button.disabled = true;
-    
     registerUserAction('copy_started', { method, number });
-    
     try {
       await navigator.clipboard.writeText(number);
       showToast(`✅ ${method} copiado! Nome: LUCAS JOSÉ`, 'success');
-      registerUserAction('copy_success', { method });
       btnText.textContent = 'COPIADO!';
       button.classList.add('copied');
       spinner.classList.add('hidden');
@@ -1592,23 +1565,24 @@
     setTimeout(() => toast.style.display = 'none', 3000);
   }
 
-  // ==================== INICIALIZAÇÃO ====================
+  // ==================== EVENTOS ====================
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Iniciando aplicação...');
     initializeFirebase();
     
     const saved = localStorage.getItem(STORAGE_KEY_WHATSAPP);
     if (saved) {
       whatsappInput.value = formatPhoneNumber(saved);
-      validateWhatsappNumber(true);
+      validateWhatsapp();
     }
     
     whatsappInput.addEventListener('input', function() {
-      let value = this.value.replace(/\D/g, '');
-      if (value.length > 9) value = value.substring(0, 9);
-      this.value = formatPhoneNumber(value);
-      validateWhatsappNumber();
+      let val = this.value.replace(/\D/g, '');
+      if (val.length > 9) val = val.substring(0,9);
+      this.value = formatPhoneNumber(val);
+      validateWhatsapp();
     });
+    
+    whatsappInput.addEventListener('blur', validateWhatsapp);
     
     transactionMessageInput.addEventListener('input', function() {
       const length = this.value.length;
@@ -1626,7 +1600,7 @@
       }
     }, 30000);
   });
-
+  
   document.addEventListener('submit', e => e.preventDefault());
 </script>
 
