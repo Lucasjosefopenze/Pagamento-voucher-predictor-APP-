@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>🚀 Predictor App | Ativação Premium via WhatsApp</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
@@ -43,15 +43,15 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
-      padding: 16px;
+      padding: 12px;
       color: var(--dark);
       line-height: 1.5;
     }
 
-    /* Container */
+    /* Container Mobile First */
     .container {
       max-width: 100%;
       background: var(--light);
@@ -61,10 +61,10 @@
       margin: 0 auto;
     }
 
-    /* Header - Chamativo */
+    /* Header - Chamativo com cores vibrantes */
     .header {
-      background: linear-gradient(135deg, var(--primary), #7C3AED);
-      padding: 28px 24px;
+      background: linear-gradient(135deg, #FF6B35, #F7931E, #FF3D00);
+      padding: 24px 20px;
       text-align: center;
       color: white;
       position: relative;
@@ -78,9 +78,9 @@
       right: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 30px 30px;
-      opacity: 0.3;
+      background: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+      background-size: 25px 25px;
+      opacity: 0.4;
       animation: float 20s linear infinite;
     }
 
@@ -92,24 +92,24 @@
     .logo-container {
       position: relative;
       z-index: 2;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .logo {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       letter-spacing: -0.5px;
     }
 
     .logo-icon {
-      background: rgba(255,255,255,0.2);
-      width: 50px;
-      height: 50px;
-      border-radius: 14px;
+      background: rgba(255,255,255,0.25);
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -125,30 +125,30 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.15);
+      gap: 6px;
+      background: rgba(255,255,255,0.2);
       backdrop-filter: blur(10px);
-      padding: 10px 22px;
+      padding: 8px 18px;
       border-radius: 50px;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       position: relative;
       z-index: 2;
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
     }
 
     .header h1 {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 900;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       position: relative;
       z-index: 2;
       letter-spacing: -0.5px;
     }
 
     .subtitle {
-      font-size: 16px;
+      font-size: 14px;
       opacity: 0.95;
       font-weight: 500;
       position: relative;
@@ -157,9 +157,9 @@
 
     /* Price Card - Compacto e Elegante */
     .price-card {
-      background: linear-gradient(135deg, var(--secondary), #00B894);
-      margin: -20px 24px 24px;
-      padding: 22px;
+      background: linear-gradient(135deg, #00D4AA, #00B894, #00A67C);
+      margin: -18px 20px 20px;
+      padding: 18px;
       border-radius: var(--radius-md);
       color: white;
       text-align: center;
@@ -171,24 +171,24 @@
     }
 
     .price-label {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       opacity: 0.9;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
     .price {
-      font-size: 44px;
+      font-size: 38px;
       font-weight: 900;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       line-height: 1;
       text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
     .price-period {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       opacity: 0.9;
     }
@@ -196,71 +196,172 @@
     .benefits {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      margin-top: 16px;
-      padding-top: 16px;
+      gap: 16px;
+      margin-top: 12px;
+      padding-top: 12px;
       border-top: 1px solid rgba(255,255,255,0.2);
     }
 
     .benefit {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 14px;
+      gap: 5px;
+      font-size: 12px;
       opacity: 0.9;
     }
 
     /* Content */
     .content {
-      padding: 0 24px 28px;
+      padding: 0 16px 24px;
     }
 
-    /* WhatsApp Section - Elegante */
+    /* Video Card - Estilo Premium Mobile */
+    .video-card {
+      background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+      border-radius: var(--radius-lg);
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255,215,0,0.2);
+    }
+
+    .video-card-header {
+      padding: 16px 18px 12px;
+      background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,107,53,0.1));
+      border-bottom: 1px solid rgba(255,215,0,0.2);
+    }
+
+    .video-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #FF4444, #CC0000);
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .video-badge i {
+      font-size: 11px;
+    }
+
+    .video-card-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .video-card-header p {
+      font-size: 13px;
+      color: #A5B4FC;
+      line-height: 1.4;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-card-footer {
+      padding: 14px 18px;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(255,215,0,0.15);
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #E0E7FF;
+      font-weight: 500;
+    }
+
+    .step-item i {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #FF6B35, #F7931E);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* WhatsApp Section */
     .whatsapp-section {
-      background: var(--gray-50);
-      padding: 22px;
+      background: linear-gradient(135deg, var(--gray-50), #FFFFFF);
+      padding: 18px;
       border-radius: var(--radius-md);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       border: 2px solid var(--gray-200);
       position: relative;
+      box-shadow: var(--shadow-sm);
     }
 
     .section-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
     .section-icon {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       background: linear-gradient(135deg, #25D366, #128C7E);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 20px;
+      font-size: 18px;
     }
 
     .section-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       color: var(--dark);
       flex: 1;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .form-label {
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       font-weight: 700;
       color: var(--gray-800);
-      font-size: 15px;
+      font-size: 14px;
     }
 
     .input-container {
@@ -269,22 +370,22 @@
 
     .country-code {
       position: absolute;
-      left: 16px;
+      left: 14px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--gray-600);
       font-weight: 600;
-      font-size: 17px;
+      font-size: 16px;
       pointer-events: none;
     }
 
     .form-input {
       width: 100%;
-      padding: 18px 18px 18px 65px;
+      padding: 14px 14px 14px 58px;
       border-radius: 12px;
       border: 2px solid var(--gray-200);
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 500;
       transition: var(--transition);
       background: white;
       color: var(--dark);
@@ -297,20 +398,20 @@
     }
 
     .input-hint {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--gray-600);
-      margin-top: 8px;
+      margin-top: 6px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .status-message {
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 16px;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 12px;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 13px;
       display: none;
       animation: slideIn 0.3s ease;
       border-left: 4px solid;
@@ -330,34 +431,34 @@
 
     /* Warning Box */
     .warning-box {
-      background: linear-gradient(135deg, #FFF3CD, #FFEAA7);
-      border: 2px solid #FFC107;
-      padding: 18px;
+      background: linear-gradient(135deg, #FFF8E7, #FFEFD0);
+      border: 2px solid #FFB300;
+      padding: 14px;
       border-radius: var(--radius-sm);
-      margin: 20px 0;
+      margin: 16px 0;
       animation: fadeIn 0.5s ease;
     }
 
     .warning-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 8px;
+      margin-bottom: 8px;
     }
 
     .warning-icon {
       color: #FF8C00;
-      font-size: 20px;
+      font-size: 18px;
     }
 
     .warning-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 800;
       color: #E65100;
     }
 
     .warning-text {
-      font-size: 15px;
+      font-size: 13px;
       color: #BF360C;
       line-height: 1.5;
     }
@@ -367,22 +468,23 @@
       background: #FFECB3;
       padding: 2px 6px;
       border-radius: 4px;
+      font-size: 12px;
     }
 
-    /* Payment Methods - Compactos e Elegantes */
+    /* Payment Methods */
     .payment-section {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .payment-methods {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .payment-method {
       background: white;
-      padding: 20px;
+      padding: 16px;
       border-radius: var(--radius-md);
       border: 2px solid var(--gray-200);
       transition: var(--transition);
@@ -391,25 +493,26 @@
 
     .payment-method.recommended {
       border-color: var(--primary);
-      background: linear-gradient(145deg, #F8FAFF, white);
+      background: linear-gradient(145deg, #F0F7FF, white);
+      box-shadow: 0 2px 8px rgba(0,102,255,0.1);
     }
 
     .method-header {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
     .method-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 22px;
+      font-size: 20px;
       flex-shrink: 0;
     }
 
@@ -426,23 +529,23 @@
     }
 
     .method-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       color: var(--dark);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .method-subtitle {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--gray-600);
       font-weight: 500;
     }
 
     .method-details {
       background: var(--gray-50);
-      padding: 16px;
+      padding: 12px;
       border-radius: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       border: 1px solid var(--gray-200);
     }
 
@@ -450,54 +553,54 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
+      padding: 8px 0;
       border-bottom: 1px solid var(--gray-200);
     }
 
     .detail-item:last-child {
       border-bottom: none;
-      padding-top: 12px;
-      margin-top: 4px;
+      padding-top: 8px;
+      margin-top: 0;
     }
 
     .detail-label {
-      font-size: 15px;
+      font-size: 13px;
       color: var(--gray-800);
       font-weight: 600;
     }
 
     .detail-value {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
       color: var(--primary);
-      font-family: 'Courier New', monospace;
+      font-family: monospace;
       letter-spacing: 0.5px;
     }
 
     .account-holder {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--dark);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .copy-button {
       width: 100%;
-      padding: 16px;
+      padding: 14px;
       border-radius: 12px;
       border: none;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .copy-button:disabled {
@@ -507,27 +610,26 @@
       opacity: 0.7;
     }
 
-    .copy-button:not(:disabled):hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 102, 255, 0.3);
+    .copy-button:not(:disabled):active {
+      transform: scale(0.98);
     }
 
     .copy-button.copied {
       background: linear-gradient(135deg, var(--success), #00B894);
     }
 
-    /* Confirmação de Pagamento - Estilos Revisados */
+    /* Confirmação de Pagamento */
     .confirmation-box {
       background: var(--gray-50);
-      padding: 20px;
+      padding: 16px;
       border-radius: var(--radius-md);
       border: 2px solid var(--gray-200);
     }
 
     .method-selection {
       display: flex;
-      gap: 12px;
-      margin-bottom: 8px;
+      gap: 10px;
+      margin-bottom: 6px;
     }
 
     .method-option {
@@ -535,32 +637,31 @@
       background: white;
       border: 2px solid var(--gray-200);
       border-radius: 12px;
-      padding: 16px;
+      padding: 12px;
       text-align: center;
       cursor: pointer;
       transition: var(--transition);
     }
 
-    .method-option:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
+    .method-option:active {
+      transform: scale(0.98);
     }
 
     .method-option.selected {
       border-color: var(--primary);
-      background: linear-gradient(145deg, #F8FAFF, white);
-      box-shadow: 0 4px 12px rgba(0, 102, 255, 0.1);
+      background: linear-gradient(145deg, #F0F7FF, white);
+      box-shadow: 0 2px 8px rgba(0, 102, 255, 0.1);
     }
 
     .method-option-icon {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 10px;
-      font-size: 18px;
+      margin: 0 auto 8px;
+      font-size: 16px;
       color: white;
     }
 
@@ -574,23 +675,24 @@
 
     .method-option-text {
       font-weight: 700;
-      font-size: 15px;
+      font-size: 13px;
       color: var(--dark);
     }
 
     textarea.form-input {
-      font-family: 'Courier New', Courier, monospace;
-      min-height: 140px;
+      font-family: monospace;
+      min-height: 120px;
+      padding: 12px;
     }
 
-    /* Support Section - Elegante */
+    /* Support Section */
     .support-section {
-      background: linear-gradient(135deg, var(--dark), #1E293B);
+      background: linear-gradient(135deg, #0F172A, #1E293B);
       color: white;
-      padding: 24px;
+      padding: 20px;
       border-radius: var(--radius-md);
       text-align: center;
-      margin-top: 24px;
+      margin-top: 20px;
       position: relative;
       overflow: hidden;
     }
@@ -602,31 +704,31 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
+      background: linear-gradient(90deg, #FF6B35, #F7931E, #FFD700);
     }
 
     .support-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .support-desc {
-      font-size: 15px;
+      font-size: 13px;
       color: #CBD5E1;
-      margin-bottom: 20px;
-      line-height: 1.6;
+      margin-bottom: 16px;
+      line-height: 1.5;
     }
 
     .support-number {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 900;
-      color: #38BDF8;
-      margin: 12px 0;
+      color: #FFB347;
+      margin: 10px 0;
       direction: ltr;
       letter-spacing: 0.5px;
     }
@@ -634,37 +736,37 @@
     .support-button {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(56, 189, 248, 0.15);
-      color: #38BDF8;
-      padding: 14px 24px;
+      gap: 8px;
+      background: rgba(255, 179, 71, 0.15);
+      color: #FFB347;
+      padding: 12px 20px;
       border-radius: 12px;
       font-weight: 700;
       text-decoration: none;
-      font-size: 15px;
-      border: 2px solid rgba(56, 189, 248, 0.25);
+      font-size: 14px;
+      border: 2px solid rgba(255, 179, 71, 0.3);
       transition: var(--transition);
-      margin-top: 8px;
+      margin-top: 6px;
+      cursor: pointer;
     }
 
-    .support-button:hover {
-      background: rgba(56, 189, 248, 0.25);
-      transform: translateY(-2px);
+    .support-button:active {
+      transform: scale(0.98);
     }
 
     .support-hours {
-      font-size: 14px;
+      font-size: 12px;
       color: #94A3B8;
-      margin-top: 16px;
+      margin-top: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     /* Footer */
     .footer {
-      padding: 24px;
+      padding: 20px;
       text-align: center;
       background: var(--gray-50);
       border-top: 2px solid var(--gray-200);
@@ -673,27 +775,27 @@
     .security-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
     .security-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      padding: 12px;
+      gap: 6px;
+      padding: 10px;
       background: white;
       border-radius: 10px;
       border: 1px solid var(--gray-200);
     }
 
     .security-icon {
-      font-size: 20px;
+      font-size: 18px;
     }
 
     .security-text {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--gray-800);
       text-align: center;
@@ -701,9 +803,9 @@
     }
 
     .copyright {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--gray-600);
-      margin-top: 12px;
+      margin-top: 10px;
       font-weight: 500;
     }
 
@@ -715,53 +817,17 @@
       transform: translateX(-50%);
       background: white;
       color: var(--dark);
-      padding: 16px 20px;
+      padding: 12px 18px;
       border-radius: 12px;
       font-weight: 700;
       display: none;
       z-index: 1000;
       box-shadow: var(--shadow-lg);
       border-left: 4px solid;
-      max-width: 90%;
+      max-width: 85%;
       text-align: center;
       animation: slideDown 0.3s ease;
-    }
-
-    /* Debug Panel - INVISÍVEL */
-    .debug-panel {
-      display: none !important; /* Mantém invisível */
-      background: #f8f9fa;
-      border: 2px solid #dee2e6;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 15px 0;
-      font-family: monospace;
-      font-size: 12px;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    .debug-title {
-      font-weight: bold;
-      color: #495057;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .debug-button {
-      background: #6c757d;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      cursor: pointer;
-    }
-
-    .debug-button:hover {
-      background: #5a6268;
+      font-size: 13px;
     }
 
     /* Modal Styles */
@@ -771,12 +837,12 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      padding: 20px;
+      padding: 16px;
       animation: fadeIn 0.3s ease;
     }
 
@@ -784,8 +850,8 @@
       background: white;
       border-radius: var(--radius-lg);
       width: 100%;
-      max-width: 420px;
-      max-height: 90vh;
+      max-width: 380px;
+      max-height: 85vh;
       overflow-y: auto;
       box-shadow: var(--shadow-lg);
       animation: slideUp 0.3s ease;
@@ -797,20 +863,20 @@
     }
 
     .modal-header {
-      padding: 24px 24px 16px;
+      padding: 20px 20px 12px;
       position: relative;
       text-align: center;
     }
 
     .modal-icon {
-      width: 60px;
-      height: 60px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 16px;
-      font-size: 28px;
+      margin: 0 auto 12px;
+      font-size: 26px;
     }
 
     .modal-icon.success {
@@ -819,49 +885,44 @@
     }
 
     .modal-header h3 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
       color: var(--dark);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .modal-close {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 12px;
+      right: 12px;
       background: none;
       border: none;
       color: var(--gray-600);
       cursor: pointer;
-      font-size: 18px;
-      width: 32px;
-      height: 32px;
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: var(--transition);
-    }
-
-    .modal-close:hover {
-      background: var(--gray-100);
     }
 
     .modal-body {
-      padding: 0 24px 24px;
+      padding: 0 20px 20px;
     }
 
     .confirmation-message {
       background: var(--gray-50);
       border-radius: var(--radius-sm);
-      padding: 16px;
-      margin-bottom: 16px;
+      padding: 12px;
+      margin-bottom: 12px;
     }
 
     .confirmation-item {
       display: flex;
-      gap: 12px;
-      padding: 12px 0;
+      gap: 10px;
+      padding: 10px 0;
       border-bottom: 1px solid var(--gray-200);
     }
 
@@ -870,20 +931,20 @@
     }
 
     .confirmation-item i {
-      font-size: 20px;
+      font-size: 18px;
       color: var(--primary);
       margin-top: 2px;
     }
 
     .confirmation-item strong {
       display: block;
-      font-size: 15px;
+      font-size: 13px;
       color: var(--dark);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .confirmation-item p {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--gray-600);
       margin: 0;
     }
@@ -892,48 +953,39 @@
       background: #FFF3CD;
       border: 1px solid #FFC107;
       border-radius: 10px;
-      padding: 12px 16px;
+      padding: 10px 12px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 14px;
+      gap: 8px;
+      font-size: 12px;
       color: #856404;
     }
 
-    .modal-warning i {
-      color: #FFC107;
-    }
-
     .modal-footer {
-      padding: 16px 24px 24px;
+      padding: 12px 20px 20px;
       border-top: 1px solid var(--gray-200);
     }
 
     .modal-button {
       width: 100%;
-      padding: 16px;
+      padding: 14px;
       border-radius: 12px;
       border: none;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
     }
 
-    .modal-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 102, 255, 0.3);
+    .modal-button:active {
+      transform: scale(0.98);
     }
 
     /* Animations */
     @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-10px); }
+      from { opacity: 0; transform: translateY(-8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -950,9 +1002,9 @@
     /* Spinner */
     .spinner {
       display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,0.3);
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
       border-radius: 50%;
       border-top-color: white;
       animation: spin 1s linear infinite;
@@ -960,14 +1012,6 @@
 
     @keyframes spin {
       to { transform: rotate(360deg); }
-    }
-
-    /* Responsive */
-    @media (min-width: 480px) {
-      .container {
-        max-width: 420px;
-        margin: 20px auto;
-      }
     }
 
     /* Utility */
@@ -981,16 +1025,16 @@
 
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
     }
     
     /* Requirements Box */
     .requirements-box {
       display: flex;
-      gap: 16px;
-      margin: 16px 0;
-      padding: 12px;
+      gap: 12px;
+      margin: 12px 0;
+      padding: 10px;
       background: var(--gray-100);
       border-radius: 10px;
     }
@@ -998,8 +1042,8 @@
     .requirement-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
+      gap: 6px;
+      font-size: 12px;
       font-weight: 600;
     }
     
@@ -1010,6 +1054,17 @@
     .requirement-item i.invalid {
       color: var(--gray-300);
     }
+
+    /* Mobile optimizations */
+    @media (max-width: 480px) {
+      body {
+        padding: 8px;
+      }
+      
+      .content {
+        padding: 0 12px 20px;
+      }
+    }
   </style>
 </head>
 
@@ -1017,7 +1072,7 @@
 
 <!-- Toast -->
 <div class="toast" id="toast">
-  <div style="display: flex; align-items: center; gap: 10px;">
+  <div style="display: flex; align-items: center; gap: 8px;">
     <i class="fas fa-check-circle" id="toastIcon"></i>
     <span id="toastMessage">Copiado com sucesso!</span>
   </div>
@@ -1193,7 +1248,7 @@
       </div>
     </div>
 
-    <!-- Confirmação de Pagamento - APENAS MENSAGEM -->
+    <!-- Confirmação de Pagamento -->
     <div class="payment-section" id="paymentConfirmationSection">
       <div class="section-header">
         <div class="section-icon" style="background: linear-gradient(135deg, var(--success), #00B894);">
@@ -1235,7 +1290,7 @@
                     rows="4"
                     placeholder="Cole aqui a MENSAGEM COMPLETA de confirmação que recebeu após o pagamento..."
                     oninput="validateConfirmationForm()"
-                    style="padding: 16px; resize: vertical; min-height: 120px; font-family: monospace; font-size: 14px;"></textarea>
+                    style="padding: 12px; resize: vertical; min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
           <div class="input-hint">
             <i class="fas fa-info-circle"></i>
             <span id="charCount">0/100 caracteres mínimos</span>
@@ -1260,6 +1315,45 @@
           <span class="btn-text">ENVIAR CONFIRMAÇÃO</span>
           <span class="spinner hidden"></span>
         </button>
+      </div>
+    </div>
+
+    <!-- VIDEO CARD - Posicionado acima do suporte com design mobile -->
+    <div class="video-card">
+      <div class="video-card-header">
+        <div class="video-badge">
+          <i class="fas fa-play-circle"></i>
+          VIDEO TUTORIAL
+        </div>
+        <h3>
+          <i class="fas fa-graduation-cap" style="color: #FFB347;"></i>
+          Como fazer o pagamento?
+        </h3>
+        <p>Assista ao vídeo e siga o passo a passo</p>
+      </div>
+      <div class="video-container">
+        <iframe 
+          src="https://www.youtube.com/embed/VXWe8X5OFFM?si=un1s9wF0nQJ1Fxh1" 
+          title="Como fazer pagamento eMola e M-Pesa" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          referrerpolicy="strict-origin-when-cross-origin" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="video-card-footer">
+        <div class="step-item">
+          <i class="fas fa-1"></i>
+          <span>Copie o número</span>
+        </div>
+        <div class="step-item">
+          <i class="fas fa-2"></i>
+          <span>Faça o pagamento</span>
+        </div>
+        <div class="step-item">
+          <i class="fas fa-3"></i>
+          <span>Cole a confirmação</span>
+        </div>
       </div>
     </div>
 
@@ -1302,7 +1396,7 @@
       </div>
     </div>
     <div class="copyright">
-      © 2025 EllonMusk•
+      © 2025 Predictor App • Todos os direitos reservados
     </div>
   </div>
 </div>
@@ -1357,7 +1451,7 @@
       
       <div class="modal-warning">
         <i class="fas fa-exclamation-circle"></i>
-        <span>Aguarde a nossa Notificação no whatsApp</span>
+        <span>Aguarde a nossa Notificação no WhatsApp</span>
       </div>
     </div>
     
@@ -1377,7 +1471,6 @@
   const STORAGE_KEY_COPY_LOGS = 'predictor_copy_logs';
   const STORAGE_KEY_PAYMENTS = 'predictor_payment_confirmations';
   const STORAGE_KEY_SITE_VISITS = 'payment_site_visits_log';
-  const STORAGE_KEY_SESSION = 'payment_site_session';
   
   // ==================== VARIÁVEIS GLOBAIS ====================
   const whatsappInput = document.getElementById('whatsapp');
@@ -1390,7 +1483,6 @@
   const emolaBtn = document.getElementById('emolaBtn');
   const mpesaBtn = document.getElementById('mpesaBtn');
   
-  // Variáveis para Confirmação
   const transactionMessageInput = document.getElementById('transactionMessage');
   const submitPaymentBtn = document.getElementById('submitPaymentBtn');
   const charCount = document.getElementById('charCount');
@@ -1398,8 +1490,6 @@
   const confirmationModal = document.getElementById('confirmationModal');
   const modalWhatsappNumber = document.getElementById('modalWhatsappNumber');
   const modalTransactionId = document.getElementById('modalTransactionId');
-  
-  // Elementos de verificação
   const methodCheck = document.getElementById('methodCheck');
   const messageCheck = document.getElementById('messageCheck');
   
@@ -1407,12 +1497,7 @@
   let currentWhatsappNumber = '';
   let firebaseAvailable = false;
   let selectedPaymentMethod = '';
-  let currentSessionId = generateSessionId();
-
-  // ==================== GERAR ID DE SESSÃO ====================
-  function generateSessionId() {
-    return 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-  }
+  let currentSessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
 
   // ==================== INICIALIZAR FIREBASE ====================
   function initializeFirebase() {
@@ -1432,255 +1517,60 @@
           firebase.initializeApp(firebaseConfig);
         }
         firebaseAvailable = true;
-        console.log('✅ Firebase disponível para o site de pagamento');
+        console.log('✅ Firebase disponível');
       }
     } catch (error) {
-      console.warn('⚠️ Firebase não disponível no Sketchiware, usando localStorage');
+      console.warn('⚠️ Firebase não disponível');
       firebaseAvailable = false;
     }
   }
 
-  // ==================== VERIFICAR SE DEVE REGISTRAR VISITA ====================
-  function shouldRegisterVisit() {
-    try {
-      const lastVisit = localStorage.getItem('last_site_visit');
-      const now = Date.now();
-      
-      // Se nunca visitou ou visitou há mais de 30 minutos, registra
-      if (!lastVisit || (now - parseInt(lastVisit)) > (30 * 60 * 1000)) {
-        return true;
-      }
-      
-      return false;
-    } catch (error) {
-      return true; // Em caso de erro, registra
-    }
-  }
-
-  // ==================== REGISTRAR VISITA DO SITE ====================
-  function registerSiteVisit() {
-    if (!firebaseAvailable) {
-      console.log('⚠️ Firebase não disponível, salvando visita localmente');
-      saveSiteVisitLocally();
-      return;
-    }
-    
-    try {
-      // Dados da visita
-      const visitData = {
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        userAgent: navigator.userAgent,
-        referrer: document.referrer || 'direct',
-        url: window.location.href,
-        pageType: 'predictor_mobile_premium_payment',
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
-        language: navigator.language,
-        platform: navigator.platform,
-        
-        // IDENTIFICADORES EXCLUSIVOS DO SITE DE PAGAMENTO
-        isPaymentSite: true,
-        isAdminPanel: false,
-        siteType: 'payment_site',
-        visitSource: 'predictor_payment_page',
-        
-        // Informações de sessão
-        sessionId: currentSessionId,
-        isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-        hasTouch: 'ontouchstart' in window,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        
-        // Informações da visita
-        pageLoaded: true,
-        visitType: 'page_visit',
-        paymentAmount: '659 MT',
-        currency: 'MT'
-      };
-      
-      // Registrar visita no Firebase
-      firebase.firestore().collection('payment_site_visits').add(visitData)
-        .then((docRef) => {
-          console.log('✅ Visita registrada com ID:', docRef.id);
-          
-          // Salvar localmente que registrou
-          localStorage.setItem('last_site_visit', Date.now().toString());
-          localStorage.setItem('last_session_id', currentSessionId);
-        })
-        .catch(error => {
-          console.warn('⚠️ Erro ao registrar visita no Firebase, salvando localmente:', error);
-          saveSiteVisitLocally(visitData);
-        });
-    } catch (error) {
-      console.warn('⚠️ Erro ao registrar visita:', error);
-      saveSiteVisitLocally();
-    }
-  }
-
-  // ==================== SALVAR VISITA LOCALMENTE (FALLBACK) ====================
-  function saveSiteVisitLocally(visitData = null) {
-    try {
-      const visits = JSON.parse(localStorage.getItem(STORAGE_KEY_SITE_VISITS) || '[]');
-      
-      const visit = visitData || {
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent,
-        url: window.location.href,
-        pageType: 'predictor_mobile_premium_payment',
-        sessionId: currentSessionId,
-        storedLocally: true
-      };
-      
-      visits.push(visit);
-      
-      // Manter apenas os últimos 50 registros
-      if (visits.length > 50) {
-        visits.splice(0, visits.length - 50);
-      }
-      
-      localStorage.setItem(STORAGE_KEY_SITE_VISITS, JSON.stringify(visits));
-      localStorage.setItem('last_site_visit', Date.now().toString());
-      
-      console.log('📊 Visita salva localmente');
-    } catch (error) {
-      console.error('❌ Erro ao salvar visita localmente:', error);
-    }
-  }
-
-  // ==================== REGISTRAR AÇÃO DO USUÁRIO ====================
+  // ==================== REGISTRAR AÇÃO ====================
   function registerUserAction(action, details = {}) {
     if (!firebaseAvailable) return;
-    
     try {
-      const actionData = {
+      firebase.firestore().collection('user_actions').add({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         sessionId: currentSessionId,
         action: action,
         ...details,
-        userAgent: navigator.userAgent,
-        url: window.location.href
-      };
-      
-      firebase.firestore().collection('user_actions').add(actionData)
-        .then(() => {
-          console.log(`✅ Ação registrada: ${action}`);
-        })
-        .catch(error => {
-          console.warn(`⚠️ Erro ao registrar ação ${action}:`, error);
-        });
-    } catch (error) {
-      console.warn(`⚠️ Erro ao registrar ação:`, error);
-    }
+        userAgent: navigator.userAgent
+      });
+    } catch (error) {}
   }
 
-  // ==================== INICIALIZAÇÃO DA APLICAÇÃO ====================
+  // ==================== INICIALIZAÇÃO ====================
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Predictor Payment Site iniciando...');
-    console.log('📱 Sessão ID:', currentSessionId);
-    
-    // Inicializar Firebase (se disponível)
     initializeFirebase();
+    registerUserAction('page_load', { pageType: 'payment_page' });
     
-    // REGISTRAR VISITA IMEDIATAMENTE AO CARREGAR A PÁGINA
-    if (shouldRegisterVisit()) {
-      console.log('👣 Registrando nova visita...');
-      registerSiteVisit();
-    } else {
-      console.log('⏱️ Visita já registrada recentemente');
-    }
-    
-    // Registrar evento de carregamento da página
-    registerUserAction('page_load', {
-      pageType: 'payment_page',
-      loadTime: performance.now()
-    });
-    
-    // Carregar número salvo
-    const saved = getSavedWhatsapp();
+    const saved = localStorage.getItem(STORAGE_KEY_WHATSAPP);
     if (saved) {
       whatsappInput.value = formatPhoneNumber(saved);
       validateWhatsappNumber(true);
     }
     
-    // Configurar validação em tempo real
     whatsappInput.addEventListener('input', function() {
       let value = this.value.replace(/\D/g, '');
-      
-      if (value.length > 9) {
-        value = value.substring(0, 9);
-      }
-      
+      if (value.length > 9) value = value.substring(0, 9);
       this.value = formatPhoneNumber(value);
       validateWhatsappNumber();
-      
-      // Registrar ação de digitação
-      if (value.length > 0) {
-        registerUserAction('whatsapp_input', {
-          inputLength: value.length,
-          prefix: value.substring(0, 2)
-        });
-      }
     });
     
-    // Validar ao perder foco
-    whatsappInput.addEventListener('blur', function() {
-      validateWhatsappNumber(true);
-    });
-    
-    // Registrar clique nos campos
-    whatsappInput.addEventListener('focus', function() {
-      registerUserAction('field_focus', { field: 'whatsapp' });
-    });
-    
-    // Registrar visualização dos métodos de pagamento
-    const paymentMethods = document.querySelectorAll('.payment-method');
-    paymentMethods.forEach(method => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const methodName = method.classList.contains('emola') ? 'eMola' : 'M-Pesa';
-            registerUserAction('payment_method_view', { method: methodName });
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.5 });
-      
-      observer.observe(method);
-    });
-    
-    // Atualizar contador de caracteres
     transactionMessageInput.addEventListener('input', function() {
       const length = this.value.length;
       charCount.textContent = `${length}/100 caracteres mínimos`;
-      
-      // Mudar cor conforme atinge o mínimo
       if (length >= 100) {
-        charCount.style.color = 'var(--success)';
-        charCount.style.fontWeight = '700';
+        charCount.style.color = '#00C853';
       } else {
-        charCount.style.color = 'var(--danger)';
-        charCount.style.fontWeight = '600';
+        charCount.style.color = '#FF3D00';
       }
-      
       validateConfirmationForm();
     });
     
-    // Focar no campo
-    setTimeout(() => whatsappInput.focus(), 400);
-    
-    // Registrar tempo na página
-    window.addEventListener('beforeunload', function() {
-      const timeOnPage = Math.round(performance.now() / 1000);
-      registerUserAction('page_exit', {
-        timeOnPage: timeOnPage,
-        whatsappEntered: isWhatsappValid,
-        currentPage: 'payment_page'
-      });
-    });
-    
-    console.log('✅ Predictor Payment Site carregado!');
+    setTimeout(() => whatsappInput.focus(), 300);
   });
 
-  // ==================== FORMATAR NÚMERO ====================
   function formatPhoneNumber(number) {
     if (!number) return '';
     const cleaned = number.replace(/\D/g, '');
@@ -1691,60 +1581,21 @@
     return cleaned;
   }
 
-  // ==================== SALVAR NO LOCALSTORAGE ====================
-  function saveToLocalStorage(phoneNumber, action = 'registration') {
+  function saveToLocalStorage(phoneNumber) {
     try {
-      const timestamp = new Date().toISOString();
-      
-      // Salvar WhatsApp
       localStorage.setItem(STORAGE_KEY_WHATSAPP, phoneNumber);
-      
-      // Salvar no log de registros
       const logs = JSON.parse(localStorage.getItem(STORAGE_KEY_LOGS) || '[]');
-      logs.push({
-        phoneNumber: phoneNumber,
-        action: action,
-        timestamp: timestamp,
-        amount: '659 MT',
-        page: 'predictor_mobile_premium',
-        source: 'sketchiware',
-        sessionId: currentSessionId
-      });
-      
-      // Manter apenas os últimos 50 registros
-      if (logs.length > 50) {
-        logs.splice(0, logs.length - 50);
-      }
-      
+      logs.push({ phoneNumber, timestamp: new Date().toISOString(), sessionId: currentSessionId });
+      if (logs.length > 50) logs.splice(0, logs.length - 50);
       localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs));
-      
-      console.log('📱 Dados salvos localmente:', phoneNumber);
-      return true;
-    } catch (error) {
-      console.error('❌ Erro ao salvar localmente:', error);
-      return false;
-    }
+    } catch (error) {}
   }
 
-  // ==================== OBTER WHATSAPP SALVO ====================
-  function getSavedWhatsapp() {
-    try {
-      return localStorage.getItem(STORAGE_KEY_WHATSAPP);
-    } catch (error) {
-      console.error('❌ Erro ao ler localStorage:', error);
-      return null;
-    }
-  }
-
-  // ==================== VALIDAR WHATSAPP ====================
   function validateWhatsappNumber(save = false) {
     const rawNumber = whatsappInput.value.replace(/\s/g, '');
-    
-    // Resetar mensagens
     successMessage.style.display = 'none';
     errorMessage.style.display = 'none';
     
-    // Verificar se está vazio
     if (!rawNumber) {
       isWhatsappValid = false;
       updateCopyButtons();
@@ -1752,7 +1603,6 @@
       return false;
     }
     
-    // Verificar se tem 9 dígitos
     if (rawNumber.length !== 9) {
       showError('Digite exatamente 9 dígitos');
       isWhatsappValid = false;
@@ -1761,7 +1611,6 @@
       return false;
     }
     
-    // Verificar prefixo válido
     const validPrefixes = ['82', '83', '84', '85', '86', '87'];
     const prefix = rawNumber.substring(0, 2);
     if (!validPrefixes.includes(prefix)) {
@@ -1772,83 +1621,40 @@
       return false;
     }
     
-    // Número válido
     currentWhatsappNumber = rawNumber;
     isWhatsappValid = true;
-    
-    // Salvar localmente
-    saveToLocalStorage(rawNumber, 'whatsapp_validation');
-    
-    // Registrar ação no Firebase
-    registerUserAction('whatsapp_validated', {
-      phoneNumber: rawNumber,
-      isValid: true
-    });
-    
-    // Atualizar botões
+    saveToLocalStorage(rawNumber);
+    registerUserAction('whatsapp_validated', { phoneNumber: rawNumber });
     updateCopyButtons();
     validateConfirmationForm();
-    
-    // Mostrar sucesso
     successMessage.style.display = 'block';
     
-    // Salvar no Firebase se disponível
     if (save && firebaseAvailable) {
       try {
         firebase.firestore().collection('whatsapp_numbers').add({
           phoneNumber: rawNumber,
-          status: 'pending',
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          amount: '659 MT',
-          page: 'predictor_mobile_premium',
-          userAgent: navigator.userAgent,
-          source: 'sketchiware',
           sessionId: currentSessionId
         });
-        console.log('✅ Dados enviados para Firebase');
-      } catch (error) {
-        console.warn('⚠️ Firebase falhou, mantendo apenas local');
-      }
+      } catch (error) {}
     }
-    
     return true;
   }
 
-  // ==================== ATUALIZAR BOTÕES ====================
   function updateCopyButtons() {
-    if (isWhatsappValid) {
-      emolaBtn.disabled = false;
-      mpesaBtn.disabled = false;
-      console.log('✅ Botões habilitados');
-    } else {
-      emolaBtn.disabled = true;
-      mpesaBtn.disabled = true;
-      console.log('❌ Botões desabilitados');
-    }
+    emolaBtn.disabled = !isWhatsappValid;
+    mpesaBtn.disabled = !isWhatsappValid;
   }
 
-  // ==================== MOSTRAR ERRO ====================
   function showError(message) {
     errorText.textContent = message;
     errorMessage.style.display = 'block';
     successMessage.style.display = 'none';
-    
-    // Registrar erro
-    registerUserAction('validation_error', {
-      field: 'whatsapp',
-      error: message
-    });
-    
-    // Animação de shake
     whatsappInput.classList.add('shake');
-    setTimeout(() => {
-      whatsappInput.classList.remove('shake');
-    }, 500);
+    setTimeout(() => whatsappInput.classList.remove('shake'), 500);
   }
 
-  // ==================== FUNÇÃO DE CÓPIA ====================
   async function copyNumber(number, button, method) {
-    // Verificar WhatsApp
     if (!isWhatsappValid) {
       showToast('Digite seu WhatsApp primeiro!', 'error');
       whatsappInput.focus();
@@ -1863,53 +1669,18 @@
     spinner.classList.remove('hidden');
     button.disabled = true;
     
-    // Registrar início da cópia
-    registerUserAction('copy_started', {
-      method: method,
-      number: number,
-      whatsapp: currentWhatsappNumber
-    });
-    
     try {
-      // Copiar para área de transferência
       await navigator.clipboard.writeText(number);
-      
-      // Registrar ação localmente
-      logCopyActionLocally(number, method);
-      
-      // Registrar cópia bem-sucedida
-      registerUserAction('copy_success', {
-        method: method,
-        number: number,
-        whatsapp: currentWhatsappNumber
-      });
-      
-      // Mostrar toast
       showToast(`✅ ${method} copiado! Nome: LUCAS JOSÉ`, 'success');
-      
-      // Atualizar botão
       btnText.textContent = 'COPIADO!';
       button.classList.add('copied');
       spinner.classList.add('hidden');
-      
-      // Restaurar após 1.5s
       setTimeout(() => {
         btnText.textContent = originalText;
         button.classList.remove('copied');
         button.disabled = false;
       }, 1500);
-      
     } catch (error) {
-      console.error('Erro ao copiar:', error);
-      
-      // Registrar erro na cópia
-      registerUserAction('copy_error', {
-        method: method,
-        error: error.message,
-        whatsapp: currentWhatsappNumber
-      });
-      
-      // Fallback para input temporário
       try {
         const tempInput = document.createElement('input');
         tempInput.value = number;
@@ -1917,167 +1688,73 @@
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
-        
-        showToast(`✅ ${method} copiado! Nome: LUCAS JOSÉ`, 'success');
-        logCopyActionLocally(number, method);
-        
-        // Registrar fallback bem-sucedido
-        registerUserAction('copy_fallback_success', {
-          method: method,
-          number: number
-        });
+        showToast(`✅ ${method} copiado!`, 'success');
       } catch (fallbackError) {
         showToast('❌ Erro ao copiar', 'error');
       }
-      
       btnText.textContent = originalText;
       spinner.classList.add('hidden');
       button.disabled = false;
     }
   }
 
-  // ==================== LOGAR AÇÃO LOCALMENTE ====================
-  function logCopyActionLocally(number, method) {
-    try {
-      const timestamp = new Date().toISOString();
-      const copyLogs = JSON.parse(localStorage.getItem(STORAGE_KEY_COPY_LOGS) || '[]');
-      
-      copyLogs.push({
-        whatsappNumber: currentWhatsappNumber,
-        copiedNumber: number,
-        method: method,
-        accountHolder: 'LUCAS JOSÉ',
-        timestamp: timestamp,
-        source: 'sketchiware',
-        sessionId: currentSessionId
-      });
-      
-      // Manter apenas os últimos 50 registros
-      if (copyLogs.length > 50) {
-        copyLogs.splice(0, copyLogs.length - 50);
-      }
-      
-      localStorage.setItem(STORAGE_KEY_COPY_LOGS, JSON.stringify(copyLogs));
-      
-      // Tentar enviar para Firebase se disponível
-      if (firebaseAvailable) {
-        try {
-          firebase.firestore().collection('copy_actions').add({
-            whatsappNumber: currentWhatsappNumber,
-            copiedNumber: number,
-            method: method,
-            accountHolder: 'LUCAS JOSÉ',
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            source: 'sketchiware',
-            sessionId: currentSessionId
-          });
-        } catch (firebaseError) {
-          console.warn('⚠️ Firebase falhou na cópia');
-        }
-      }
-      
-      console.log(`📋 Ação copiada: ${method} - ${number}`);
-    } catch (error) {
-      console.error('❌ Erro ao logar cópia:', error);
-    }
-  }
-
-  // ==================== SELECIONAR MÉTODO DE PAGAMENTO ====================
   function selectPaymentMethod(method) {
     selectedPaymentMethod = method;
     selectedMethodInput.value = method;
-    
-    // Registrar seleção de método
-    registerUserAction('payment_method_selected', {
-      method: method
-    });
-    
-    // Remover seleção anterior
-    document.querySelectorAll('.method-option').forEach(option => {
-      option.classList.remove('selected');
-    });
-    
-    // Adicionar seleção atual
-    const selectedElement = document.getElementById(`method${method.charAt(0).toUpperCase() + method.slice(1)}`);
-    if (selectedElement) {
-      selectedElement.classList.add('selected');
-    }
-    
-    // Atualizar verificação
+    registerUserAction('payment_method_selected', { method });
+    document.querySelectorAll('.method-option').forEach(option => option.classList.remove('selected'));
+    document.getElementById(`method${method.charAt(0).toUpperCase() + method.slice(1)}`).classList.add('selected');
     updateMethodCheck();
     validateConfirmationForm();
   }
 
-  // ==================== ATUALIZAR VERIFICAÇÕES ====================
   function updateMethodCheck() {
     if (selectedPaymentMethod) {
       methodCheck.className = 'fas fa-check-circle valid';
-      methodCheck.style.color = 'var(--success)';
+      methodCheck.style.color = '#00C853';
     } else {
       methodCheck.className = 'fas fa-check-circle invalid';
-      methodCheck.style.color = 'var(--gray-300)';
+      methodCheck.style.color = '#E5E7EB';
     }
   }
 
   function updateMessageCheck(hasValidMessage) {
     if (hasValidMessage) {
       messageCheck.className = 'fas fa-check-circle valid';
-      messageCheck.style.color = 'var(--success)';
+      messageCheck.style.color = '#00C853';
     } else {
       messageCheck.className = 'fas fa-check-circle invalid';
-      messageCheck.style.color = 'var(--gray-300)';
+      messageCheck.style.color = '#E5E7EB';
     }
   }
 
-  // ==================== VALIDAR FORMULÁRIO DE CONFIRMAÇÃO ====================
   function validateConfirmationForm() {
     const message = transactionMessageInput.value.trim();
     const hasValidMessage = message.length >= 100;
     const hasMethod = selectedPaymentMethod !== '';
     const hasWhatsapp = isWhatsappValid;
     
-    // Atualizar ícones de verificação
     updateMethodCheck();
     updateMessageCheck(hasValidMessage);
     
-    // Validar: Precisa de WhatsApp + Método + Mensagem
-    const isValid = hasWhatsapp && hasMethod && hasValidMessage;
-    
-    submitPaymentBtn.disabled = !isValid;
-    
-    if (!hasWhatsapp) {
-      submitPaymentBtn.title = "Digite seu WhatsApp primeiro";
-    } else if (!hasMethod) {
-      submitPaymentBtn.title = "Selecione o método de pagamento";
-    } else if (!hasValidMessage) {
-      submitPaymentBtn.title = "Informe a mensagem de confirmação (100+ caracteres)";
-    } else {
-      submitPaymentBtn.title = "Clique para enviar confirmação";
-    }
-    
-    return isValid;
+    submitPaymentBtn.disabled = !(hasWhatsapp && hasMethod && hasValidMessage);
+    return !submitPaymentBtn.disabled;
   }
 
-  // ==================== ENVIAR CONFIRMAÇÃO DE PAGAMENTO ====================
   async function submitPaymentConfirmation() {
-    // Validar WhatsApp
     if (!isWhatsappValid) {
       showToast('Digite seu WhatsApp primeiro!', 'error');
       whatsappInput.focus();
       return;
     }
     
-    // Validar método selecionado
     if (!selectedPaymentMethod) {
       showToast('Selecione o método de pagamento!', 'error');
       return;
     }
     
-    // Validar que tem mensagem
     const message = transactionMessageInput.value.trim();
-    const hasValidMessage = message.length >= 100;
-    
-    if (!hasValidMessage) {
+    if (message.length < 100) {
       showToast('Informe a mensagem de confirmação (100+ caracteres)!', 'error');
       return;
     }
@@ -2090,101 +1767,46 @@
     spinner.classList.remove('hidden');
     submitPaymentBtn.disabled = true;
     
-    // Registrar início do envio
-    registerUserAction('confirmation_submit_started', {
-      method: selectedPaymentMethod,
-      messageLength: message.length,
-      whatsapp: currentWhatsappNumber
-    });
-    
     try {
-      // Extrair possível ID da transação da mensagem
       let extractedTransactionId = 'Não identificado';
-      if (message.length > 0) {
-        // Tentar encontrar padrões comuns de ID
-        const idPatterns = [
-          /ID[:\s]*([A-Z0-9]{8,})/i,
-          /Referência[:\s]*([A-Z0-9]{8,})/i,
-          /Transação[:\s]*([A-Z0-9]{8,})/i,
-          /([A-Z][0-9]{9,})/,
-          /([0-9]{10,})/
-        ];
-        
-        for (const pattern of idPatterns) {
-          const match = message.match(pattern);
-          if (match && match[1]) {
-            extractedTransactionId = match[1];
-            break;
-          }
-        }
-        
-        // Se não encontrou, pegar primeiros 20 caracteres
-        if (extractedTransactionId === 'Não identificado') {
-          extractedTransactionId = message.substring(0, 20) + '...';
+      const idPatterns = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
+      for (const pattern of idPatterns) {
+        const match = message.match(pattern);
+        if (match && match[1]) {
+          extractedTransactionId = match[1];
+          break;
         }
       }
+      if (extractedTransactionId === 'Não identificado') {
+        extractedTransactionId = message.substring(0, 20) + '...';
+      }
       
-      // Preparar dados
       const paymentData = {
         whatsappNumber: currentWhatsappNumber,
         paymentMethod: selectedPaymentMethod,
         transactionMessage: message,
         transactionId: extractedTransactionId,
-        messageLength: message.length,
         timestamp: new Date().toISOString(),
-        status: 'pending_verification',
-        amount: '659 MT',
         sessionId: currentSessionId
       };
       
-      // Salvar localmente
-      savePaymentConfirmation(paymentData);
+      const payments = JSON.parse(localStorage.getItem(STORAGE_KEY_PAYMENTS) || '[]');
+      payments.push(paymentData);
+      if (payments.length > 20) payments.splice(0, payments.length - 20);
+      localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(payments));
       
-      // Registrar envio bem-sucedido localmente
-      registerUserAction('confirmation_submit_local', {
-        method: selectedPaymentMethod,
-        transactionId: extractedTransactionId,
-        messageLength: message.length
-      });
-      
-      // Enviar para Firebase se disponível
       if (firebaseAvailable) {
-        try {
-          await firebase.firestore().collection('payment_confirmations').add({
-            ...paymentData,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            source: 'sketchiware'
-          });
-          console.log('✅ Confirmação enviada para Firebase');
-          
-          // Registrar envio bem-sucedido no Firebase
-          registerUserAction('confirmation_submit_firebase', {
-            method: selectedPaymentMethod,
-            transactionId: extractedTransactionId
-          });
-        } catch (firebaseError) {
-          console.warn('⚠️ Firebase falhou, salvando apenas localmente');
-          registerUserAction('confirmation_submit_firebase_error', {
-            error: firebaseError.message
-          });
-        }
+        await firebase.firestore().collection('payment_confirmations').add({
+          ...paymentData,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
       }
       
-      // Mostrar modal de confirmação
       showConfirmationModal(paymentData);
-      
-      // Resetar formulário
       resetConfirmationForm();
       
     } catch (error) {
-      console.error('❌ Erro ao enviar confirmação:', error);
       showToast('Erro ao enviar confirmação!', 'error');
-      
-      // Registrar erro no envio
-      registerUserAction('confirmation_submit_error', {
-        error: error.message,
-        method: selectedPaymentMethod
-      });
     } finally {
       btnText.textContent = originalText;
       spinner.classList.add('hidden');
@@ -2192,175 +1814,60 @@
     }
   }
 
-  // ==================== SALVAR CONFIRMAÇÃO LOCALMENTE ====================
-  function savePaymentConfirmation(paymentData) {
-    try {
-      const payments = JSON.parse(localStorage.getItem(STORAGE_KEY_PAYMENTS) || '[]');
-      
-      payments.push(paymentData);
-      
-      // Manter apenas os últimos 20 registros
-      if (payments.length > 20) {
-        payments.splice(0, payments.length - 20);
-      }
-      
-      localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(payments));
-      
-      console.log('✅ Confirmação salva localmente:', paymentData.transactionId);
-      return true;
-    } catch (error) {
-      console.error('❌ Erro ao salvar confirmação:', error);
-      return false;
-    }
-  }
-
-  // ==================== MOSTRAR MODAL DE CONFIRMAÇÃO ====================
   function showConfirmationModal(paymentData) {
-    // Atualizar informações no modal
     modalWhatsappNumber.textContent = `+258${paymentData.whatsappNumber}`;
-    modalTransactionId.textContent = paymentData.transactionId || 'Não identificado';
-    
-    // Mostrar modal
+    modalTransactionId.textContent = paymentData.transactionId;
     confirmationModal.style.display = 'flex';
-    
-    // Desabilitar scroll do body
     document.body.style.overflow = 'hidden';
-    
-    // Registrar visualização do modal
-    registerUserAction('confirmation_modal_viewed', {
-      transactionId: paymentData.transactionId
-    });
   }
 
-  // ==================== FECHAR MODAL ====================
   function closeModal() {
     confirmationModal.style.display = 'none';
     document.body.style.overflow = 'auto';
-    
-    // Registrar fechamento do modal
-    registerUserAction('confirmation_modal_closed');
   }
 
-  // ==================== RESETAR FORMULÁRIO ====================
   function resetConfirmationForm() {
-    // Desmarcar método
-    document.querySelectorAll('.method-option').forEach(option => {
-      option.classList.remove('selected');
-    });
+    document.querySelectorAll('.method-option').forEach(option => option.classList.remove('selected'));
     selectedPaymentMethod = '';
     selectedMethodInput.value = '';
-    
-    // Limpar mensagem
     transactionMessageInput.value = '';
     charCount.textContent = '0/100 caracteres mínimos';
-    charCount.style.color = 'var(--danger)';
-    
-    // Atualizar verificação
     updateMethodCheck();
     updateMessageCheck(false);
-    
     validateConfirmationForm();
   }
 
-  // ==================== COPIAR NÚMERO DO SUPORTE ====================
   async function copySupportNumber() {
-    const supportNumber = '+258866890298';
-    
-    // Registrar tentativa de cópia do suporte
-    registerUserAction('support_copy_attempt');
-    
     try {
-      await navigator.clipboard.writeText(supportNumber);
+      await navigator.clipboard.writeText('+258866890298');
       showToast('✅ Número do suporte copiado!', 'success');
-      
-      // Registrar cópia bem-sucedida
-      registerUserAction('support_copy_success');
-      
-      // Registrar localmente
-      logCopyActionLocally(supportNumber, 'support_number');
-      
     } catch (error) {
-      console.error('Erro ao copiar suporte:', error);
-      
-      // Fallback
-      try {
-        const tempInput = document.createElement('input');
-        tempInput.value = supportNumber;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        showToast('✅ Número do suporte copiado!', 'success');
-      } catch (fallbackError) {
-        showToast('❌ Erro ao copiar', 'error');
-        registerUserAction('support_copy_error', { error: error.message });
-      }
+      const tempInput = document.createElement('input');
+      tempInput.value = '+258866890298';
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast('✅ Número do suporte copiado!', 'success');
     }
   }
 
-  // ==================== MOSTRAR TOAST ====================
   function showToast(message, type = 'success') {
     toastMessage.textContent = message;
-    
-    if (type === 'success') {
-      toastIcon.className = 'fas fa-check-circle';
-      toast.style.borderLeftColor = 'var(--success)';
-      toastIcon.style.color = 'var(--success)';
-    } else if (type === 'error') {
-      toastIcon.className = 'fas fa-exclamation-circle';
-      toast.style.borderLeftColor = 'var(--danger)';
-      toastIcon.style.color = 'var(--danger)';
-    } else if (type === 'warning') {
-      toastIcon.className = 'fas fa-exclamation-triangle';
-      toast.style.borderLeftColor = 'var(--warning)';
-      toastIcon.style.color = 'var(--warning)';
-    }
-    
+    toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    toast.style.borderLeftColor = type === 'success' ? '#00C853' : '#FF3D00';
+    toastIcon.style.color = type === 'success' ? '#00C853' : '#FF3D00';
     toast.style.display = 'block';
-    
-    // Registrar toast exibido
-    registerUserAction('toast_shown', {
-      type: type,
-      message: message
-    });
-    
-    // Esconder após 3.5s
-    setTimeout(() => {
-      toast.style.display = 'none';
-    }, 3500);
+    setTimeout(() => toast.style.display = 'none', 3000);
   }
 
-  // ==================== AUTO-SAVE ====================
   setInterval(() => {
     if (isWhatsappValid && currentWhatsappNumber) {
-      saveToLocalStorage(currentWhatsappNumber, 'auto_save');
-      console.log('💾 Auto-save realizado');
+      saveToLocalStorage(currentWhatsappNumber);
     }
   }, 30000);
 
-  // ==================== PREVENIR ENVIO DE FORMULÁRIO ====================
-  document.addEventListener('submit', function(e) {
-    e.preventDefault();
-    return false;
-  });
-
-  // ==================== REGISTRAR SCROLL ====================
-  let lastScrollReport = 0;
-  window.addEventListener('scroll', function() {
-    const now = Date.now();
-    if (now - lastScrollReport > 5000) { // Reportar a cada 5 segundos
-      const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-      if (scrollPercent > 25 && scrollPercent < 100) {
-        registerUserAction('page_scroll', {
-          scrollPercent: Math.round(scrollPercent),
-          viewportHeight: window.innerHeight,
-          totalHeight: document.body.scrollHeight
-        });
-        lastScrollReport = now;
-      }
-    }
-  });
-
+  document.addEventListener('submit', e => e.preventDefault());
 </script>
 
 </body>
