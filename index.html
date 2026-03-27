@@ -1217,11 +1217,83 @@
 </div>
 
 <script>
-  // ==================== SISTEMA OTIMIZADO PARA SKETCHIWARE ====================
+  // ==================== CONFIGURAÇÃO FIREBASE ====================
+  const firebaseConfig = {
+    apiKey: "AIzaSyDbPB6XBF3J1VY0X0ZQj2SKu8",
+    authDomain: "whatsapp-24492.firebaseapp.com",
+    projectId: "whatsapp-24492",
+    storageBucket: "whatsapp-24492.appspot.com",
+    messagingSenderId: "5299709394245",
+    appId: "1:5299709394245:web:7d46554c2e8f"
+  };
   
-  // Função principal que será executada quando a página carregar
+  let db = null;
+  let firebaseReady = false;
+  let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+  
+  // ==================== INICIALIZAR FIREBASE ====================
+  function initFirebase() {
+    try {
+      if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        firebaseReady = true;
+        console.log('✅ Firebase conectado!');
+        
+        // Registrar visita
+        registrarVisita();
+      }
+    } catch (error) {
+      console.warn('⚠️ Firebase offline');
+      firebaseReady = false;
+    }
+  }
+  
+  // ==================== REGISTRAR VISITA ====================
+  function registrarVisita() {
+    if (!firebaseReady || !db) return;
+    try {
+      db.collection('payment_site_visits').add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        sessionId: sessionId,
+        userAgent: navigator.userAgent,
+        pageType: 'predictor_payment_page',
+        paymentAmount: '659 MT'
+      }).catch(() => {});
+    } catch (error) {}
+  }
+  
+  // ==================== SALVAR WHATSAPP NO FIREBASE ====================
+  function salvarWhatsappFirebase(phoneNumber) {
+    if (!firebaseReady || !db) return;
+    try {
+      db.collection('whatsapp_numbers').add({
+        phoneNumber: phoneNumber,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        sessionId: sessionId,
+        status: 'pending',
+        amount: '659 MT'
+      }).catch(() => {});
+    } catch (error) {}
+  }
+  
+  // ==================== SALVAR CONFIRMAÇÃO NO FIREBASE ====================
+  function salvarConfirmacaoFirebase(paymentData) {
+    if (!firebaseReady || !db) return;
+    try {
+      db.collection('payment_confirmations').add({
+        ...paymentData,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(() => {});
+    } catch (error) {}
+  }
+  
+  // ==================== SISTEMA PRINCIPAL ====================
   function iniciarSistema() {
-    console.log('🚀 Sistema iniciado para Sketchiware');
+    console.log('🚀 Sistema iniciado - Firebase integrado');
+    
+    // Iniciar Firebase
+    initFirebase();
     
     // Pegar elementos
     const whatsappInput = document.getElementById('whatsapp');
@@ -1294,6 +1366,9 @@
       // Salvar no localStorage
       localStorage.setItem('predictor_whatsapp', raw);
       
+      // Salvar no Firebase
+      salvarWhatsappFirebase(raw);
+      
       return true;
     }
     
@@ -1325,7 +1400,6 @@
           botao.disabled = false;
         }, 1500);
       } catch (erro) {
-        // Fallback para WebView
         const inputTemp = document.createElement('input');
         inputTemp.value = numero;
         document.body.appendChild(inputTemp);
@@ -1421,19 +1495,24 @@
           idTransacao = mensagem.substring(0, 20) + '...';
         }
         
-        // Salvar dados
-        const pagamento = {
-          whatsapp: numeroWhatsapp,
-          metodo: metodoSelecionado,
-          mensagem: mensagem,
-          idTransacao: idTransacao,
-          data: new Date().toISOString()
+        // Preparar dados
+        const paymentData = {
+          whatsappNumber: numeroWhatsapp,
+          paymentMethod: metodoSelecionado,
+          transactionMessage: mensagem,
+          transactionId: idTransacao,
+          sessionId: sessionId,
+          amount: '659 MT'
         };
         
+        // Salvar localmente
         let pagamentos = JSON.parse(localStorage.getItem('predictor_pagamentos') || '[]');
-        pagamentos.push(pagamento);
+        pagamentos.push({ ...paymentData, timestamp: new Date().toISOString() });
         if (pagamentos.length > 20) pagamentos.splice(0, pagamentos.length - 20);
         localStorage.setItem('predictor_pagamentos', JSON.stringify(pagamentos));
+        
+        // Salvar no Firebase
+        salvarConfirmacaoFirebase(paymentData);
         
         // Mostrar modal
         document.getElementById('modalWhatsappNumber').textContent = `+258${numeroWhatsapp}`;
