@@ -1216,11 +1216,104 @@
 </div>
 
 <script>
-  // ==================== SISTEMA SIMPLIFICADO PARA SKETCHIWARE ====================
+  // ==================== SISTEMA COMPLETO COM REGISTRO DE VISITAS ====================
   
-  // Função que será executada quando a página carregar
+  // Variáveis globais
+  let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+  let firebaseReady = false;
+  let db = null;
+  
+  // ==================== INICIALIZAR FIREBASE ====================
+  function initFirebase() {
+    try {
+      if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+        const firebaseConfig = {
+          apiKey: "AIzaSyDbPB6XBF3J1VY0X0ZQj2SKu8",
+          authDomain: "whatsapp-24492.firebaseapp.com",
+          projectId: "whatsapp-24492",
+          storageBucket: "whatsapp-24492.appspot.com",
+          messagingSenderId: "5299709394245",
+          appId: "1:5299709394245:web:7d46554c2e8f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        firebaseReady = true;
+        console.log('✅ Firebase conectado');
+      }
+    } catch(e) {
+      console.log('⚠️ Firebase offline');
+      firebaseReady = false;
+    }
+  }
+  
+  // ==================== REGISTRAR VISITA (LOCAL + FIREBASE) ====================
+  function registrarVisita() {
+    const visitaData = {
+      sessionId: sessionId,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href,
+      pageType: 'predictor_payment_page',
+      screenWidth: window.innerWidth,
+      screenHeight: window.innerHeight,
+      language: navigator.language,
+      paymentAmount: '659 MT'
+    };
+    
+    // Salvar localmente
+    try {
+      let visitas = JSON.parse(localStorage.getItem('predictor_visitas') || '[]');
+      visitas.push(visitaData);
+      if (visitas.length > 100) visitas.splice(0, visitas.length - 100);
+      localStorage.setItem('predictor_visitas', JSON.stringify(visitas));
+      console.log('📊 Visita salva localmente');
+    } catch(e) {}
+    
+    // Salvar no Firebase
+    if (firebaseReady && db) {
+      db.collection('payment_site_visits').add({
+        ...visitaData,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(() => {});
+    }
+  }
+  
+  // ==================== REGISTRAR AÇÃO DO USUÁRIO ====================
+  function registrarAcao(acao, dados = {}) {
+    const acaoData = {
+      sessionId: sessionId,
+      action: acao,
+      timestamp: new Date().toISOString(),
+      ...dados
+    };
+    
+    // Salvar localmente
+    try {
+      let acoes = JSON.parse(localStorage.getItem('predictor_acoes') || '[]');
+      acoes.push(acaoData);
+      if (acoes.length > 200) acoes.splice(0, acoes.length - 200);
+      localStorage.setItem('predictor_acoes', JSON.stringify(acoes));
+    } catch(e) {}
+    
+    // Salvar no Firebase
+    if (firebaseReady && db) {
+      db.collection('user_actions').add({
+        ...acaoData,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(() => {});
+    }
+  }
+  
+  // ==================== SISTEMA PRINCIPAL ====================
   (function() {
-    console.log('🚀 Sistema iniciado para Sketchiware');
+    console.log('🚀 Sistema iniciado - Session:', sessionId);
+    
+    // Iniciar Firebase
+    initFirebase();
+    
+    // Registrar visita
+    registrarVisita();
+    registrarAcao('page_load', { pageType: 'payment_page' });
     
     // Pegar elementos
     const whatsappInput = document.getElementById('whatsapp');
@@ -1298,11 +1391,25 @@
         let whatsLog = JSON.parse(localStorage.getItem('predictor_whatsapp_log') || '[]');
         whatsLog.push({
           numero: raw,
-          data: new Date().toISOString()
+          data: new Date().toISOString(),
+          sessionId: sessionId
         });
         if (whatsLog.length > 50) whatsLog.splice(0, whatsLog.length - 50);
         localStorage.setItem('predictor_whatsapp_log', JSON.stringify(whatsLog));
       } catch(e) {}
+      
+      // Registrar ação
+      registrarAcao('whatsapp_validated', { phoneNumber: raw });
+      
+      // Salvar no Firebase
+      if (firebaseReady && db) {
+        db.collection('whatsapp_numbers').add({
+          phoneNumber: raw,
+          sessionId: sessionId,
+          amount: '659 MT',
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(() => {});
+      }
       
       return true;
     }
@@ -1323,14 +1430,16 @@
       if (spinner) spinner.classList.remove('hidden');
       botao.disabled = true;
       
+      registrarAcao('copy_started', { method: metodo, number: numero });
+      
       try {
-        // Tentar método moderno
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(numero).then(() => {
             mostrarToast(`✅ ${metodo} copiado! Nome: LUCAS JOSÉ`, 'success');
             btnText.textContent = 'COPIADO!';
             botao.classList.add('copied');
             if (spinner) spinner.classList.add('hidden');
+            registrarAcao('copy_success', { method: metodo });
             setTimeout(() => {
               btnText.textContent = textoOriginal;
               botao.classList.remove('copied');
@@ -1383,6 +1492,7 @@
         methodCheckIcon.style.color = '#E5E7EB';
       }
       
+      registrarAcao('payment_method_selected', { method: metodo });
       validarConfirmacao();
     };
     
@@ -1407,7 +1517,6 @@
     
     // Função para enviar confirmação
     window.submitPaymentConfirmation = function() {
-      // Verificações
       if (!whatsappValido) {
         mostrarToast('Digite seu WhatsApp primeiro!', 'error');
         whatsappInput.focus();
@@ -1432,6 +1541,11 @@
       if (spinner) spinner.classList.remove('hidden');
       submitBtn.disabled = true;
       
+      registrarAcao('confirmation_submit_started', { 
+        method: metodoSelecionado, 
+        messageLength: mensagem.length 
+      });
+      
       // Extrair ID da transação
       let idTransacao = 'Não identificado';
       const padroes = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
@@ -1452,59 +1566,40 @@
         paymentMethod: metodoSelecionado,
         transactionMessage: mensagem,
         transactionId: idTransacao,
+        sessionId: sessionId,
         amount: '659 MT',
         timestamp: new Date().toISOString()
       };
       
-      // SALVAR LOCALMENTE (FUNCIONA 100% NO SKETCHIWARE)
+      // SALVAR LOCALMENTE
       try {
-        // Salvar no array principal
         let pagamentos = JSON.parse(localStorage.getItem('predictor_pagamentos') || '[]');
         pagamentos.push(paymentData);
         if (pagamentos.length > 50) pagamentos.splice(0, pagamentos.length - 50);
         localStorage.setItem('predictor_pagamentos', JSON.stringify(pagamentos));
         
-        // Salvar também em um log separado
         let log = JSON.parse(localStorage.getItem('predictor_confirmacoes_log') || '[]');
-        log.push({
-          ...paymentData,
-          dataEnvio: new Date().toISOString()
-        });
+        log.push(paymentData);
         if (log.length > 100) log.splice(0, log.length - 100);
         localStorage.setItem('predictor_confirmacoes_log', JSON.stringify(log));
         
-        console.log('✅ Dados salvos localmente:', paymentData);
+        console.log('✅ Confirmação salva localmente:', paymentData);
       } catch(e) {
         console.error('Erro ao salvar:', e);
       }
       
-      // Tentar enviar para Firebase em segundo plano (não bloqueia)
-      try {
-        if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
-          const firebaseConfig = {
-            apiKey: "AIzaSyDbPB6XBF3J1VY0X0ZQj2SKu8",
-            authDomain: "whatsapp-24492.firebaseapp.com",
-            projectId: "whatsapp-24492",
-            storageBucket: "whatsapp-24492.appspot.com",
-            messagingSenderId: "5299709394245",
-            appId: "1:5299709394245:web:7d46554c2e8f"
-          };
-          firebase.initializeApp(firebaseConfig);
-          const db = firebase.firestore();
-          db.collection('payment_confirmations').add({
-            ...paymentData,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          }).catch(() => {});
-        } else if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
-          const db = firebase.firestore();
-          db.collection('payment_confirmations').add({
-            ...paymentData,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          }).catch(() => {});
-        }
-      } catch(e) {
-        console.log('Firebase não disponível, apenas local');
+      // Salvar no Firebase
+      if (firebaseReady && db) {
+        db.collection('payment_confirmations').add({
+          ...paymentData,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(() => {});
       }
+      
+      registrarAcao('confirmation_submitted', { 
+        method: metodoSelecionado, 
+        transactionId: idTransacao 
+      });
       
       // Mostrar modal de sucesso
       document.getElementById('modalWhatsappNumber').textContent = `+258${numeroWhatsapp}`;
@@ -1536,14 +1631,17 @@
     window.closeModal = function() {
       document.getElementById('confirmationModal').style.display = 'none';
       document.body.style.overflow = 'auto';
+      registrarAcao('confirmation_modal_closed');
     };
     
     // Função para copiar número do suporte
     window.copySupportNumber = function() {
+      registrarAcao('support_copy_attempt');
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText('+258866890298').then(() => {
             mostrarToast('✅ Número do suporte copiado!', 'success');
+            registrarAcao('support_copy_success');
           }).catch(() => fallbackCopy());
         } else {
           fallbackCopy();
@@ -1588,6 +1686,10 @@
       validarWhatsapp();
     });
     
+    whatsappInput.addEventListener('focus', function() {
+      registrarAcao('field_focus', { field: 'whatsapp' });
+    });
+    
     transactionMsg.addEventListener('input', function() {
       const tamanho = this.value.length;
       charCountSpan.textContent = `${tamanho}/100 caracteres mínimos`;
@@ -1599,6 +1701,24 @@
         charCountSpan.style.fontWeight = '600';
       }
       validarConfirmacao();
+    });
+    
+    // Registrar scroll
+    let lastScrollReport = 0;
+    window.addEventListener('scroll', function() {
+      const now = Date.now();
+      if (now - lastScrollReport > 5000) {
+        const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+        if (scrollPercent > 25 && scrollPercent < 100) {
+          registrarAcao('page_scroll', { scrollPercent: Math.round(scrollPercent) });
+          lastScrollReport = now;
+        }
+      }
+    });
+    
+    // Registrar saída da página
+    window.addEventListener('beforeunload', function() {
+      registrarAcao('page_exit', { timeOnPage: Math.round(performance.now() / 1000) });
     });
     
     // Carregar número salvo
