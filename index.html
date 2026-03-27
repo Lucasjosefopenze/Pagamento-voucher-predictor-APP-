@@ -210,7 +210,7 @@
       padding: 0 16px 24px;
     }
 
-    /* VIDEO CARD - CORRIGIDO */
+    /* VIDEO CARD */
     .video-card {
       background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
       border-radius: var(--radius-lg);
@@ -256,7 +256,6 @@
       line-height: 1.4;
     }
 
-    /* CONTAINER DO VÍDEO - CORRIGIDO */
     .video-container {
       position: relative;
       width: 100%;
@@ -1064,6 +1063,7 @@
         <div class="section-icon"><i class="fab fa-whatsapp"></i></div>
         <div class="section-title">Digite seu WhatsApp</div>
       </div>
+      
       <div class="form-group">
         <label class="form-label">Número para receber o Voucher:</label>
         <div class="input-container">
@@ -1072,8 +1072,14 @@
         </div>
         <div class="input-hint"><i class="fas fa-info-circle"></i> Digite 9 dígitos (ex: 84xxxxxxx)</div>
       </div>
-      <div class="status-message status-success" id="successMessage"><i class="fas fa-check-circle"></i> WhatsApp registrado! Pronto para pagamento.</div>
-      <div class="status-message status-error" id="errorMessage"><i class="fas fa-exclamation-circle"></i> <span id="errorText">Digite 9 dígitos válidos</span></div>
+      
+      <div class="status-message status-success" id="successMessage">
+        <i class="fas fa-check-circle"></i> WhatsApp registrado! Pronto para pagamento.
+      </div>
+      
+      <div class="status-message status-error" id="errorMessage">
+        <i class="fas fa-exclamation-circle"></i> <span id="errorText">Digite 9 dígitos válidos</span>
+      </div>
     </div>
 
     <div class="warning-box">
@@ -1086,6 +1092,7 @@
         <div class="section-icon" style="background: linear-gradient(135deg, var(--primary), #4F46E5);"><i class="fas fa-credit-card"></i></div>
         <div class="section-title">Método de Pagamento</div>
       </div>
+      
       <div class="payment-methods">
         <div class="payment-method emola recommended">
           <div class="method-header">
@@ -1117,6 +1124,7 @@
         <div class="section-icon" style="background: linear-gradient(135deg, var(--success), #00B894);"><i class="fas fa-check-circle"></i></div>
         <div class="section-title">Enviar Confirmação de Pagamento</div>
       </div>
+      
       <div class="confirmation-box">
         <div class="form-group">
           <label class="form-label">Método utilizado:</label>
@@ -1127,20 +1135,23 @@
           <div class="input-hint"><i class="fas fa-info-circle"></i> Selecione o método que usou para pagar</div>
           <input type="hidden" id="selectedMethod" value="">
         </div>
+        
         <div class="form-group">
           <label class="form-label">Mensagem de Confirmação / ID da Transação:</label>
           <textarea id="transactionMessage" class="form-input" rows="4" placeholder="Cole aqui a MENSAGEM COMPLETA de confirmação que recebeu após o pagamento..." oninput="validateConfirmationForm()" style="padding: 12px; min-height: 100px;"></textarea>
           <div class="input-hint"><i class="fas fa-info-circle"></i> <span id="charCount">0/100 caracteres mínimos</span> • Cole a mensagem completa</div>
         </div>
+        
         <div class="requirements-box">
           <div class="requirement-item"><i class="fas fa-check-circle" id="methodCheck"></i><span>Método selecionado</span></div>
           <div class="requirement-item"><i class="fas fa-check-circle" id="messageCheck"></i><span>Mensagem (Colada)</span></div>
         </div>
+        
         <button class="copy-button" id="submitPaymentBtn" onclick="submitPaymentConfirmation()" disabled><i class="fas fa-paper-plane"></i><span class="btn-text">ENVIAR CONFIRMAÇÃO</span><span class="spinner hidden"></span></button>
       </div>
     </div>
 
-    <!-- VIDEO CARD - CORRIGIDO -->
+    <!-- VIDEO CARD -->
     <div class="video-card">
       <div class="video-card-header">
         <div class="video-badge"><i class="fas fa-play-circle"></i> VIDEO TUTORIAL</div>
@@ -1150,7 +1161,7 @@
       <div class="video-container">
         <div class="video-wrapper">
           <iframe 
-            src="https://www.youtube.com/embed/VXWe8X5OFFM?autoplay=0&controls=1&rel=0&modestbranding=1&playsinline=1&fs=1&enablejsapi=1"
+            src="https://www.youtube.com/embed/VXWe8X5OFFM?autoplay=0&controls=1&rel=0&modestbranding=1&playsinline=1&fs=1"
             title="Como fazer pagamento eMola e M-Pesa" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
@@ -1288,6 +1299,7 @@
 
   function validateWhatsappNumber(save = false) {
     const rawNumber = whatsappInput.value.replace(/\s/g, '');
+    
     successMessage.style.display = 'none';
     errorMessage.style.display = 'none';
     
