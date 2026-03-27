@@ -210,7 +210,6 @@
       padding: 0 16px 24px;
     }
 
-    /* VIDEO CARD */
     .video-card {
       background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
       border-radius: var(--radius-lg);
@@ -1241,7 +1240,13 @@
         console.log('✅ Firebase conectado!');
         
         // Registrar visita
-        registrarVisita();
+        db.collection('payment_site_visits').add({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          sessionId: sessionId,
+          userAgent: navigator.userAgent,
+          pageType: 'predictor_payment_page',
+          paymentAmount: '659 MT'
+        }).catch(() => {});
       }
     } catch (error) {
       console.warn('⚠️ Firebase offline');
@@ -1249,48 +1254,20 @@
     }
   }
   
-  // ==================== REGISTRAR VISITA ====================
-  function registrarVisita() {
-    if (!firebaseReady || !db) return;
+  // ==================== SALVAR NO FIREBASE ====================
+  function salvarFirebase(colecao, dados) {
+    if (!firebaseReady || !db) return false;
     try {
-      db.collection('payment_site_visits').add({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        sessionId: sessionId,
-        userAgent: navigator.userAgent,
-        pageType: 'predictor_payment_page',
-        paymentAmount: '659 MT'
-      }).catch(() => {});
-    } catch (error) {}
-  }
-  
-  // ==================== SALVAR WHATSAPP NO FIREBASE ====================
-  function salvarWhatsappFirebase(phoneNumber) {
-    if (!firebaseReady || !db) return;
-    try {
-      db.collection('whatsapp_numbers').add({
-        phoneNumber: phoneNumber,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        sessionId: sessionId,
-        status: 'pending',
-        amount: '659 MT'
-      }).catch(() => {});
-    } catch (error) {}
-  }
-  
-  // ==================== SALVAR CONFIRMAÇÃO NO FIREBASE ====================
-  function salvarConfirmacaoFirebase(paymentData) {
-    if (!firebaseReady || !db) return;
-    try {
-      db.collection('payment_confirmations').add({
-        ...paymentData,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }).catch(() => {});
-    } catch (error) {}
+      db.collection(colecao).add(dados).catch(() => {});
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
   
   // ==================== SISTEMA PRINCIPAL ====================
   function iniciarSistema() {
-    console.log('🚀 Sistema iniciado - Firebase integrado');
+    console.log('🚀 Sistema iniciado');
     
     // Iniciar Firebase
     initFirebase();
@@ -1363,11 +1340,16 @@
       mpesaBtn.disabled = false;
       successMsg.style.display = 'block';
       
-      // Salvar no localStorage
+      // Salvar localmente
       localStorage.setItem('predictor_whatsapp', raw);
       
       // Salvar no Firebase
-      salvarWhatsappFirebase(raw);
+      salvarFirebase('whatsapp_numbers', {
+        phoneNumber: raw,
+        timestamp: firebaseReady ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString(),
+        sessionId: sessionId,
+        amount: '659 MT'
+      });
       
       return true;
     }
@@ -1474,68 +1456,76 @@
         return;
       }
       
+      // Desabilitar botão e mostrar loading
       const btnText = submitBtn.querySelector('.btn-text');
       const spinner = submitBtn.querySelector('.spinner');
       btnText.textContent = 'ENVIANDO...';
       spinner.classList.remove('hidden');
       submitBtn.disabled = true;
       
-      setTimeout(() => {
-        // Extrair ID da transação
-        let idTransacao = 'Não identificado';
-        const padroes = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
-        for (const padrao of padroes) {
-          const match = mensagem.match(padrao);
-          if (match && match[1]) {
-            idTransacao = match[1];
-            break;
-          }
+      // Extrair ID da transação
+      let idTransacao = 'Não identificado';
+      const padroes = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
+      for (const padrao of padroes) {
+        const match = mensagem.match(padrao);
+        if (match && match[1]) {
+          idTransacao = match[1];
+          break;
         }
-        if (idTransacao === 'Não identificado') {
-          idTransacao = mensagem.substring(0, 20) + '...';
-        }
-        
-        // Preparar dados
-        const paymentData = {
-          whatsappNumber: numeroWhatsapp,
-          paymentMethod: metodoSelecionado,
-          transactionMessage: mensagem,
-          transactionId: idTransacao,
-          sessionId: sessionId,
-          amount: '659 MT'
-        };
-        
-        // Salvar localmente
-        let pagamentos = JSON.parse(localStorage.getItem('predictor_pagamentos') || '[]');
-        pagamentos.push({ ...paymentData, timestamp: new Date().toISOString() });
-        if (pagamentos.length > 20) pagamentos.splice(0, pagamentos.length - 20);
-        localStorage.setItem('predictor_pagamentos', JSON.stringify(pagamentos));
-        
-        // Salvar no Firebase
-        salvarConfirmacaoFirebase(paymentData);
-        
-        // Mostrar modal
-        document.getElementById('modalWhatsappNumber').textContent = `+258${numeroWhatsapp}`;
-        document.getElementById('modalTransactionId').textContent = idTransacao;
-        document.getElementById('confirmationModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        
-        // Resetar formulário
-        document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
-        metodoSelecionado = '';
-        selectedMethodHidden.value = '';
-        transactionMsg.value = '';
-        charCountSpan.textContent = '0/100 caracteres mínimos';
-        methodCheckIcon.className = 'fas fa-check-circle invalid';
-        messageCheckIcon.className = 'fas fa-check-circle invalid';
-        submitBtn.disabled = true;
-        
-        mostrarToast('✅ Confirmação enviada com sucesso!', 'success');
-        
-        btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
-        spinner.classList.add('hidden');
-        submitBtn.disabled = false;
-      }, 500);
+      }
+      if (idTransacao === 'Não identificado') {
+        idTransacao = mensagem.substring(0, 20) + '...';
+      }
+      
+      // Preparar dados
+      const paymentData = {
+        whatsappNumber: numeroWhatsapp,
+        paymentMethod: metodoSelecionado,
+        transactionMessage: mensagem,
+        transactionId: idTransacao,
+        sessionId: sessionId,
+        amount: '659 MT',
+        timestamp: new Date().toISOString()
+      };
+      
+      // Salvar localmente
+      let pagamentos = JSON.parse(localStorage.getItem('predictor_pagamentos') || '[]');
+      pagamentos.push(paymentData);
+      if (pagamentos.length > 20) pagamentos.splice(0, pagamentos.length - 20);
+      localStorage.setItem('predictor_pagamentos', JSON.stringify(pagamentos));
+      
+      // Salvar no Firebase
+      if (firebaseReady && db) {
+        db.collection('payment_confirmations').add({
+          ...paymentData,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(() => {});
+      }
+      
+      // Mostrar modal
+      document.getElementById('modalWhatsappNumber').textContent = `+258${numeroWhatsapp}`;
+      document.getElementById('modalTransactionId').textContent = idTransacao;
+      document.getElementById('confirmationModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      
+      // Resetar formulário
+      document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
+      metodoSelecionado = '';
+      selectedMethodHidden.value = '';
+      transactionMsg.value = '';
+      charCountSpan.textContent = '0/100 caracteres mínimos';
+      charCountSpan.style.color = '#FF3D00';
+      methodCheckIcon.className = 'fas fa-check-circle invalid';
+      messageCheckIcon.className = 'fas fa-check-circle invalid';
+      submitBtn.disabled = true;
+      
+      // Restaurar botão
+      btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
+      spinner.classList.add('hidden');
+      submitBtn.disabled = false;
+      
+      // Mostrar toast de sucesso
+      mostrarToast('✅ Confirmação enviada com sucesso!', 'success');
     };
     
     // Função para fechar modal
