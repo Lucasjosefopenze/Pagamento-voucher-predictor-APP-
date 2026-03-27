@@ -406,6 +406,8 @@
       margin-top: 12px;
       font-weight: 600;
       font-size: 13px;
+      display: none;
+      animation: slideIn 0.3s ease;
       border-left: 4px solid;
     }
 
@@ -413,14 +415,12 @@
       background: #E8F5E9;
       color: #2E7D32;
       border-left-color: var(--success);
-      display: none;
     }
 
     .status-error {
       background: #FFEBEE;
       color: #C62828;
       border-left-color: var(--danger);
-      display: none;
     }
 
     .warning-box {
@@ -1217,430 +1217,325 @@
 </div>
 
 <script>
-  // ==================== CONFIGURAÇÃO OTIMIZADA PARA SKETCHIWARE ====================
-  const STORAGE_KEY_WHATSAPP = 'predictor_whatsapp_mobile';
-  const STORAGE_KEY_PAYMENTS = 'predictor_payment_confirmations';
+  // ==================== SISTEMA OTIMIZADO PARA SKETCHIWARE ====================
   
-  // Aguardar o DOM completamente carregado
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Site carregado - Modo Sketchiware');
+  // Função principal que será executada quando a página carregar
+  function iniciarSistema() {
+    console.log('🚀 Sistema iniciado para Sketchiware');
     
-    // Inicializar Firebase
-    initializeFirebase();
+    // Pegar elementos
+    const whatsappInput = document.getElementById('whatsapp');
+    const successMsg = document.getElementById('successMessage');
+    const errorMsg = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+    const emolaBtn = document.getElementById('emolaBtn');
+    const mpesaBtn = document.getElementById('mpesaBtn');
+    const transactionMsg = document.getElementById('transactionMessage');
+    const charCountSpan = document.getElementById('charCount');
+    const submitBtn = document.getElementById('submitPaymentBtn');
+    const methodCheckIcon = document.getElementById('methodCheck');
+    const messageCheckIcon = document.getElementById('messageCheck');
+    const selectedMethodHidden = document.getElementById('selectedMethod');
     
-    // Carregar número salvo
-    const saved = localStorage.getItem(STORAGE_KEY_WHATSAPP);
-    if (saved) {
-      whatsappInput.value = formatPhoneNumber(saved);
-      validateWhatsappNumber(true);
+    let whatsappValido = false;
+    let numeroWhatsapp = '';
+    let metodoSelecionado = '';
+    
+    // Função para formatar número
+    function formatarNumero(numero) {
+      if (!numero) return '';
+      const limpo = numero.replace(/\D/g, '');
+      const match = limpo.match(/^(\d{2})(\d{3})(\d{0,4})$/);
+      if (match) {
+        return match[1] + ' ' + match[2] + (match[3] ? ' ' + match[3] : '');
+      }
+      return limpo;
     }
     
-    // Eventos do WhatsApp
-    whatsappInput.addEventListener('input', function() {
-      let value = this.value.replace(/\D/g, '');
-      if (value.length > 9) value = value.substring(0, 9);
-      this.value = formatPhoneNumber(value);
-      validateWhatsappNumber();
-    });
-    
-    whatsappInput.addEventListener('blur', function() { 
-      validateWhatsappNumber(true); 
-    });
-    
-    // Eventos da confirmação
-    transactionMessageInput.addEventListener('input', function() {
-      const length = this.value.length;
-      charCount.textContent = `${length}/100 caracteres mínimos`;
-      if (length >= 100) {
-        charCount.style.color = '#00C853';
-        charCount.style.fontWeight = '700';
-      } else {
-        charCount.style.color = '#FF3D00';
-        charCount.style.fontWeight = '600';
+    // Função para validar WhatsApp
+    function validarWhatsapp() {
+      const raw = whatsappInput.value.replace(/\s/g, '');
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      
+      if (!raw) {
+        whatsappValido = false;
+        emolaBtn.disabled = true;
+        mpesaBtn.disabled = true;
+        return false;
       }
-      validateConfirmationForm();
+      
+      if (raw.length !== 9) {
+        errorText.innerText = 'Digite exatamente 9 dígitos';
+        errorMsg.style.display = 'block';
+        whatsappValido = false;
+        emolaBtn.disabled = true;
+        mpesaBtn.disabled = true;
+        return false;
+      }
+      
+      const prefixosValidos = ['82', '83', '84', '85', '86', '87'];
+      const prefixo = raw.substring(0, 2);
+      if (!prefixosValidos.includes(prefixo)) {
+        errorText.innerText = 'Use prefixo 82, 83, 84, 85, 86 ou 87';
+        errorMsg.style.display = 'block';
+        whatsappValido = false;
+        emolaBtn.disabled = true;
+        mpesaBtn.disabled = true;
+        return false;
+      }
+      
+      numeroWhatsapp = raw;
+      whatsappValido = true;
+      emolaBtn.disabled = false;
+      mpesaBtn.disabled = false;
+      successMsg.style.display = 'block';
+      
+      // Salvar no localStorage
+      localStorage.setItem('predictor_whatsapp', raw);
+      
+      return true;
+    }
+    
+    // Função para copiar número
+    window.copyNumber = async function(numero, botao, metodo) {
+      if (!whatsappValido) {
+        mostrarToast('Digite seu WhatsApp primeiro!', 'error');
+        whatsappInput.focus();
+        return;
+      }
+      
+      const btnText = botao.querySelector('.btn-text');
+      const spinner = botao.querySelector('.spinner');
+      const textoOriginal = btnText.textContent;
+      
+      btnText.textContent = 'COPIANDO...';
+      spinner.classList.remove('hidden');
+      botao.disabled = true;
+      
+      try {
+        await navigator.clipboard.writeText(numero);
+        mostrarToast(`✅ ${metodo} copiado! Nome: LUCAS JOSÉ`, 'success');
+        btnText.textContent = 'COPIADO!';
+        botao.classList.add('copied');
+        spinner.classList.add('hidden');
+        setTimeout(() => {
+          btnText.textContent = textoOriginal;
+          botao.classList.remove('copied');
+          botao.disabled = false;
+        }, 1500);
+      } catch (erro) {
+        // Fallback para WebView
+        const inputTemp = document.createElement('input');
+        inputTemp.value = numero;
+        document.body.appendChild(inputTemp);
+        inputTemp.select();
+        document.execCommand('copy');
+        document.body.removeChild(inputTemp);
+        mostrarToast(`✅ ${metodo} copiado! Nome: LUCAS JOSÉ`, 'success');
+        btnText.textContent = textoOriginal;
+        spinner.classList.add('hidden');
+        botao.disabled = false;
+      }
+    };
+    
+    // Função para selecionar método
+    window.selectPaymentMethod = function(metodo) {
+      metodoSelecionado = metodo;
+      selectedMethodHidden.value = metodo;
+      
+      document.querySelectorAll('.method-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      
+      const elementoSelecionado = document.getElementById(`method${metodo.charAt(0).toUpperCase() + metodo.slice(1)}`);
+      if (elementoSelecionado) elementoSelecionado.classList.add('selected');
+      
+      if (metodoSelecionado) {
+        methodCheckIcon.className = 'fas fa-check-circle valid';
+        methodCheckIcon.style.color = '#00C853';
+      } else {
+        methodCheckIcon.className = 'fas fa-check-circle invalid';
+        methodCheckIcon.style.color = '#E5E7EB';
+      }
+      
+      validarConfirmacao();
+    };
+    
+    // Função para validar formulário de confirmação
+    function validarConfirmacao() {
+      const mensagem = transactionMsg.value.trim();
+      const mensagemValida = mensagem.length >= 100;
+      const metodoValido = metodoSelecionado !== '';
+      
+      if (mensagemValida) {
+        messageCheckIcon.className = 'fas fa-check-circle valid';
+        messageCheckIcon.style.color = '#00C853';
+      } else {
+        messageCheckIcon.className = 'fas fa-check-circle invalid';
+        messageCheckIcon.style.color = '#E5E7EB';
+      }
+      
+      submitBtn.disabled = !(whatsappValido && metodoValido && mensagemValida);
+    }
+    
+    window.validateConfirmationForm = validarConfirmacao;
+    
+    // Função para enviar confirmação
+    window.submitPaymentConfirmation = function() {
+      if (!whatsappValido) {
+        mostrarToast('Digite seu WhatsApp primeiro!', 'error');
+        whatsappInput.focus();
+        return;
+      }
+      
+      if (!metodoSelecionado) {
+        mostrarToast('Selecione o método de pagamento!', 'error');
+        return;
+      }
+      
+      const mensagem = transactionMsg.value.trim();
+      if (mensagem.length < 100) {
+        mostrarToast('Informe a mensagem de confirmação (100+ caracteres)!', 'error');
+        return;
+      }
+      
+      const btnText = submitBtn.querySelector('.btn-text');
+      const spinner = submitBtn.querySelector('.spinner');
+      btnText.textContent = 'ENVIANDO...';
+      spinner.classList.remove('hidden');
+      submitBtn.disabled = true;
+      
+      setTimeout(() => {
+        // Extrair ID da transação
+        let idTransacao = 'Não identificado';
+        const padroes = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
+        for (const padrao of padroes) {
+          const match = mensagem.match(padrao);
+          if (match && match[1]) {
+            idTransacao = match[1];
+            break;
+          }
+        }
+        if (idTransacao === 'Não identificado') {
+          idTransacao = mensagem.substring(0, 20) + '...';
+        }
+        
+        // Salvar dados
+        const pagamento = {
+          whatsapp: numeroWhatsapp,
+          metodo: metodoSelecionado,
+          mensagem: mensagem,
+          idTransacao: idTransacao,
+          data: new Date().toISOString()
+        };
+        
+        let pagamentos = JSON.parse(localStorage.getItem('predictor_pagamentos') || '[]');
+        pagamentos.push(pagamento);
+        if (pagamentos.length > 20) pagamentos.splice(0, pagamentos.length - 20);
+        localStorage.setItem('predictor_pagamentos', JSON.stringify(pagamentos));
+        
+        // Mostrar modal
+        document.getElementById('modalWhatsappNumber').textContent = `+258${numeroWhatsapp}`;
+        document.getElementById('modalTransactionId').textContent = idTransacao;
+        document.getElementById('confirmationModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Resetar formulário
+        document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
+        metodoSelecionado = '';
+        selectedMethodHidden.value = '';
+        transactionMsg.value = '';
+        charCountSpan.textContent = '0/100 caracteres mínimos';
+        methodCheckIcon.className = 'fas fa-check-circle invalid';
+        messageCheckIcon.className = 'fas fa-check-circle invalid';
+        submitBtn.disabled = true;
+        
+        mostrarToast('✅ Confirmação enviada com sucesso!', 'success');
+        
+        btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
+        spinner.classList.add('hidden');
+        submitBtn.disabled = false;
+      }, 500);
+    };
+    
+    // Função para fechar modal
+    window.closeModal = function() {
+      document.getElementById('confirmationModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    };
+    
+    // Função para copiar número do suporte
+    window.copySupportNumber = async function() {
+      try {
+        await navigator.clipboard.writeText('+258866890298');
+        mostrarToast('✅ Número do suporte copiado!', 'success');
+      } catch (erro) {
+        const inputTemp = document.createElement('input');
+        inputTemp.value = '+258866890298';
+        document.body.appendChild(inputTemp);
+        inputTemp.select();
+        document.execCommand('copy');
+        document.body.removeChild(inputTemp);
+        mostrarToast('✅ Número do suporte copiado!', 'success');
+      }
+    };
+    
+    // Função para mostrar toast
+    function mostrarToast(mensagem, tipo = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+      
+      toastMsg.textContent = mensagem;
+      toastIcon.className = tipo === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+      toast.style.borderLeftColor = tipo === 'success' ? '#00C853' : '#FF3D00';
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 3000);
+    }
+    
+    // Eventos
+    whatsappInput.addEventListener('input', function() {
+      let valor = this.value.replace(/\D/g, '');
+      if (valor.length > 9) valor = valor.substring(0, 9);
+      this.value = formatarNumero(valor);
+      validarWhatsapp();
     });
+    
+    whatsappInput.addEventListener('blur', function() {
+      validarWhatsapp();
+    });
+    
+    transactionMsg.addEventListener('input', function() {
+      const tamanho = this.value.length;
+      charCountSpan.textContent = `${tamanho}/100 caracteres mínimos`;
+      if (tamanho >= 100) {
+        charCountSpan.style.color = '#00C853';
+        charCountSpan.style.fontWeight = '700';
+      } else {
+        charCountSpan.style.color = '#FF3D00';
+        charCountSpan.style.fontWeight = '600';
+      }
+      validarConfirmacao();
+    });
+    
+    // Carregar número salvo
+    const numeroSalvo = localStorage.getItem('predictor_whatsapp');
+    if (numeroSalvo) {
+      whatsappInput.value = formatarNumero(numeroSalvo);
+      validarWhatsapp();
+    }
     
     // Focar no campo
     setTimeout(() => whatsappInput.focus(), 500);
-    
-    // Auto-save a cada 30 segundos
-    setInterval(() => {
-      if (isWhatsappValid && currentWhatsappNumber) {
-        localStorage.setItem(STORAGE_KEY_WHATSAPP, currentWhatsappNumber);
-      }
-    }, 30000);
-  });
-  
-  // ==================== VARIÁVEIS GLOBAIS ====================
-  const whatsappInput = document.getElementById('whatsapp');
-  const successMessage = document.getElementById('successMessage');
-  const errorMessage = document.getElementById('errorMessage');
-  const errorText = document.getElementById('errorText');
-  const toast = document.getElementById('toast');
-  const toastMessage = document.getElementById('toastMessage');
-  const toastIcon = document.getElementById('toastIcon');
-  const emolaBtn = document.getElementById('emolaBtn');
-  const mpesaBtn = document.getElementById('mpesaBtn');
-  
-  const transactionMessageInput = document.getElementById('transactionMessage');
-  const submitPaymentBtn = document.getElementById('submitPaymentBtn');
-  const charCount = document.getElementById('charCount');
-  const selectedMethodInput = document.getElementById('selectedMethod');
-  const confirmationModal = document.getElementById('confirmationModal');
-  const modalWhatsappNumber = document.getElementById('modalWhatsappNumber');
-  const modalTransactionId = document.getElementById('modalTransactionId');
-  const methodCheck = document.getElementById('methodCheck');
-  const messageCheck = document.getElementById('messageCheck');
-  
-  let isWhatsappValid = false;
-  let currentWhatsappNumber = '';
-  let firebaseAvailable = false;
-  let selectedPaymentMethod = '';
-  let currentSessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-
-  // ==================== INICIALIZAR FIREBASE ====================
-  function initializeFirebase() {
-    try {
-      if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
-        const firebaseConfig = {
-          apiKey: "AIzaSyDbPB6XBF3J1VY0X0ZQj2SKu8",
-          authDomain: "whatsapp-24492.firebaseapp.com",
-          projectId: "whatsapp-24492",
-          storageBucket: "whatsapp-24492.appspot.com",
-          messagingSenderId: "5299709394245",
-          appId: "1:5299709394245:web:7d46554c2e8f"
-        };
-        firebase.initializeApp(firebaseConfig);
-        firebaseAvailable = true;
-        console.log('✅ Firebase inicializado');
-      }
-    } catch (error) {
-      console.warn('⚠️ Firebase não disponível');
-      firebaseAvailable = false;
-    }
-  }
-
-  // ==================== FORMATAR NÚMERO ====================
-  function formatPhoneNumber(number) {
-    if (!number) return '';
-    const cleaned = number.replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{2})(\d{3})(\d{0,4})$/);
-    if (match) {
-      return match[1] + ' ' + match[2] + (match[3] ? ' ' + match[3] : '');
-    }
-    return cleaned;
-  }
-
-  // ==================== VALIDAR WHATSAPP ====================
-  function validateWhatsappNumber(save = false) {
-    const rawNumber = whatsappInput.value.replace(/\s/g, '');
-    
-    // Esconder mensagens
-    successMessage.style.display = 'none';
-    errorMessage.style.display = 'none';
-    
-    if (!rawNumber) {
-      isWhatsappValid = false;
-      updateCopyButtons();
-      validateConfirmationForm();
-      return false;
-    }
-    
-    if (rawNumber.length !== 9) {
-      showError('Digite exatamente 9 dígitos');
-      isWhatsappValid = false;
-      updateCopyButtons();
-      validateConfirmationForm();
-      return false;
-    }
-    
-    const validPrefixes = ['82', '83', '84', '85', '86', '87'];
-    const prefix = rawNumber.substring(0, 2);
-    if (!validPrefixes.includes(prefix)) {
-      showError('Use prefixo 82, 83, 84, 85, 86 ou 87');
-      isWhatsappValid = false;
-      updateCopyButtons();
-      validateConfirmationForm();
-      return false;
-    }
-    
-    // Número válido
-    currentWhatsappNumber = rawNumber;
-    isWhatsappValid = true;
-    
-    // Salvar localmente
-    if (save) {
-      localStorage.setItem(STORAGE_KEY_WHATSAPP, rawNumber);
-    }
-    
-    // Atualizar botões
-    updateCopyButtons();
-    validateConfirmationForm();
-    
-    // Mostrar mensagem de sucesso
-    successMessage.style.display = 'block';
-    successMessage.style.animation = 'slideIn 0.3s ease';
-    
-    // Salvar no Firebase se disponível
-    if (save && firebaseAvailable) {
-      try {
-        firebase.firestore().collection('whatsapp_numbers').add({
-          phoneNumber: rawNumber,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          sessionId: currentSessionId,
-          amount: '659 MT'
-        });
-      } catch (error) {}
-    }
-    
-    return true;
-  }
-
-  // ==================== ATUALIZAR BOTÕES DE CÓPIA ====================
-  function updateCopyButtons() {
-    if (isWhatsappValid) {
-      emolaBtn.disabled = false;
-      mpesaBtn.disabled = false;
-    } else {
-      emolaBtn.disabled = true;
-      mpesaBtn.disabled = true;
-    }
-  }
-
-  // ==================== MOSTRAR ERRO ====================
-  function showError(message) {
-    errorText.textContent = message;
-    errorMessage.style.display = 'block';
-    errorMessage.style.animation = 'slideIn 0.3s ease';
-    whatsappInput.classList.add('shake');
-    setTimeout(() => whatsappInput.classList.remove('shake'), 500);
-  }
-
-  // ==================== FUNÇÃO DE CÓPIA ====================
-  async function copyNumber(number, button, method) {
-    if (!isWhatsappValid) {
-      showToast('Digite seu WhatsApp primeiro!', 'error');
-      whatsappInput.focus();
-      return;
-    }
-    
-    const btnText = button.querySelector('.btn-text');
-    const spinner = button.querySelector('.spinner');
-    const originalText = btnText.textContent;
-    
-    btnText.textContent = 'COPIANDO...';
-    spinner.classList.remove('hidden');
-    button.disabled = true;
-    
-    try {
-      await navigator.clipboard.writeText(number);
-      showToast(`✅ ${method} copiado! Nome: LUCAS JOSÉ`, 'success');
-      btnText.textContent = 'COPIADO!';
-      button.classList.add('copied');
-      spinner.classList.add('hidden');
-      setTimeout(() => {
-        btnText.textContent = originalText;
-        button.classList.remove('copied');
-        button.disabled = false;
-      }, 1500);
-    } catch (error) {
-      // Fallback para WebView/Sketchiware
-      const tempInput = document.createElement('input');
-      tempInput.value = number;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      showToast(`✅ ${method} copiado! Nome: LUCAS JOSÉ`, 'success');
-      btnText.textContent = originalText;
-      spinner.classList.add('hidden');
-      button.disabled = false;
-    }
-  }
-
-  // ==================== SELECIONAR MÉTODO ====================
-  function selectPaymentMethod(method) {
-    selectedPaymentMethod = method;
-    selectedMethodInput.value = method;
-    
-    document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
-    const selectedElement = document.getElementById(`method${method.charAt(0).toUpperCase() + method.slice(1)}`);
-    if (selectedElement) selectedElement.classList.add('selected');
-    
-    updateMethodCheck();
-    validateConfirmationForm();
-  }
-
-  // ==================== ATUALIZAR VERIFICAÇÕES ====================
-  function updateMethodCheck() {
-    if (selectedPaymentMethod) {
-      methodCheck.className = 'fas fa-check-circle valid';
-      methodCheck.style.color = '#00C853';
-    } else {
-      methodCheck.className = 'fas fa-check-circle invalid';
-      methodCheck.style.color = '#E5E7EB';
-    }
-  }
-
-  function updateMessageCheck(hasValidMessage) {
-    if (hasValidMessage) {
-      messageCheck.className = 'fas fa-check-circle valid';
-      messageCheck.style.color = '#00C853';
-    } else {
-      messageCheck.className = 'fas fa-check-circle invalid';
-      messageCheck.style.color = '#E5E7EB';
-    }
-  }
-
-  // ==================== VALIDAR FORMULÁRIO DE CONFIRMAÇÃO ====================
-  function validateConfirmationForm() {
-    const message = transactionMessageInput.value.trim();
-    const hasValidMessage = message.length >= 100;
-    const hasMethod = selectedPaymentMethod !== '';
-    const hasWhatsapp = isWhatsappValid;
-    
-    updateMethodCheck();
-    updateMessageCheck(hasValidMessage);
-    
-    submitPaymentBtn.disabled = !(hasWhatsapp && hasMethod && hasValidMessage);
-    return !submitPaymentBtn.disabled;
-  }
-
-  // ==================== ENVIAR CONFIRMAÇÃO ====================
-  async function submitPaymentConfirmation() {
-    if (!isWhatsappValid) {
-      showToast('Digite seu WhatsApp primeiro!', 'error');
-      whatsappInput.focus();
-      return;
-    }
-    if (!selectedPaymentMethod) {
-      showToast('Selecione o método de pagamento!', 'error');
-      return;
-    }
-    
-    const message = transactionMessageInput.value.trim();
-    if (message.length < 100) {
-      showToast('Informe a mensagem de confirmação (100+ caracteres)!', 'error');
-      return;
-    }
-    
-    const btnText = submitPaymentBtn.querySelector('.btn-text');
-    const spinner = submitPaymentBtn.querySelector('.spinner');
-    btnText.textContent = 'ENVIANDO...';
-    spinner.classList.remove('hidden');
-    submitPaymentBtn.disabled = true;
-    
-    try {
-      // Extrair ID da transação
-      let extractedTransactionId = 'Não identificado';
-      const patterns = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
-      for (const pattern of patterns) {
-        const match = message.match(pattern);
-        if (match && match[1]) { 
-          extractedTransactionId = match[1]; 
-          break; 
-        }
-      }
-      if (extractedTransactionId === 'Não identificado') {
-        extractedTransactionId = message.substring(0, 20) + '...';
-      }
-      
-      const paymentData = {
-        whatsappNumber: currentWhatsappNumber,
-        paymentMethod: selectedPaymentMethod,
-        transactionMessage: message,
-        transactionId: extractedTransactionId,
-        sessionId: currentSessionId,
-        amount: '659 MT',
-        timestamp: new Date().toISOString()
-      };
-      
-      // Salvar localmente
-      const payments = JSON.parse(localStorage.getItem(STORAGE_KEY_PAYMENTS) || '[]');
-      payments.push(paymentData);
-      if (payments.length > 20) payments.splice(0, payments.length - 20);
-      localStorage.setItem(STORAGE_KEY_PAYMENTS, JSON.stringify(payments));
-      
-      // Salvar no Firebase se disponível
-      if (firebaseAvailable) {
-        try {
-          await firebase.firestore().collection('payment_confirmations').add({
-            ...paymentData,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        } catch (error) {}
-      }
-      
-      // Mostrar modal
-      showConfirmationModal(paymentData);
-      resetConfirmationForm();
-      showToast('✅ Confirmação enviada com sucesso!', 'success');
-      
-    } catch (error) {
-      showToast('Erro ao enviar confirmação!', 'error');
-    } finally {
-      btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
-      spinner.classList.add('hidden');
-      submitPaymentBtn.disabled = false;
-    }
-  }
-
-  // ==================== MOSTRAR MODAL ====================
-  function showConfirmationModal(paymentData) {
-    modalWhatsappNumber.textContent = `+258${paymentData.whatsappNumber}`;
-    modalTransactionId.textContent = paymentData.transactionId;
-    confirmationModal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    confirmationModal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }
-
-  // ==================== RESETAR FORMULÁRIO ====================
-  function resetConfirmationForm() {
-    document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
-    selectedPaymentMethod = '';
-    selectedMethodInput.value = '';
-    transactionMessageInput.value = '';
-    charCount.textContent = '0/100 caracteres mínimos';
-    updateMethodCheck();
-    updateMessageCheck(false);
-    validateConfirmationForm();
-  }
-
-  // ==================== COPIAR NÚMERO DO SUPORTE ====================
-  async function copySupportNumber() {
-    try {
-      await navigator.clipboard.writeText('+258866890298');
-      showToast('✅ Número do suporte copiado!', 'success');
-    } catch (error) {
-      const tempInput = document.createElement('input');
-      tempInput.value = '+258866890298';
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      showToast('✅ Número do suporte copiado!', 'success');
-    }
-  }
-
-  // ==================== MOSTRAR TOAST ====================
-  function showToast(message, type = 'success') {
-    toastMessage.textContent = message;
-    toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-    toast.style.borderLeftColor = type === 'success' ? '#00C853' : '#FF3D00';
-    toast.style.display = 'block';
-    setTimeout(() => toast.style.display = 'none', 3000);
   }
   
-  // Prevenir envio de formulário
-  document.addEventListener('submit', function(e) {
-    e.preventDefault();
-    return false;
-  });
+  // Iniciar quando a página carregar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciarSistema);
+  } else {
+    iniciarSistema();
+  }
 </script>
 
 </body>
