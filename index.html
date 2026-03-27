@@ -987,6 +987,28 @@
       to { transform: rotate(360deg); }
     }
 
+    /* Efeito de processamento */
+    .processing {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .processing::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: processing 1s infinite;
+    }
+    
+    @keyframes processing {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
     .hidden {
       display: none !important;
     }
@@ -999,6 +1021,18 @@
       0%, 100% { transform: translateX(0); }
       25% { transform: translateX(-4px); }
       75% { transform: translateX(4px); }
+    }
+
+    /* Efeito de vibração ao digitar */
+    @keyframes vibrate {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
+      100% { transform: translateX(0); }
+    }
+    
+    .vibrate {
+      animation: vibrate 0.1s ease-in-out 3;
     }
 
     @keyframes slideIn {
@@ -1216,12 +1250,20 @@
 </div>
 
 <script>
-  // ==================== SISTEMA COMPLETO COM REGISTRO DE VISITAS ====================
+  // ==================== SISTEMA COMPLETO COM VIBRAÇÃO E PROCESSAMENTO ====================
   
   // Variáveis globais
   let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
   let firebaseReady = false;
   let db = null;
+  
+  // Função para vibrar (funciona em dispositivos móveis)
+  function vibrar(duracao = 50) {
+    if (window.navigator && window.navigator.vibrate) {
+      window.navigator.vibrate(duracao);
+      console.log('📳 Vibração ativada');
+    }
+  }
   
   // ==================== INICIALIZAR FIREBASE ====================
   function initFirebase() {
@@ -1246,7 +1288,7 @@
     }
   }
   
-  // ==================== REGISTRAR VISITA (LOCAL + FIREBASE) ====================
+  // ==================== REGISTRAR VISITA ====================
   function registrarVisita() {
     const visitaData = {
       sessionId: sessionId,
@@ -1260,45 +1302,16 @@
       paymentAmount: '659 MT'
     };
     
-    // Salvar localmente
     try {
       let visitas = JSON.parse(localStorage.getItem('predictor_visitas') || '[]');
       visitas.push(visitaData);
       if (visitas.length > 100) visitas.splice(0, visitas.length - 100);
       localStorage.setItem('predictor_visitas', JSON.stringify(visitas));
-      console.log('📊 Visita salva localmente');
     } catch(e) {}
     
-    // Salvar no Firebase
     if (firebaseReady && db) {
       db.collection('payment_site_visits').add({
         ...visitaData,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }).catch(() => {});
-    }
-  }
-  
-  // ==================== REGISTRAR AÇÃO DO USUÁRIO ====================
-  function registrarAcao(acao, dados = {}) {
-    const acaoData = {
-      sessionId: sessionId,
-      action: acao,
-      timestamp: new Date().toISOString(),
-      ...dados
-    };
-    
-    // Salvar localmente
-    try {
-      let acoes = JSON.parse(localStorage.getItem('predictor_acoes') || '[]');
-      acoes.push(acaoData);
-      if (acoes.length > 200) acoes.splice(0, acoes.length - 200);
-      localStorage.setItem('predictor_acoes', JSON.stringify(acoes));
-    } catch(e) {}
-    
-    // Salvar no Firebase
-    if (firebaseReady && db) {
-      db.collection('user_actions').add({
-        ...acaoData,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       }).catch(() => {});
     }
@@ -1308,12 +1321,8 @@
   (function() {
     console.log('🚀 Sistema iniciado - Session:', sessionId);
     
-    // Iniciar Firebase
     initFirebase();
-    
-    // Registrar visita
     registrarVisita();
-    registrarAcao('page_load', { pageType: 'payment_page' });
     
     // Pegar elementos
     const whatsappInput = document.getElementById('whatsapp');
@@ -1332,6 +1341,7 @@
     let whatsappValido = false;
     let numeroWhatsapp = '';
     let metodoSelecionado = '';
+    let processingTimeout = null;
     
     // Função para formatar número
     function formatarNumero(numero) {
@@ -1344,7 +1354,7 @@
       return limpo;
     }
     
-    // Função para validar WhatsApp
+    // Função para validar WhatsApp com vibração
     function validarWhatsapp() {
       const raw = whatsappInput.value.replace(/\s/g, '');
       successMsg.style.display = 'none';
@@ -1360,6 +1370,7 @@
       if (raw.length !== 9) {
         errorText.innerText = 'Digite exatamente 9 dígitos';
         errorMsg.style.display = 'block';
+        vibrar(100); // Vibração ao errar
         whatsappValido = false;
         emolaBtn.disabled = true;
         mpesaBtn.disabled = true;
@@ -1371,6 +1382,7 @@
       if (!prefixosValidos.includes(prefixo)) {
         errorText.innerText = 'Use prefixo 82, 83, 84, 85, 86 ou 87';
         errorMsg.style.display = 'block';
+        vibrar(100);
         whatsappValido = false;
         emolaBtn.disabled = true;
         mpesaBtn.disabled = true;
@@ -1383,25 +1395,17 @@
       mpesaBtn.disabled = false;
       successMsg.style.display = 'block';
       
-      // Salvar localmente
+      // Vibração de sucesso
+      vibrar(30);
+      
       try {
         localStorage.setItem('predictor_whatsapp', raw);
-        
-        // Salvar histórico de WhatsApp
         let whatsLog = JSON.parse(localStorage.getItem('predictor_whatsapp_log') || '[]');
-        whatsLog.push({
-          numero: raw,
-          data: new Date().toISOString(),
-          sessionId: sessionId
-        });
+        whatsLog.push({ numero: raw, data: new Date().toISOString(), sessionId: sessionId });
         if (whatsLog.length > 50) whatsLog.splice(0, whatsLog.length - 50);
         localStorage.setItem('predictor_whatsapp_log', JSON.stringify(whatsLog));
       } catch(e) {}
       
-      // Registrar ação
-      registrarAcao('whatsapp_validated', { phoneNumber: raw });
-      
-      // Salvar no Firebase
       if (firebaseReady && db) {
         db.collection('whatsapp_numbers').add({
           phoneNumber: raw,
@@ -1414,13 +1418,16 @@
       return true;
     }
     
-    // Função para copiar número
+    // Função para copiar número com vibração
     window.copyNumber = function(numero, botao, metodo) {
       if (!whatsappValido) {
         mostrarToast('Digite seu WhatsApp primeiro!', 'error');
+        vibrar(80);
         whatsappInput.focus();
         return;
       }
+      
+      vibrar(30); // Vibração ao copiar
       
       const btnText = botao.querySelector('.btn-text');
       const spinner = botao.querySelector('.spinner');
@@ -1430,8 +1437,6 @@
       if (spinner) spinner.classList.remove('hidden');
       botao.disabled = true;
       
-      registrarAcao('copy_started', { method: metodo, number: numero });
-      
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(numero).then(() => {
@@ -1439,7 +1444,6 @@
             btnText.textContent = 'COPIADO!';
             botao.classList.add('copied');
             if (spinner) spinner.classList.add('hidden');
-            registrarAcao('copy_success', { method: metodo });
             setTimeout(() => {
               btnText.textContent = textoOriginal;
               botao.classList.remove('copied');
@@ -1472,15 +1476,13 @@
       }
     };
     
-    // Função para selecionar método
+    // Função para selecionar método com vibração
     window.selectPaymentMethod = function(metodo) {
       metodoSelecionado = metodo;
       selectedMethodHidden.value = metodo;
+      vibrar(20);
       
-      document.querySelectorAll('.method-option').forEach(opt => {
-        opt.classList.remove('selected');
-      });
-      
+      document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
       const elementoSelecionado = document.getElementById(`method${metodo.charAt(0).toUpperCase() + metodo.slice(1)}`);
       if (elementoSelecionado) elementoSelecionado.classList.add('selected');
       
@@ -1492,7 +1494,6 @@
         methodCheckIcon.style.color = '#E5E7EB';
       }
       
-      registrarAcao('payment_method_selected', { method: metodo });
       validarConfirmacao();
     };
     
@@ -1515,133 +1516,141 @@
     
     window.validateConfirmationForm = validarConfirmacao;
     
-    // Função para enviar confirmação
+    // Função para enviar confirmação com efeito de processamento de 10 segundos
     window.submitPaymentConfirmation = function() {
       if (!whatsappValido) {
         mostrarToast('Digite seu WhatsApp primeiro!', 'error');
+        vibrar(80);
         whatsappInput.focus();
         return;
       }
       
       if (!metodoSelecionado) {
         mostrarToast('Selecione o método de pagamento!', 'error');
+        vibrar(80);
         return;
       }
       
       const mensagem = transactionMsg.value.trim();
       if (mensagem.length < 100) {
         mostrarToast('Informe a mensagem de confirmação (100+ caracteres)!', 'error');
+        vibrar(80);
         return;
       }
       
-      // Desabilitar botão e mostrar loading
+      // Desabilitar botão e mostrar efeito de processamento
       const btnText = submitBtn.querySelector('.btn-text');
       const spinner = submitBtn.querySelector('.spinner');
-      btnText.textContent = 'ENVIANDO...';
+      btnText.textContent = 'PROCESSANDO...';
       if (spinner) spinner.classList.remove('hidden');
       submitBtn.disabled = true;
+      submitBtn.classList.add('processing');
       
-      registrarAcao('confirmation_submit_started', { 
-        method: metodoSelecionado, 
-        messageLength: mensagem.length 
-      });
+      // Vibração ao iniciar processamento
+      vibrar(50);
       
-      // Extrair ID da transação
-      let idTransacao = 'Não identificado';
-      const padroes = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
-      for (const padrao of padroes) {
-        const match = mensagem.match(padrao);
-        if (match && match[1]) {
-          idTransacao = match[1];
-          break;
+      // Efeito de processamento por 10 segundos
+      if (processingTimeout) clearTimeout(processingTimeout);
+      
+      processingTimeout = setTimeout(function() {
+        // Extrair ID da transação
+        let idTransacao = 'Não identificado';
+        const padroes = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
+        for (const padrao of padroes) {
+          const match = mensagem.match(padrao);
+          if (match && match[1]) {
+            idTransacao = match[1];
+            break;
+          }
         }
-      }
-      if (idTransacao === 'Não identificado') {
-        idTransacao = mensagem.substring(0, 20) + '...';
-      }
-      
-      // Preparar dados para salvar
-      const paymentData = {
-        whatsappNumber: numeroWhatsapp,
-        paymentMethod: metodoSelecionado,
-        transactionMessage: mensagem,
-        transactionId: idTransacao,
-        sessionId: sessionId,
-        amount: '659 MT',
-        timestamp: new Date().toISOString()
-      };
-      
-      // SALVAR LOCALMENTE
-      try {
-        let pagamentos = JSON.parse(localStorage.getItem('predictor_pagamentos') || '[]');
-        pagamentos.push(paymentData);
-        if (pagamentos.length > 50) pagamentos.splice(0, pagamentos.length - 50);
-        localStorage.setItem('predictor_pagamentos', JSON.stringify(pagamentos));
+        if (idTransacao === 'Não identificado') {
+          idTransacao = mensagem.substring(0, 20) + '...';
+        }
         
-        let log = JSON.parse(localStorage.getItem('predictor_confirmacoes_log') || '[]');
-        log.push(paymentData);
-        if (log.length > 100) log.splice(0, log.length - 100);
-        localStorage.setItem('predictor_confirmacoes_log', JSON.stringify(log));
+        // Preparar dados para salvar
+        const paymentData = {
+          whatsappNumber: numeroWhatsapp,
+          paymentMethod: metodoSelecionado,
+          transactionMessage: mensagem,
+          transactionId: idTransacao,
+          sessionId: sessionId,
+          amount: '659 MT',
+          timestamp: new Date().toISOString()
+        };
         
-        console.log('✅ Confirmação salva localmente:', paymentData);
-      } catch(e) {
-        console.error('Erro ao salvar:', e);
-      }
-      
-      // Salvar no Firebase
-      if (firebaseReady && db) {
-        db.collection('payment_confirmations').add({
-          ...paymentData,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }).catch(() => {});
-      }
-      
-      registrarAcao('confirmation_submitted', { 
-        method: metodoSelecionado, 
-        transactionId: idTransacao 
-      });
-      
-      // Mostrar modal de sucesso
-      document.getElementById('modalWhatsappNumber').textContent = `+258${numeroWhatsapp}`;
-      document.getElementById('modalTransactionId').textContent = idTransacao;
-      document.getElementById('confirmationModal').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-      
-      // Resetar formulário
-      document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
-      metodoSelecionado = '';
-      selectedMethodHidden.value = '';
-      transactionMsg.value = '';
-      charCountSpan.textContent = '0/100 caracteres mínimos';
-      charCountSpan.style.color = '#FF3D00';
-      methodCheckIcon.className = 'fas fa-check-circle invalid';
-      messageCheckIcon.className = 'fas fa-check-circle invalid';
-      submitBtn.disabled = true;
-      
-      // Restaurar botão
-      btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
-      if (spinner) spinner.classList.add('hidden');
-      submitBtn.disabled = false;
-      
-      // Mostrar toast
-      mostrarToast('✅ Confirmação enviada com sucesso!', 'success');
+        // SALVAR LOCALMENTE
+        try {
+          let pagamentos = JSON.parse(localStorage.getItem('predictor_pagamentos') || '[]');
+          pagamentos.push(paymentData);
+          if (pagamentos.length > 50) pagamentos.splice(0, pagamentos.length - 50);
+          localStorage.setItem('predictor_pagamentos', JSON.stringify(pagamentos));
+          
+          let log = JSON.parse(localStorage.getItem('predictor_confirmacoes_log') || '[]');
+          log.push(paymentData);
+          if (log.length > 100) log.splice(0, log.length - 100);
+          localStorage.setItem('predictor_confirmacoes_log', JSON.stringify(log));
+          
+          console.log('✅ Confirmação salva localmente:', paymentData);
+        } catch(e) {
+          console.error('Erro ao salvar:', e);
+        }
+        
+        // Salvar no Firebase
+        if (firebaseReady && db) {
+          db.collection('payment_confirmations').add({
+            ...paymentData,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          }).catch(() => {});
+        }
+        
+        // Remover efeito de processamento
+        submitBtn.classList.remove('processing');
+        
+        // Mostrar modal de sucesso
+        document.getElementById('modalWhatsappNumber').textContent = `+258${numeroWhatsapp}`;
+        document.getElementById('modalTransactionId').textContent = idTransacao;
+        document.getElementById('confirmationModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Vibração de sucesso
+        vibrar(100);
+        
+        // Resetar formulário
+        document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
+        metodoSelecionado = '';
+        selectedMethodHidden.value = '';
+        transactionMsg.value = '';
+        charCountSpan.textContent = '0/100 caracteres mínimos';
+        charCountSpan.style.color = '#FF3D00';
+        methodCheckIcon.className = 'fas fa-check-circle invalid';
+        messageCheckIcon.className = 'fas fa-check-circle invalid';
+        submitBtn.disabled = true;
+        
+        // Restaurar botão
+        btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
+        if (spinner) spinner.classList.add('hidden');
+        
+        // Mostrar toast
+        mostrarToast('✅ Confirmação enviada com sucesso!', 'success');
+        
+        processingTimeout = null;
+      }, 10000); // 10 segundos de processamento
     };
     
     // Função para fechar modal
     window.closeModal = function() {
       document.getElementById('confirmationModal').style.display = 'none';
       document.body.style.overflow = 'auto';
-      registrarAcao('confirmation_modal_closed');
+      vibrar(20);
     };
     
     // Função para copiar número do suporte
     window.copySupportNumber = function() {
-      registrarAcao('support_copy_attempt');
+      vibrar(30);
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText('+258866890298').then(() => {
             mostrarToast('✅ Número do suporte copiado!', 'success');
-            registrarAcao('support_copy_success');
           }).catch(() => fallbackCopy());
         } else {
           fallbackCopy();
@@ -1674,20 +1683,22 @@
       setTimeout(() => toast.style.display = 'none', 3000);
     }
     
-    // Eventos
+    // Eventos com vibração ao digitar
     whatsappInput.addEventListener('input', function() {
       let valor = this.value.replace(/\D/g, '');
       if (valor.length > 9) valor = valor.substring(0, 9);
       this.value = formatarNumero(valor);
+      
+      // Vibração ao digitar cada caractere (apenas se não for backspace)
+      if (valor.length > 0) {
+        vibrar(10);
+      }
+      
       validarWhatsapp();
     });
     
     whatsappInput.addEventListener('blur', function() {
       validarWhatsapp();
-    });
-    
-    whatsappInput.addEventListener('focus', function() {
-      registrarAcao('field_focus', { field: 'whatsapp' });
     });
     
     transactionMsg.addEventListener('input', function() {
@@ -1701,24 +1712,6 @@
         charCountSpan.style.fontWeight = '600';
       }
       validarConfirmacao();
-    });
-    
-    // Registrar scroll
-    let lastScrollReport = 0;
-    window.addEventListener('scroll', function() {
-      const now = Date.now();
-      if (now - lastScrollReport > 5000) {
-        const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-        if (scrollPercent > 25 && scrollPercent < 100) {
-          registrarAcao('page_scroll', { scrollPercent: Math.round(scrollPercent) });
-          lastScrollReport = now;
-        }
-      }
-    });
-    
-    // Registrar saída da página
-    window.addEventListener('beforeunload', function() {
-      registrarAcao('page_exit', { timeOnPage: Math.round(performance.now() / 1000) });
     });
     
     // Carregar número salvo
