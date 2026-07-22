@@ -485,6 +485,39 @@
       background: linear-gradient(145deg, #F0F7FF, white);
     }
 
+    /* Estilo especial para Pagamento Automático */
+    .payment-method.automatic {
+      border-color: #10B981;
+      background: linear-gradient(145deg, #ECFDF5, #F0FDF4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .payment-method.automatic::before {
+      content: '⚡';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 50px;
+      opacity: 0.15;
+      transform: rotate(15deg);
+    }
+
+    .payment-method.automatic .method-icon {
+      background: linear-gradient(135deg, #10B981, #059669);
+    }
+
+    .automatic-badge {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     .method-header {
       display: flex;
       align-items: center;
@@ -521,6 +554,9 @@
       font-weight: 800;
       color: var(--dark);
       margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .method-subtitle {
@@ -603,6 +639,47 @@
 
     .copy-button.copied {
       background: linear-gradient(135deg, var(--success), #00B894);
+    }
+
+    /* Botão Pagar Automático - Estilo Especial */
+    .pay-now-btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .pay-now-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6);
+    }
+
+    .pay-now-btn:active {
+      transform: scale(0.97);
+    }
+
+    .pay-now-btn i {
+      font-size: 20px;
+      animation: bounceIcon 1.5s ease-in-out infinite;
+    }
+
+    @keyframes bounceIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
     }
 
     .confirmation-box {
@@ -987,7 +1064,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Efeito de processamento */
     .processing {
       position: relative;
       overflow: hidden;
@@ -1023,7 +1099,6 @@
       75% { transform: translateX(4px); }
     }
 
-    /* Efeito de vibração ao digitar */
     @keyframes vibrate {
       0% { transform: translateX(0); }
       25% { transform: translateX(-2px); }
@@ -1120,13 +1195,14 @@
       <div class="warning-text">Ao fazer o pagamento, <strong>VERIFIQUE O NOME: LUCAS JOSÉ</strong> para confirmação. O código será enviado em 5min após pagamento confirmado.</div>
     </div>
 
-    <div class="payment-section">
+    <div class="payment-section" id="paymentSection">
       <div class="section-header">
         <div class="section-icon" style="background: linear-gradient(135deg, var(--primary), #4F46E5);"><i class="fas fa-credit-card"></i></div>
-        <div class="section-title">Método de Pagamento</div>
+        <div class="section-title">Métodos de Pagamento</div>
       </div>
       
       <div class="payment-methods">
+        <!-- eMOLA -->
         <div class="payment-method emola recommended">
           <div class="method-header">
             <div class="method-icon"><i class="fas fa-wallet"></i></div>
@@ -1138,6 +1214,8 @@
           </div>
           <button class="copy-button" id="emolaBtn" onclick="copyNumber('866890298', this, 'eMola')" disabled><span class="btn-text">COPIAR NÚMERO</span><span class="spinner hidden"></span></button>
         </div>
+
+        <!-- M-PESA Tradicional -->
         <div class="payment-method mpesa">
           <div class="method-header">
             <div class="method-icon"><i class="fas fa-money-bill-wave"></i></div>
@@ -1148,6 +1226,39 @@
             <div class="detail-item"><span class="account-holder"><i class="fas fa-user-check"></i> Titular: <span style="color: var(--primary);">LUCAS JOSÉ</span></span></div>
           </div>
           <button class="copy-button" id="mpesaBtn" onclick="copyNumber('848750886', this, 'M-Pesa')" disabled><span class="btn-text">COPIAR NÚMERO</span><span class="spinner hidden"></span></button>
+        </div>
+
+        <!-- NOVO: Pagamento Automático (M-Pesa) -->
+        <div class="payment-method automatic">
+          <div class="method-header">
+            <div class="method-icon"><i class="fas fa-robot"></i></div>
+            <div class="method-info">
+              <div class="method-title">
+                Pagamento Automático
+                <span class="automatic-badge"><i class="fas fa-bolt"></i> Instantâneo</span>
+              </div>
+              <div class="method-subtitle">M-Pesa • Processamento em 30 segundos</div>
+            </div>
+          </div>
+          <div class="method-details" style="background: linear-gradient(145deg, #ECFDF5, #F0FDF4); border-color: #10B981;">
+            <div class="detail-item">
+              <span class="detail-label"><i class="fas fa-clock" style="color: #10B981;"></i> Tempo de processamento</span>
+              <span style="font-weight: 700; color: #059669;">~30 segundos</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label"><i class="fas fa-shield-alt" style="color: #10B981;"></i> Segurança</span>
+              <span style="font-weight: 700; color: #059669;">Criptografado</span>
+            </div>
+            <div class="detail-item" style="border-bottom: none; padding-top: 8px;">
+              <span class="detail-label"><i class="fas fa-check-circle" style="color: #10B981;"></i> Status</span>
+              <span style="font-weight: 700; color: #059669;">Disponível</span>
+            </div>
+          </div>
+          <a href="https://apitest-sand.vercel.app/" target="_blank" rel="noopener noreferrer" class="pay-now-btn">
+            <i class="fas fa-bolt"></i>
+            PAGAR AGORA
+            <i class="fas fa-arrow-right"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -1252,20 +1363,16 @@
 <script>
   // ==================== SISTEMA COMPLETO COM VIBRAÇÃO E PROCESSAMENTO ====================
   
-  // Variáveis globais
   let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
   let firebaseReady = false;
   let db = null;
   
-  // Função para vibrar (funciona em dispositivos móveis)
   function vibrar(duracao = 50) {
     if (window.navigator && window.navigator.vibrate) {
       window.navigator.vibrate(duracao);
-      console.log('📳 Vibração ativada');
     }
   }
   
-  // ==================== INICIALIZAR FIREBASE ====================
   function initFirebase() {
     try {
       if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
@@ -1288,7 +1395,6 @@
     }
   }
   
-  // ==================== REGISTRAR VISITA ====================
   function registrarVisita() {
     const visitaData = {
       sessionId: sessionId,
@@ -1317,14 +1423,12 @@
     }
   }
   
-  // ==================== SISTEMA PRINCIPAL ====================
   (function() {
     console.log('🚀 Sistema iniciado - Session:', sessionId);
     
     initFirebase();
     registrarVisita();
     
-    // Pegar elementos
     const whatsappInput = document.getElementById('whatsapp');
     const successMsg = document.getElementById('successMessage');
     const errorMsg = document.getElementById('errorMessage');
@@ -1343,7 +1447,6 @@
     let metodoSelecionado = '';
     let processingTimeout = null;
     
-    // Função para formatar número
     function formatarNumero(numero) {
       if (!numero) return '';
       const limpo = numero.replace(/\D/g, '');
@@ -1354,7 +1457,6 @@
       return limpo;
     }
     
-    // Função para validar WhatsApp com vibração
     function validarWhatsapp() {
       const raw = whatsappInput.value.replace(/\s/g, '');
       successMsg.style.display = 'none';
@@ -1370,7 +1472,7 @@
       if (raw.length !== 9) {
         errorText.innerText = 'Digite exatamente 9 dígitos';
         errorMsg.style.display = 'block';
-        vibrar(100); // Vibração ao errar
+        vibrar(100);
         whatsappValido = false;
         emolaBtn.disabled = true;
         mpesaBtn.disabled = true;
@@ -1395,7 +1497,6 @@
       mpesaBtn.disabled = false;
       successMsg.style.display = 'block';
       
-      // Vibração de sucesso
       vibrar(30);
       
       try {
@@ -1418,7 +1519,6 @@
       return true;
     }
     
-    // Função para copiar número com vibração
     window.copyNumber = function(numero, botao, metodo) {
       if (!whatsappValido) {
         mostrarToast('Digite seu WhatsApp primeiro!', 'error');
@@ -1427,7 +1527,7 @@
         return;
       }
       
-      vibrar(30); // Vibração ao copiar
+      vibrar(30);
       
       const btnText = botao.querySelector('.btn-text');
       const spinner = botao.querySelector('.spinner');
@@ -1476,7 +1576,6 @@
       }
     };
     
-    // Função para selecionar método com vibração
     window.selectPaymentMethod = function(metodo) {
       metodoSelecionado = metodo;
       selectedMethodHidden.value = metodo;
@@ -1497,7 +1596,6 @@
       validarConfirmacao();
     };
     
-    // Função para validar formulário de confirmação
     function validarConfirmacao() {
       const mensagem = transactionMsg.value.trim();
       const mensagemValida = mensagem.length >= 100;
@@ -1516,7 +1614,6 @@
     
     window.validateConfirmationForm = validarConfirmacao;
     
-    // Função para enviar confirmação com efeito de processamento de 10 segundos
     window.submitPaymentConfirmation = function() {
       if (!whatsappValido) {
         mostrarToast('Digite seu WhatsApp primeiro!', 'error');
@@ -1538,7 +1635,6 @@
         return;
       }
       
-      // Desabilitar botão e mostrar efeito de processamento
       const btnText = submitBtn.querySelector('.btn-text');
       const spinner = submitBtn.querySelector('.spinner');
       btnText.textContent = 'PROCESSANDO...';
@@ -1546,14 +1642,11 @@
       submitBtn.disabled = true;
       submitBtn.classList.add('processing');
       
-      // Vibração ao iniciar processamento
       vibrar(50);
       
-      // Efeito de processamento por 10 segundos
       if (processingTimeout) clearTimeout(processingTimeout);
       
       processingTimeout = setTimeout(function() {
-        // Extrair ID da transação
         let idTransacao = 'Não identificado';
         const padroes = [/ID[:\s]*([A-Z0-9]{8,})/i, /Referência[:\s]*([A-Z0-9]{8,})/i, /([0-9]{10,})/];
         for (const padrao of padroes) {
@@ -1567,7 +1660,6 @@
           idTransacao = mensagem.substring(0, 20) + '...';
         }
         
-        // Preparar dados para salvar
         const paymentData = {
           whatsappNumber: numeroWhatsapp,
           paymentMethod: metodoSelecionado,
@@ -1578,7 +1670,6 @@
           timestamp: new Date().toISOString()
         };
         
-        // SALVAR LOCALMENTE
         try {
           let pagamentos = JSON.parse(localStorage.getItem('predictor_pagamentos') || '[]');
           pagamentos.push(paymentData);
@@ -1595,7 +1686,6 @@
           console.error('Erro ao salvar:', e);
         }
         
-        // Salvar no Firebase
         if (firebaseReady && db) {
           db.collection('payment_confirmations').add({
             ...paymentData,
@@ -1603,19 +1693,15 @@
           }).catch(() => {});
         }
         
-        // Remover efeito de processamento
         submitBtn.classList.remove('processing');
         
-        // Mostrar modal de sucesso
         document.getElementById('modalWhatsappNumber').textContent = `+258${numeroWhatsapp}`;
         document.getElementById('modalTransactionId').textContent = idTransacao;
         document.getElementById('confirmationModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
         
-        // Vibração de sucesso
         vibrar(100);
         
-        // Resetar formulário
         document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
         metodoSelecionado = '';
         selectedMethodHidden.value = '';
@@ -1626,25 +1712,21 @@
         messageCheckIcon.className = 'fas fa-check-circle invalid';
         submitBtn.disabled = true;
         
-        // Restaurar botão
         btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
         if (spinner) spinner.classList.add('hidden');
         
-        // Mostrar toast
         mostrarToast('✅ Confirmação enviada com sucesso!', 'success');
         
         processingTimeout = null;
-      }, 10000); // 10 segundos de processamento
+      }, 10000);
     };
     
-    // Função para fechar modal
     window.closeModal = function() {
       document.getElementById('confirmationModal').style.display = 'none';
       document.body.style.overflow = 'auto';
       vibrar(20);
     };
     
-    // Função para copiar número do suporte
     window.copySupportNumber = function() {
       vibrar(30);
       try {
@@ -1670,7 +1752,6 @@
       }
     };
     
-    // Função para mostrar toast
     function mostrarToast(mensagem, tipo = 'success') {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toastMessage');
@@ -1683,13 +1764,11 @@
       setTimeout(() => toast.style.display = 'none', 3000);
     }
     
-    // Eventos com vibração ao digitar
     whatsappInput.addEventListener('input', function() {
       let valor = this.value.replace(/\D/g, '');
       if (valor.length > 9) valor = valor.substring(0, 9);
       this.value = formatarNumero(valor);
       
-      // Vibração ao digitar cada caractere (apenas se não for backspace)
       if (valor.length > 0) {
         vibrar(10);
       }
@@ -1714,7 +1793,6 @@
       validarConfirmacao();
     });
     
-    // Carregar número salvo
     try {
       const numeroSalvo = localStorage.getItem('predictor_whatsapp');
       if (numeroSalvo) {
@@ -1723,7 +1801,6 @@
       }
     } catch(e) {}
     
-    // Focar no campo
     setTimeout(() => whatsappInput.focus(), 500);
   })();
 </script>
