@@ -1077,6 +1077,7 @@
 
     /* ==============================================================
        VIDEO CARD - FORMATO GRAVAÇÃO DE TELA (9:16)
+       AGORA COM "TUTORIAL EM BREVE"
     ============================================================== */
     .video-card {
       background: var(--bg-card);
@@ -1129,7 +1130,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(239, 68, 68, 0.12);
+      background: rgba(245, 158, 11, 0.12);
       color: #FCA5A5;
       padding: 2px 12px;
       border-radius: 50px;
@@ -1167,7 +1168,7 @@
       margin-top: 1px;
     }
 
-    /* ===== VIDEO - FORMATO GRAVAÇÃO DE TELA (9:16) ===== */
+    /* ===== VIDEO - ESPAÇO ESCURO COM "TUTORIAL EM BREVE" ===== */
     .video-container {
       position: relative;
       width: 100%;
@@ -1180,15 +1181,59 @@
       padding-bottom: 177.78%;
       background: #000;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
-    .video-wrapper iframe {
+    .video-placeholder {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a0a;
+      color: #4B4B6A;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .video-placeholder .placeholder-icon {
+      font-size: 48px;
+      color: #2A2A42;
+      margin-bottom: 16px;
+      animation: placeholderPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes placeholderPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    .video-placeholder .placeholder-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #6B6B90;
+      letter-spacing: 0.5px;
+    }
+
+    .video-placeholder .placeholder-subtitle {
+      font-size: 13px;
+      color: #4B4B6A;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .video-placeholder .placeholder-line {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #2A2A42, transparent);
+      margin: 12px auto 0;
+      border-radius: 2px;
     }
 
     /* ===== SUPORTE ===== */
@@ -1828,6 +1873,18 @@
       .video-card-header .video-title-group p {
         font-size: 11px;
       }
+
+      .video-placeholder .placeholder-icon {
+        font-size: 36px;
+      }
+
+      .video-placeholder .placeholder-title {
+        font-size: 17px;
+      }
+
+      .video-placeholder .placeholder-subtitle {
+        font-size: 12px;
+      }
     }
 
     @media (max-width: 380px) {
@@ -1877,6 +1934,14 @@
 
       .video-card-header .video-title-group h3 {
         font-size: 13px;
+      }
+
+      .video-placeholder .placeholder-icon {
+        font-size: 28px;
+      }
+
+      .video-placeholder .placeholder-title {
+        font-size: 15px;
       }
     }
 
@@ -2119,7 +2184,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- VIDEO TUTORIAL - FORMATO GRAVAÇÃO DE TELA (9:16)              -->
+    <!-- VIDEO TUTORIAL - ESPAÇO ESCURO COM "TUTORIAL EM BREVE"        -->
     <!-- ============================================================== -->
     <div class="video-card">
       <div class="video-card-header">
@@ -2127,21 +2192,19 @@
           <i class="fas fa-play"></i>
         </div>
         <div class="video-title-group">
-          <span class="video-badge"><i class="fas fa-circle"></i> AO VIVO</span>
+          <span class="video-badge"><i class="fas fa-circle"></i> EM BREVE</span>
           <h3><i class="fas fa-mobile-alt"></i> Como fazer o pagamento?</h3>
-          <p>Assista ao tutorial completo e veja o passo a passo</p>
+          <p>Em breve teremos um tutorial completo para você</p>
         </div>
       </div>
       <div class="video-container">
         <div class="video-wrapper">
-          <iframe 
-            src="https://www.youtube.com/embed/VXWe8X5OFFM?autoplay=0&controls=1&rel=0&modestbranding=1&playsinline=1&fs=1"
-            title="Como fazer pagamento eMola e M-Pesa" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
-            referrerpolicy="strict-origin-when-cross-origin" 
-            allowfullscreen>
-          </iframe>
+          <div class="video-placeholder">
+            <i class="fas fa-video placeholder-icon"></i>
+            <div class="placeholder-title">📹 TUTORIAL EM BREVE</div>
+            <div class="placeholder-subtitle">Estamos preparando um vídeo explicativo</div>
+            <div class="placeholder-line"></div>
+          </div>
         </div>
       </div>
     </div>
