@@ -11,28 +11,61 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
   <style>
+    /* ===== VARIÁVEIS ===== */
     :root {
-      --primary: #0066FF;
-      --primary-dark: #0052D4;
-      --secondary: #00D4AA;
-      --accent: #FF6B35;
-      --success: #00C853;
-      --warning: #FFB300;
-      --danger: #FF3D00;
-      --dark: #121826;
-      --light: #FFFFFF;
-      --gray-50: #F9FAFB;
-      --gray-100: #F3F4F6;
-      --gray-200: #E5E7EB;
-      --gray-600: #4B5563;
-      --gray-800: #1F2937;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
-      --shadow-lg: 0 10px 25px rgba(0,0,0,0.2);
-      --radius-sm: 12px;
-      --radius-md: 16px;
+      --primary: #8B5CF6;
+      --primary-light: #A78BFA;
+      --primary-dark: #6D28D9;
+      --primary-gradient: linear-gradient(145deg, #8B5CF6, #6D28D9);
+      --primary-glow: rgba(139, 92, 246, 0.35);
+      
+      --secondary: #EC4899;
+      --secondary-light: #F472B6;
+      --secondary-dark: #BE185D;
+      
+      --accent: #F59E0B;
+      --accent-light: #FBBF24;
+      --accent-dark: #D97706;
+      
+      --success: #10B981;
+      --success-light: #34D399;
+      --success-dark: #059669;
+      --success-gradient: linear-gradient(145deg, #10B981, #059669);
+      
+      --bg-primary: #0A0A12;
+      --bg-secondary: #12121F;
+      --bg-card: #1A1A2E;
+      --bg-card-hover: #22223A;
+      --bg-input: #1A1A2E;
+      --bg-section: #15152A;
+      
+      --surface-light: #2A2A42;
+      --surface-mid: #22223A;
+      --surface-dark: #1A1A2E;
+      
+      --text-primary: #FFFFFF;
+      --text-secondary: #C4C4E0;
+      --text-muted: #8888B0;
+      --text-dark: #6B6B90;
+      
+      --border-light: rgba(255,255,255,0.06);
+      --border-mid: rgba(255,255,255,0.10);
+      --border-primary: rgba(139, 92, 246, 0.25);
+      
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+      --shadow-xl: 0 12px 60px rgba(0,0,0,0.6);
+      --shadow-primary: 0 8px 35px rgba(139, 92, 246, 0.25);
+      --shadow-success: 0 8px 35px rgba(16, 185, 129, 0.20);
+      --shadow-accent: 0 8px 35px rgba(245, 158, 11, 0.15);
+      
+      --radius-sm: 10px;
+      --radius-md: 14px;
       --radius-lg: 20px;
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-xl: 28px;
+      
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -43,26 +76,28 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
       min-height: 100vh;
-      padding: 12px;
-      color: var(--dark);
-      line-height: 1.5;
+      padding: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
     }
 
     .container {
       max-width: 100%;
-      background: var(--light);
-      border-radius: var(--radius-lg);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-xl);
       overflow: hidden;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-xl);
       margin: 0 auto;
+      border: 1px solid var(--border-light);
     }
 
+    /* ===== HEADER ===== */
     .header {
-      background: linear-gradient(135deg, #FF6B35, #F7931E, #FF3D00);
-      padding: 24px 20px;
+      background: linear-gradient(145deg, #1A1A3E 0%, #2D1B69 40%, #6D28D9 100%);
+      padding: 28px 24px 32px;
       text-align: center;
       color: white;
       position: relative;
@@ -73,188 +108,1066 @@
       content: '';
       position: absolute;
       top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
-      background-size: 25px 25px;
-      opacity: 0.4;
-      animation: float 20s linear infinite;
+      right: -30%;
+      width: 70%;
+      height: 150%;
+      background: radial-gradient(ellipse, rgba(139, 92, 246, 0.20) 0%, transparent 70%);
+      pointer-events: none;
+      animation: headerGlow 6s ease-in-out infinite alternate;
     }
 
-    @keyframes float {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      100% { transform: translate(-30px, -30px) rotate(360deg); }
+    @keyframes headerGlow {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.5; }
+      100% { transform: scale(1.3) translate(-20px, 20px); opacity: 1; }
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -40%;
+      left: -20%;
+      width: 50%;
+      height: 100%;
+      background: radial-gradient(ellipse, rgba(236, 72, 153, 0.10) 0%, transparent 70%);
+      pointer-events: none;
+      animation: headerGlow2 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes headerGlow2 {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+      100% { transform: scale(1.2) translate(30px, -20px); opacity: 0.6; }
     }
 
     .logo-container {
       position: relative;
       z-index: 2;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .logo {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
       letter-spacing: -0.5px;
     }
 
     .logo-icon {
-      background: rgba(255,255,255,0.25);
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(10px);
-      animation: pulse 2s infinite;
+      font-size: 22px;
+      box-shadow: 0 4px 25px rgba(139, 92, 246, 0.25);
+      animation: logoPulse 3s ease-in-out infinite;
+      border: 1px solid rgba(255,255,255,0.06);
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 25px rgba(139, 92, 246, 0.25); }
+      50% { transform: scale(1.05); box-shadow: 0 4px 45px rgba(139, 92, 246, 0.40); }
     }
 
-    .badge {
+    .badge-top {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.2);
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
       backdrop-filter: blur(10px);
-      padding: 8px 18px;
+      padding: 6px 20px;
       border-radius: 50px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       position: relative;
       z-index: 2;
-      border: 1px solid rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.06);
+      letter-spacing: 0.3px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .badge-top i {
+      color: var(--accent-light);
     }
 
     .header h1 {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 900;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       position: relative;
       z-index: 2;
       letter-spacing: -0.5px;
+      text-shadow: 0 2px 30px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, #FFFFFF, #C4B5FD);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .subtitle {
-      font-size: 14px;
-      opacity: 0.95;
+      font-size: 15px;
+      opacity: 0.8;
       font-weight: 500;
       position: relative;
       z-index: 2;
+      color: rgba(255,255,255,0.7);
     }
 
+    /* ===== PRICE CARD ===== */
     .price-card {
-      background: linear-gradient(135deg, #00D4AA, #00B894, #00A67C);
-      margin: -18px 20px 20px;
-      padding: 18px;
+      background: linear-gradient(145deg, #0D2B2B, #064E3B, #065F46);
+      margin: -20px 20px 20px;
+      padding: 20px 24px;
       border-radius: var(--radius-md);
       color: white;
       text-align: center;
       position: relative;
       z-index: 10;
-      box-shadow: var(--shadow-md);
-      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: 0 8px 40px rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      overflow: hidden;
+    }
+
+    .price-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 60%;
+      height: 150%;
+      background: radial-gradient(ellipse, rgba(52, 211, 153, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .price-card::after {
+      content: '✦';
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      font-size: 40px;
+      opacity: 0.04;
+      color: white;
     }
 
     .price-label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      opacity: 0.9;
+      opacity: 0.7;
       margin-bottom: 4px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      position: relative;
     }
 
     .price {
-      font-size: 38px;
+      font-size: 44px;
       font-weight: 900;
-      margin-bottom: 2px;
       line-height: 1;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+      position: relative;
     }
 
     .price-period {
       font-size: 14px;
       font-weight: 600;
-      opacity: 0.9;
+      opacity: 0.8;
+      position: relative;
     }
 
     .benefits {
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: 24px;
       margin-top: 12px;
       padding-top: 12px;
-      border-top: 1px solid rgba(255,255,255,0.2);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      flex-wrap: wrap;
     }
 
     .benefit {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 8px;
       font-size: 12px;
-      opacity: 0.9;
+      opacity: 0.85;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
     }
 
+    .benefit i {
+      font-size: 14px;
+      color: var(--accent-light);
+    }
+
+    /* ===== CONTENT ===== */
     .content {
-      padding: 0 16px 24px;
+      padding: 0 18px 28px;
     }
 
-    .video-card {
-      background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
-      border-radius: var(--radius-lg);
-      margin-bottom: 24px;
+    /* ===== SECTION HEADER ===== */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      flex: 1;
+      letter-spacing: -0.3px;
+    }
+
+    /* ===== WHATSAPP SECTION ===== */
+    .whatsapp-section {
+      background: var(--bg-card);
+      padding: 18px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+      position: relative;
       overflow: hidden;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid rgba(255,215,0,0.2);
+    }
+
+    .whatsapp-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #25D366, #128C7E, #25D366);
+      background-size: 200% 100%;
+      animation: shimmerLine 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmerLine {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
+    }
+
+    .whatsapp-section:focus-within {
+      border-color: rgba(37, 211, 102, 0.3);
+      box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.04);
+    }
+
+    .whatsapp-section .section-icon {
+      background: linear-gradient(145deg, #25D366, #128C7E);
+    }
+
+    /* ===== FORM ===== */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      font-size: 13px;
+      letter-spacing: 0.3px;
+    }
+
+    .input-container {
+      position: relative;
+    }
+
+    .country-code {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    .form-input {
       width: 100%;
+      padding: 13px 14px 13px 56px;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      font-size: 16px;
+      font-weight: 500;
+      transition: var(--transition);
+      background: var(--bg-input);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    .video-card-header {
-      padding: 16px 18px 12px;
-      background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,107,53,0.1));
-      border-bottom: 1px solid rgba(255,215,0,0.2);
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.06);
     }
 
-    .video-badge {
-      display: inline-flex;
+    .form-input::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    textarea.form-input {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100px;
+      padding: 14px;
+      resize: vertical;
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      display: flex;
       align-items: center;
       gap: 6px;
-      background: linear-gradient(135deg, #FF4444, #CC0000);
-      padding: 5px 12px;
-      border-radius: 50px;
-      font-size: 11px;
-      font-weight: 700;
-      color: white;
+    }
+
+    /* ===== STATUS MESSAGES ===== */
+    .status-message {
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-weight: 600;
+      font-size: 13px;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    .status-success {
+      background: rgba(16, 185, 129, 0.10);
+      color: #34D399;
+      border-left: 4px solid var(--success);
+    }
+
+    .status-error {
+      background: rgba(239, 68, 68, 0.10);
+      color: #F87171;
+      border-left: 4px solid #EF4444;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== WARNING BOX ===== */
+    .warning-box {
+      background: rgba(245, 158, 11, 0.06);
+      border: 1px solid rgba(245, 158, 11, 0.12);
+      padding: 16px 18px;
+      border-radius: var(--radius-sm);
+      margin: 16px 0;
+      box-shadow: 0 2px 16px rgba(245, 158, 11, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .warning-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 40%;
+      height: 150%;
+      background: radial-gradient(ellipse, rgba(245, 158, 11, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .warning-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .warning-icon {
+      color: var(--accent-light);
+      font-size: 18px;
+    }
+
+    .warning-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--accent-light);
+    }
+
+    .warning-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      position: relative;
+      z-index: 2;
+    }
+
+    .warning-text strong {
+      color: var(--accent-light);
+      background: rgba(245, 158, 11, 0.08);
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* ===== PAYMENT METHODS ===== */
+    .payment-section {
+      margin-bottom: 20px;
+    }
+
+    .payment-section .section-icon {
+      background: var(--primary-gradient);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .payment-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .payment-method {
+      background: var(--bg-card);
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+    }
+
+    .payment-method:hover {
+      border-color: var(--border-mid);
+      background: var(--bg-card-hover);
+    }
+
+    .payment-method.recommended {
+      border-color: var(--border-primary);
+      background: rgba(139, 92, 246, 0.04);
+    }
+
+    /* ===== MÉTODO AUTOMÁTICO ===== */
+    .payment-method.automatic {
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      background: linear-gradient(145deg, #0A1A1A, #0D2424);
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 35px rgba(16, 185, 129, 0.04);
+    }
+
+    .payment-method.automatic .crown-wrapper {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      z-index: 10;
+      width: 65px;
+      height: 65px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .payment-method.automatic .crown-wrapper::before {
+      content: '👑';
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 36px;
+      animation: crownGlow 2s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6));
+      transform: rotate(15deg);
+    }
+
+    @keyframes crownGlow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.4)); transform: rotate(15deg) scale(1); }
+      50% { filter: drop-shadow(0 0 45px rgba(245, 158, 11, 0.9)) drop-shadow(0 0 80px rgba(245, 158, 11, 0.4)); transform: rotate(15deg) scale(1.1); }
+    }
+
+    .payment-method.automatic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #10B981, #34D399, #6EE7B7, #34D399, #10B981);
+      background-size: 300% 100%;
+      animation: shimmerLine2 4s ease-in-out infinite;
+    }
+
+    @keyframes shimmerLine2 {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
+    }
+
+    .automatic-inner {
+      padding: 18px;
+      position: relative;
+      z-index: 2;
+      background: rgba(10, 26, 26, 0.90);
+      backdrop-filter: blur(10px);
+    }
+
+    .automatic-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 10px;
     }
 
-    .video-card-header h3 {
-      font-size: 18px;
-      font-weight: 800;
+    .automatic-icon-wrapper {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #10B981, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
       color: white;
-      margin-bottom: 6px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 25px rgba(16, 185, 129, 0.20);
+      animation: iconGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes iconGlow {
+      0%, 100% { box-shadow: 0 4px 25px rgba(16, 185, 129, 0.20); }
+      50% { box-shadow: 0 4px 45px rgba(16, 185, 129, 0.35); }
+    }
+
+    .automatic-title-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .automatic-title-group .method-title {
+      color: white;
+      font-size: 17px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .automatic-title-group .method-title .title-text {
+      white-space: nowrap;
+    }
+
+    .automatic-title-group .method-subtitle {
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .automatic-title-group .method-subtitle i {
+      color: #10B981;
+      font-size: 11px;
+    }
+
+    .badge-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 4px 0 6px;
+      width: 100%;
+    }
+
+    .instant-badge {
+      background: linear-gradient(145deg, #10B981, #059669);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 15px rgba(16, 185, 129, 0.20);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .instant-badge i {
+      font-size: 12px;
+    }
+
+    .featured-badge-dark {
+      background: linear-gradient(145deg, #F59E0B, #D97706);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 5px 16px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 15px rgba(245, 158, 11, 0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    .featured-badge-dark i {
+      font-size: 12px;
+    }
+
+    .automatic-image {
+      text-align: center;
+      margin: 6px 0 16px;
+    }
+
+    .automatic-image img {
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(16, 185, 129, 0.08);
+      max-height: 170px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.02);
+      padding: 8px;
+      transition: var(--transition);
+    }
+
+    .automatic-image img:hover {
+      border-color: rgba(16, 185, 129, 0.20);
+      transform: scale(1.02);
+    }
+
+    .automatic-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .automatic-info-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 10px;
+      padding: 10px 6px;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .automatic-info-card:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(16, 185, 129, 0.08);
+    }
+
+    .automatic-info-card .info-icon {
+      font-size: 14px;
+      color: #10B981;
+      margin-bottom: 2px;
+      display: block;
+    }
+
+    .automatic-info-card .info-label {
+      font-size: 8px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: block;
+    }
+
+    .automatic-info-card .info-value {
+      font-size: 13px;
+      color: white;
+      font-weight: 700;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .automatic-info-card .info-value.green {
+      color: #34D399;
+    }
+
+    .pay-now-btn-automatic {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(145deg, #10B981, #059669);
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 30px rgba(16, 185, 129, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pay-now-btn-automatic::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%);
+      animation: btnShine 4s ease-in-out infinite;
+    }
+
+    @keyframes btnShine {
+      0%, 100% { transform: translateX(-30%) translateY(-30%); }
+      50% { transform: translateX(30%) translateY(30%); }
+    }
+
+    .pay-now-btn-automatic:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 45px rgba(16, 185, 129, 0.25);
+    }
+
+    .pay-now-btn-automatic:active {
+      transform: scale(0.97);
+    }
+
+    .pay-now-btn-automatic i,
+    .pay-now-btn-automatic span {
+      position: relative;
+      z-index: 2;
+    }
+
+    .pay-now-btn-automatic i:first-child {
+      font-size: 18px;
+    }
+
+    .pay-now-btn-automatic .btn-arrow {
+      font-size: 16px;
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .pay-now-btn-automatic:hover .btn-arrow {
+      transform: translateX(6px);
+    }
+
+    /* ===== MÉTODO eMOLA ===== */
+    .method-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .method-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .emola .method-icon {
+      background: linear-gradient(145deg, #8B5CF6, #6D28D9);
+      box-shadow: 0 4px 25px rgba(139, 92, 246, 0.15);
+    }
+
+    .method-info {
+      flex: 1;
+    }
+
+    .method-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .method-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .method-details {
+      background: rgba(255,255,255,0.02);
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border-light);
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .detail-item:last-child {
+      border-bottom: none;
+      padding-top: 6px;
+    }
+
+    .detail-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .detail-value {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--primary-light);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .account-holder {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .video-card-header p {
-      font-size: 13px;
-      color: #A5B4FC;
-      line-height: 1.4;
+    .account-holder span {
+      color: var(--primary-light);
     }
 
+    /* ===== COPY BUTTON ===== */
+    .copy-button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary-gradient);
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 25px rgba(139, 92, 246, 0.12);
+    }
+
+    .copy-button:disabled {
+      background: var(--bg-card-hover);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: 0.6;
+      box-shadow: none;
+    }
+
+    .copy-button:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 35px rgba(139, 92, 246, 0.25);
+    }
+
+    .copy-button:not(:disabled):active {
+      transform: scale(0.97);
+    }
+
+    .copy-button.copied {
+      background: var(--success-gradient);
+      box-shadow: 0 4px 25px rgba(16, 185, 129, 0.15);
+    }
+
+    /* ===== CONFIRMAÇÃO ===== */
+    .confirmation-box {
+      background: var(--bg-card);
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+    }
+
+    .confirmation-box:focus-within {
+      border-color: rgba(16, 185, 129, 0.2);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.03);
+    }
+
+    .paymentConfirmationSection .section-icon {
+      background: var(--success-gradient);
+      box-shadow: var(--shadow-success);
+    }
+
+    .requirements-box {
+      display: flex;
+      gap: 14px;
+      margin: 12px 0 16px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 10px;
+      border: 1px solid var(--border-light);
+    }
+    
+    .requirement-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    
+    .requirement-item i.valid {
+      color: var(--success);
+    }
+    
+    .requirement-item i.invalid {
+      color: var(--text-muted);
+      opacity: 0.3;
+    }
+
+    .submit-btn {
+      background: var(--success-gradient) !important;
+      box-shadow: 0 4px 25px rgba(16, 185, 129, 0.12) !important;
+    }
+
+    .submit-btn:not(:disabled):hover {
+      box-shadow: 0 8px 35px rgba(16, 185, 129, 0.25) !important;
+    }
+
+    /* ==============================================================
+       VIDEO CARD - FORMATO GRAVAÇÃO DE TELA (9:16)
+    ============================================================== */
+    .video-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+    }
+
+    .video-card:hover {
+      border-color: var(--border-mid);
+    }
+
+    .video-card-header {
+      padding: 16px 18px 12px;
+      background: linear-gradient(145deg, rgba(245, 158, 11, 0.04), rgba(236, 72, 153, 0.04));
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .video-card-header .video-icon-wrapper {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #EF4444, #DC2626);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.20);
+      animation: videoIconPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes videoIconPulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.20); }
+      50% { box-shadow: 0 4px 35px rgba(239, 68, 68, 0.40); }
+    }
+
+    .video-card-header .video-title-group {
+      flex: 1;
+    }
+
+    .video-card-header .video-title-group .video-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(239, 68, 68, 0.12);
+      color: #FCA5A5;
+      padding: 2px 12px;
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid rgba(239, 68, 68, 0.10);
+    }
+
+    .video-card-header .video-title-group .video-badge i {
+      font-size: 7px;
+      color: #EF4444;
+    }
+
+    .video-card-header .video-title-group h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .video-card-header .video-title-group h3 i {
+      color: var(--accent-light);
+      font-size: 15px;
+    }
+
+    .video-card-header .video-title-group p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-top: 1px;
+    }
+
+    /* ===== VIDEO - FORMATO GRAVAÇÃO DE TELA (9:16) ===== */
     .video-container {
       position: relative;
       width: 100%;
@@ -278,484 +1191,17 @@
       border: none;
     }
 
-    .video-card-footer {
-      padding: 12px 18px;
-      background: rgba(0,0,0,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      border-top: 1px solid rgba(255,215,0,0.15);
-    }
-
-    .step-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: #E0E7FF;
-      font-weight: 600;
-    }
-
-    .step-item i {
-      width: 26px;
-      height: 26px;
-      background: linear-gradient(135deg, #FF6B35, #F7931E);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: white;
-    }
-
-    .whatsapp-section {
-      background: linear-gradient(135deg, var(--gray-50), #FFFFFF);
-      padding: 18px;
-      border-radius: var(--radius-md);
-      margin-bottom: 20px;
-      border: 2px solid var(--gray-200);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .section-icon {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, #25D366, #128C7E);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
-    }
-
-    .section-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--dark);
-      flex: 1;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 700;
-      color: var(--gray-800);
-      font-size: 14px;
-    }
-
-    .input-container {
-      position: relative;
-    }
-
-    .country-code {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--gray-600);
-      font-weight: 600;
-      font-size: 16px;
-      pointer-events: none;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 14px 14px 14px 58px;
-      border-radius: 12px;
-      border: 2px solid var(--gray-200);
-      font-size: 16px;
-      font-weight: 500;
-      transition: var(--transition);
-      background: white;
-      color: var(--dark);
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
-    }
-
-    .input-hint {
-      font-size: 12px;
-      color: var(--gray-600);
-      margin-top: 6px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .status-message {
-      padding: 12px;
-      border-radius: 10px;
-      margin-top: 12px;
-      font-weight: 600;
-      font-size: 13px;
-      display: none;
-      animation: slideIn 0.3s ease;
-      border-left: 4px solid;
-    }
-
-    .status-success {
-      background: #E8F5E9;
-      color: #2E7D32;
-      border-left-color: var(--success);
-    }
-
-    .status-error {
-      background: #FFEBEE;
-      color: #C62828;
-      border-left-color: var(--danger);
-    }
-
-    .warning-box {
-      background: linear-gradient(135deg, #FFF8E7, #FFEFD0);
-      border: 2px solid #FFB300;
-      padding: 14px;
-      border-radius: var(--radius-sm);
-      margin: 16px 0;
-    }
-
-    .warning-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .warning-icon {
-      color: #FF8C00;
-      font-size: 18px;
-    }
-
-    .warning-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #E65100;
-    }
-
-    .warning-text {
-      font-size: 13px;
-      color: #BF360C;
-      line-height: 1.5;
-    }
-
-    .warning-text strong {
-      color: #D84315;
-      background: #FFECB3;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 12px;
-    }
-
-    .payment-section {
-      margin-bottom: 20px;
-    }
-
-    .payment-methods {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .payment-method {
-      background: white;
-      padding: 16px;
-      border-radius: var(--radius-md);
-      border: 2px solid var(--gray-200);
-      transition: var(--transition);
-    }
-
-    .payment-method.recommended {
-      border-color: var(--primary);
-      background: linear-gradient(145deg, #F0F7FF, white);
-    }
-
-    /* Estilo especial para Pagamento Automático */
-    .payment-method.automatic {
-      border-color: #10B981;
-      background: linear-gradient(145deg, #ECFDF5, #F0FDF4);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .payment-method.automatic::before {
-      content: '⚡';
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      font-size: 50px;
-      opacity: 0.15;
-      transform: rotate(15deg);
-    }
-
-    .payment-method.automatic .method-icon {
-      background: linear-gradient(135deg, #10B981, #059669);
-    }
-
-    .automatic-badge {
-      background: linear-gradient(135deg, #10B981, #059669);
-      color: white;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 50px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .method-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .method-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .emola .method-icon {
-      background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-    }
-
-    .mpesa .method-icon {
-      background: linear-gradient(135deg, #10B981, #059669);
-    }
-
-    .method-info {
-      flex: 1;
-    }
-
-    .method-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--dark);
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .method-subtitle {
-      font-size: 12px;
-      color: var(--gray-600);
-      font-weight: 500;
-    }
-
-    .method-details {
-      background: var(--gray-50);
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 14px;
-      border: 1px solid var(--gray-200);
-    }
-
-    .detail-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--gray-200);
-    }
-
-    .detail-item:last-child {
-      border-bottom: none;
-      padding-top: 8px;
-    }
-
-    .detail-label {
-      font-size: 13px;
-      color: var(--gray-800);
-      font-weight: 600;
-    }
-
-    .detail-value {
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--primary);
-      font-family: monospace;
-      letter-spacing: 0.5px;
-    }
-
-    .account-holder {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--dark);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .copy-button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .copy-button:disabled {
-      background: var(--gray-200);
-      color: var(--gray-600);
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-
-    .copy-button:not(:disabled):active {
-      transform: scale(0.98);
-    }
-
-    .copy-button.copied {
-      background: linear-gradient(135deg, var(--success), #00B894);
-    }
-
-    /* Botão Pagar Automático - Estilo Especial */
-    .pay-now-btn {
-      width: 100%;
-      padding: 16px;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(135deg, #10B981, #059669);
-      color: white;
-      font-size: 18px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-    }
-
-    .pay-now-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6);
-    }
-
-    .pay-now-btn:active {
-      transform: scale(0.97);
-    }
-
-    .pay-now-btn i {
-      font-size: 20px;
-      animation: bounceIcon 1.5s ease-in-out infinite;
-    }
-
-    @keyframes bounceIcon {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
-    }
-
-    .confirmation-box {
-      background: var(--gray-50);
-      padding: 16px;
-      border-radius: var(--radius-md);
-      border: 2px solid var(--gray-200);
-    }
-
-    .method-selection {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-
-    .method-option {
-      flex: 1;
-      background: white;
-      border: 2px solid var(--gray-200);
-      border-radius: 12px;
-      padding: 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .method-option:active {
-      transform: scale(0.98);
-    }
-
-    .method-option.selected {
-      border-color: var(--primary);
-      background: linear-gradient(145deg, #F0F7FF, white);
-    }
-
-    .method-option-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 8px;
-      font-size: 16px;
-      color: white;
-    }
-
-    #methodEmola .method-option-icon {
-      background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-    }
-
-    #methodMpesa .method-option-icon {
-      background: linear-gradient(135deg, #10B981, #059669);
-    }
-
-    .method-option-text {
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--dark);
-    }
-
-    textarea.form-input {
-      font-family: monospace;
-      min-height: 100px;
-      padding: 12px;
-    }
-
+    /* ===== SUPORTE ===== */
     .support-section {
-      background: linear-gradient(135deg, #0F172A, #1E293B);
+      background: var(--bg-card);
       color: white;
-      padding: 20px;
+      padding: 24px 20px;
       border-radius: var(--radius-md);
       text-align: center;
       margin-top: 20px;
       position: relative;
       overflow: hidden;
+      border: 1px solid var(--border-light);
     }
 
     .support-section::before {
@@ -764,130 +1210,193 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #FF6B35, #F7931E, #FFD700);
+      height: 2px;
+      background: linear-gradient(90deg, #EC4899, #F59E0B, #8B5CF6);
+      background-size: 300% 100%;
+      animation: shimmerLine3 4s ease-in-out infinite;
+    }
+
+    @keyframes shimmerLine3 {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
+    }
+
+    .support-section::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 60%;
+      height: 150%;
+      background: radial-gradient(ellipse, rgba(236, 72, 153, 0.03) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     .support-title {
       font-size: 17px;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+      color: var(--text-primary);
+    }
+
+    .support-title i {
+      color: var(--accent-light);
     }
 
     .support-desc {
       font-size: 13px;
-      color: #CBD5E1;
-      margin-bottom: 16px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
       line-height: 1.5;
+      position: relative;
+      z-index: 2;
     }
 
     .support-number {
       font-size: 22px;
       font-weight: 900;
-      color: #FFB347;
-      margin: 10px 0;
+      background: linear-gradient(135deg, #F59E0B, #FBBF24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 6px 0 12px;
+      position: relative;
+      z-index: 2;
+      letter-spacing: 0.5px;
     }
 
     .support-button {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(255, 179, 71, 0.15);
-      color: #FFB347;
-      padding: 12px 20px;
+      gap: 10px;
+      background: rgba(245, 158, 11, 0.06);
+      color: var(--accent-light);
+      padding: 12px 24px;
       border-radius: 12px;
       font-weight: 700;
       font-size: 14px;
-      border: 2px solid rgba(255, 179, 71, 0.3);
+      border: 1px solid rgba(245, 158, 11, 0.08);
       cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      z-index: 2;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .support-button:hover {
+      background: rgba(245, 158, 11, 0.10);
+      border-color: rgba(245, 158, 11, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 25px rgba(245, 158, 11, 0.04);
     }
 
     .support-button:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
     .support-hours {
       font-size: 12px;
-      color: #94A3B8;
+      color: var(--text-muted);
       margin-top: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
+      position: relative;
+      z-index: 2;
     }
 
+    /* ===== FOOTER ===== */
     .footer {
-      padding: 20px;
+      padding: 20px 24px;
       text-align: center;
-      background: var(--gray-50);
-      border-top: 2px solid var(--gray-200);
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-light);
     }
 
     .security-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .security-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       padding: 10px;
-      background: white;
+      background: rgba(255,255,255,0.02);
       border-radius: 10px;
-      border: 1px solid var(--gray-200);
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+    }
+
+    .security-item:hover {
+      border-color: var(--border-mid);
+      background: rgba(255,255,255,0.03);
     }
 
     .security-icon {
-      font-size: 18px;
+      font-size: 20px;
     }
 
     .security-text {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
-      color: var(--gray-800);
+      color: var(--text-muted);
       text-align: center;
     }
 
     .copyright {
       font-size: 11px;
-      color: var(--gray-600);
-      margin-top: 10px;
+      color: var(--text-dark);
+      margin-top: 4px;
     }
 
+    /* ===== TOAST ===== */
     .toast {
       position: fixed;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: white;
-      color: var(--dark);
-      padding: 12px 18px;
-      border-radius: 12px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      padding: 14px 24px;
+      border-radius: 14px;
       font-weight: 700;
       display: none;
       z-index: 1000;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-xl);
       border-left: 4px solid;
-      max-width: 85%;
+      max-width: 90%;
       text-align: center;
-      font-size: 13px;
+      font-size: 14px;
+      animation: slideDown 0.3s ease;
+      border: 1px solid var(--border-light);
     }
 
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ===== MODAL ===== */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -897,47 +1406,61 @@
     }
 
     .modal-content {
-      background: white;
+      background: var(--bg-card);
       border-radius: var(--radius-lg);
       width: 100%;
       max-width: 380px;
       max-height: 85vh;
       overflow-y: auto;
-      box-shadow: var(--shadow-lg);
-      animation: slideUp 0.3s ease;
+      box-shadow: var(--shadow-xl);
+      animation: modalSlideUp 0.3s ease;
+      border: 1px solid var(--border-light);
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    @keyframes modalSlideUp {
+      from { transform: translateY(30px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .modal-header {
-      padding: 20px 20px 12px;
+      padding: 24px 24px 12px;
       position: relative;
       text-align: center;
     }
 
     .modal-icon {
-      width: 55px;
-      height: 55px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 12px;
-      font-size: 26px;
+      font-size: 28px;
+      animation: modalIconPop 0.5s ease;
+    }
+
+    @keyframes modalIconPop {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.2); }
+      100% { transform: scale(1); }
     }
 
     .modal-icon.success {
-      background: linear-gradient(135deg, var(--success), #00B894);
+      background: var(--success-gradient);
       color: white;
+      box-shadow: 0 4px 30px rgba(16, 185, 129, 0.15);
     }
 
     .modal-header h3 {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 900;
-      color: var(--dark);
+      color: var(--text-primary);
     }
 
     .modal-close {
@@ -946,30 +1469,39 @@
       right: 12px;
       background: none;
       border: none;
-      color: var(--gray-600);
+      color: var(--text-muted);
       cursor: pointer;
-      font-size: 16px;
-      width: 28px;
-      height: 28px;
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      background: rgba(255,255,255,0.04);
     }
 
     .modal-body {
-      padding: 0 20px 20px;
+      padding: 0 24px 20px;
     }
 
     .confirmation-message {
-      background: var(--gray-50);
+      background: rgba(255,255,255,0.02);
       border-radius: var(--radius-sm);
-      padding: 12px;
+      padding: 12px 16px;
       margin-bottom: 12px;
+      border: 1px solid var(--border-light);
     }
 
     .confirmation-item {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       padding: 10px 0;
-      border-bottom: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--border-light);
     }
 
     .confirmation-item:last-child {
@@ -978,35 +1510,43 @@
 
     .confirmation-item i {
       font-size: 18px;
-      color: var(--primary);
+      color: var(--primary-light);
+      margin-top: 2px;
+      width: 24px;
+      text-align: center;
     }
 
     .confirmation-item strong {
       display: block;
       font-size: 13px;
-      color: var(--dark);
+      color: var(--text-primary);
     }
 
     .confirmation-item p {
       font-size: 12px;
-      color: var(--gray-600);
+      color: var(--text-muted);
     }
 
     .modal-warning {
-      background: #FFF3CD;
-      border: 1px solid #FFC107;
+      background: rgba(245, 158, 11, 0.06);
+      border: 1px solid rgba(245, 158, 11, 0.08);
       border-radius: 10px;
-      padding: 10px 12px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-size: 12px;
-      color: #856404;
+      color: var(--text-secondary);
+    }
+
+    .modal-warning i {
+      color: var(--accent-light);
+      font-size: 16px;
     }
 
     .modal-footer {
-      padding: 12px 20px 20px;
-      border-top: 1px solid var(--gray-200);
+      padding: 12px 24px 24px;
+      border-top: 1px solid var(--border-light);
     }
 
     .modal-button {
@@ -1014,50 +1554,34 @@
       padding: 14px;
       border-radius: 12px;
       border: none;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      background: var(--primary-gradient);
       color: white;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
+      transition: var(--transition);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      box-shadow: 0 4px 25px rgba(139, 92, 246, 0.12);
+    }
+
+    .modal-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 35px rgba(139, 92, 246, 0.25);
     }
 
     .modal-button:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
-    .requirements-box {
-      display: flex;
-      gap: 12px;
-      margin: 12px 0;
-      padding: 10px;
-      background: var(--gray-100);
-      border-radius: 10px;
-    }
-    
-    .requirement-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    .requirement-item i.valid {
-      color: var(--success);
-    }
-    
-    .requirement-item i.invalid {
-      color: var(--gray-300);
-    }
-
+    /* ===== UTILITIES ===== */
     .spinner {
       display: inline-block;
       width: 18px;
       height: 18px;
-      border: 2px solid rgba(255,255,255,0.3);
+      border: 2px solid rgba(255,255,255,0.1);
       border-radius: 50%;
       border-top-color: white;
-      animation: spin 1s linear infinite;
+      animation: spin 0.8s linear infinite;
     }
 
     @keyframes spin {
@@ -1076,7 +1600,7 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
       animation: processing 1s infinite;
     }
     
@@ -1089,14 +1613,276 @@
       display: none !important;
     }
 
-    .shake {
-      animation: shake 0.5s ease-in-out;
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 20px 0 18px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-4px); }
-      75% { transform: translateX(4px); }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-light);
+    }
+
+    .section-divider i {
+      color: var(--primary-light);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      
+      .content {
+        padding: 0 12px 20px;
+      }
+      
+      .header {
+        padding: 20px 16px 24px;
+      }
+      
+      .header h1 {
+        font-size: 22px;
+      }
+      
+      .logo {
+        font-size: 22px;
+      }
+      
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+      
+      .price {
+        font-size: 36px;
+      }
+      
+      .price-card {
+        padding: 16px 18px;
+        margin: -16px 14px 16px;
+      }
+      
+      .benefits {
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      
+      .benefit {
+        font-size: 11px;
+      }
+
+      .automatic-title-group .method-title {
+        font-size: 15px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2px;
+      }
+
+      .automatic-title-group .method-title .title-text {
+        white-space: normal;
+        width: 100%;
+        text-align: center;
+      }
+
+      .badge-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 4px 0 6px;
+        width: 100%;
+      }
+
+      .instant-badge {
+        font-size: 11px;
+        padding: 4px 14px;
+      }
+
+      .instant-badge i {
+        font-size: 10px;
+      }
+
+      .featured-badge-dark {
+        font-size: 11px;
+        padding: 4px 14px;
+      }
+
+      .featured-badge-dark i {
+        font-size: 10px;
+      }
+
+      .automatic-title-group .method-subtitle {
+        font-size: 11px;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .automatic-info-grid {
+        gap: 6px;
+      }
+      
+      .automatic-info-card .info-value {
+        font-size: 12px;
+      }
+      
+      .automatic-info-card .info-label {
+        font-size: 7px;
+      }
+
+      .automatic-image img {
+        max-height: 130px;
+        padding: 6px;
+      }
+      
+      .pay-now-btn-automatic {
+        font-size: 14px;
+        padding: 14px;
+      }
+      
+      .automatic-icon-wrapper {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+      }
+
+      .automatic-header {
+        gap: 10px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .payment-method.automatic .crown-wrapper {
+        width: 50px;
+        height: 50px;
+        top: -6px;
+        right: -6px;
+      }
+
+      .payment-method.automatic .crown-wrapper::before {
+        font-size: 28px;
+      }
+      
+      .method-title {
+        font-size: 15px;
+      }
+      
+      .detail-value {
+        font-size: 16px;
+      }
+      
+      .requirements-box {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .security-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+      
+      .security-item {
+        padding: 8px 4px;
+      }
+      
+      .security-text {
+        font-size: 9px;
+      }
+      
+      .support-number {
+        font-size: 18px;
+      }
+      
+      .modal-content {
+        max-width: 100%;
+        margin: 0 8px;
+      }
+
+      .video-card-header {
+        padding: 14px 16px 10px;
+        gap: 12px;
+      }
+
+      .video-card-header .video-icon-wrapper {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+      }
+
+      .video-card-header .video-title-group h3 {
+        font-size: 15px;
+        flex-wrap: wrap;
+      }
+
+      .video-card-header .video-title-group p {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .automatic-title-group .method-title {
+        font-size: 13px;
+      }
+
+      .automatic-title-group .method-subtitle {
+        font-size: 10px;
+      }
+
+      .instant-badge {
+        font-size: 9px;
+        padding: 3px 10px;
+      }
+
+      .featured-badge-dark {
+        font-size: 9px;
+        padding: 3px 10px;
+      }
+
+      .automatic-image img {
+        max-height: 100px;
+        padding: 4px;
+      }
+
+      .automatic-icon-wrapper {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+      }
+
+      .automatic-header {
+        gap: 6px;
+      }
+
+      .payment-method.automatic .crown-wrapper::before {
+        font-size: 22px;
+      }
+
+      .payment-method.automatic .crown-wrapper {
+        width: 40px;
+        height: 40px;
+        top: -4px;
+        right: -4px;
+      }
+
+      .video-card-header .video-title-group h3 {
+        font-size: 13px;
+      }
+    }
+
+    /* ===== ANIMAÇÕES ===== */
+    .vibrate {
+      animation: vibrate 0.1s ease-in-out 3;
     }
 
     @keyframes vibrate {
@@ -1105,28 +1891,33 @@
       75% { transform: translateX(2px); }
       100% { transform: translateX(0); }
     }
-    
-    .vibrate {
-      animation: vibrate 0.1s ease-in-out 3;
+
+    .shake {
+      animation: shake 0.4s ease-in-out;
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    /* ===== SCROLL ===== */
+    ::-webkit-scrollbar {
+      width: 6px;
     }
 
-    @media (max-width: 480px) {
-      body {
-        padding: 8px;
-      }
-      .content {
-        padding: 0 12px 20px;
-      }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--surface-mid);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--surface-light);
     }
   </style>
 </head>
@@ -1134,14 +1925,15 @@
 <body>
 
 <div class="toast" id="toast">
-  <div style="display: flex; align-items: center; gap: 8px;">
-    <i class="fas fa-check-circle" id="toastIcon"></i>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <i class="fas fa-check-circle" id="toastIcon" style="font-size: 18px;"></i>
     <span id="toastMessage">Copiado com sucesso!</span>
   </div>
 </div>
 
 <div class="container">
 
+  <!-- ===== HEADER ===== -->
   <div class="header">
     <div class="logo-container">
       <div class="logo">
@@ -1149,23 +1941,132 @@
         <span>VOUCHER-PAY</span>
       </div>
     </div>
-    <div class="badge"><i class="fas fa-shield-alt"></i> PAGAMENTO 100% SEGURO</div>
+    <div class="badge-top"><i class="fas fa-shield-alt"></i> PAGAMENTO 100% SEGURO</div>
     <h1>ATIVAÇÃO PREMIUM</h1>
-    <p class="subtitle">Receba o código via WhatsApp</p>
+    <p class="subtitle">Receba o código via WhatsApp em instantes</p>
   </div>
 
+  <!-- ===== PRICE CARD ===== -->
   <div class="price-card">
     <div class="price-label">Valor Total</div>
     <div class="price">659 MT</div>
     <div class="price-period">Acesso por 48 Horas</div>
     <div class="benefits">
-      <div class="benefit"><i class="fas fa-check"></i><span>Acesso Imediato</span></div>
+      <div class="benefit"><i class="fas fa-check-circle"></i><span>Acesso Imediato</span></div>
       <div class="benefit"><i class="fas fa-headset"></i><span>Suporte 24/7</span></div>
     </div>
   </div>
 
+  <!-- ===== CONTENT ===== -->
   <div class="content">
 
+    <!-- ===== MÉTODOS DE PAGAMENTO ===== -->
+    <div class="payment-section" id="paymentSection">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-credit-card"></i></div>
+        <div class="section-title">Métodos de Pagamento</div>
+      </div>
+      
+      <div class="payment-methods">
+
+        <!-- ===== PAGAMENTO AUTOMÁTICO ===== -->
+        <div class="payment-method automatic">
+          <div class="crown-wrapper"></div>
+          <div class="automatic-inner">
+            
+            <div class="automatic-header">
+              <div class="automatic-icon-wrapper">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <div class="automatic-title-group">
+                <div class="method-title">
+                  <span class="title-text">Pagamento Automático</span>
+                </div>
+                <div class="badge-container">
+                  <span class="instant-badge"><i class="fas fa-clock"></i> Instantâneo</span>
+                  <span class="featured-badge-dark"><i class="fas fa-star"></i> Recomendado</span>
+                </div>
+                <div class="method-subtitle">
+                  <i class="fas fa-check-circle"></i> M-Pesa • Processamento em 30 segundos
+                </div>
+              </div>
+            </div>
+            
+            <div class="automatic-image">
+              <img src="https://i.ibb.co/bgLSX8Hz/unnamed.jpg" alt="M-Pesa Pagamento" border="0">
+            </div>
+            
+            <div class="automatic-info-grid">
+              <div class="automatic-info-card">
+                <span class="info-icon"><i class="fas fa-clock"></i></span>
+                <span class="info-label">Tempo</span>
+                <span class="info-value green">~30s</span>
+              </div>
+              <div class="automatic-info-card">
+                <span class="info-icon"><i class="fas fa-shield-alt"></i></span>
+                <span class="info-label">Segurança</span>
+                <span class="info-value green">Criptografado</span>
+              </div>
+              <div class="automatic-info-card">
+                <span class="info-icon"><i class="fas fa-check-circle"></i></span>
+                <span class="info-label">Status</span>
+                <span class="info-value green">Disponível</span>
+              </div>
+            </div>
+            
+            <a href="https://apitest-sand.vercel.app/" target="_blank" rel="noopener noreferrer" class="pay-now-btn-automatic">
+              <i class="fas fa-bolt"></i>
+              <span>PAGAR AGORA</span>
+              <i class="fas fa-arrow-right btn-arrow"></i>
+            </a>
+            
+          </div>
+        </div>
+
+        <!-- ===== eMOLA ===== -->
+        <div class="payment-method emola recommended">
+          <div class="method-header">
+            <div class="method-icon"><i class="fas fa-wallet"></i></div>
+            <div class="method-info">
+              <div class="method-title">eMOLA</div>
+              <div class="method-subtitle">Método alternativo • Seguro e confiável</div>
+            </div>
+          </div>
+          <div class="method-details">
+            <div class="detail-item">
+              <span class="detail-label">Número</span>
+              <span class="detail-value">866890298</span>
+            </div>
+            <div class="detail-item">
+              <span class="account-holder"><i class="fas fa-user-check"></i> Titular: <span>LUCAS JOSÉ</span></span>
+            </div>
+          </div>
+          <button class="copy-button" id="emolaBtn" onclick="copyNumber('866890298', this, 'eMola')">
+            <span class="btn-text">COPIAR NÚMERO</span>
+            <span class="spinner hidden"></span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== INSTRUÇÃO IMPORTANTE ===== -->
+    <div class="warning-box">
+      <div class="warning-header">
+        <i class="fas fa-exclamation-triangle warning-icon"></i>
+        <div class="warning-title">INSTRUÇÃO IMPORTANTE</div>
+      </div>
+      <div class="warning-text">Ao fazer o pagamento, <strong>VERIFIQUE O NOME: LUCAS JOSÉ</strong> para confirmação. O código será enviado em 5 minutos após pagamento confirmado.</div>
+    </div>
+
+    <!-- ===== SEPARADOR ===== -->
+    <div class="section-divider">
+      <i class="fas fa-arrow-down"></i>
+      <span>Após o pagamento, confirme abaixo</span>
+      <i class="fas fa-arrow-down"></i>
+    </div>
+
+    <!-- ===== DIGITE SEU WHATSAPP ===== -->
     <div class="whatsapp-section">
       <div class="section-header">
         <div class="section-icon"><i class="fab fa-whatsapp"></i></div>
@@ -1173,7 +2074,7 @@
       </div>
       
       <div class="form-group">
-        <label class="form-label">Número para receber o Voucher:</label>
+        <label class="form-label">Número para receber o Voucher</label>
         <div class="input-container">
           <span class="country-code">+258</span>
           <input type="tel" id="whatsapp" class="form-input" placeholder="84 123 456" maxlength="13" inputmode="numeric" autocomplete="tel" required>
@@ -1182,7 +2083,7 @@
       </div>
       
       <div class="status-message status-success" id="successMessage">
-        <i class="fas fa-check-circle"></i> WhatsApp registrado! Pronto para pagamento.
+        <i class="fas fa-check-circle"></i> WhatsApp registrado! Pronto para confirmação.
       </div>
       
       <div class="status-message status-error" id="errorMessage">
@@ -1190,117 +2091,46 @@
       </div>
     </div>
 
-    <div class="warning-box">
-      <div class="warning-header"><i class="fas fa-exclamation-triangle warning-icon"></i><div class="warning-title">INSTRUÇÃO IMPORTANTE</div></div>
-      <div class="warning-text">Ao fazer o pagamento, <strong>VERIFIQUE O NOME: LUCAS JOSÉ</strong> para confirmação. O código será enviado em 5min após pagamento confirmado.</div>
-    </div>
-
-    <div class="payment-section" id="paymentSection">
+    <!-- ===== SEÇÃO DE CONFIRMAÇÃO ===== -->
+    <div class="payment-section paymentConfirmationSection" id="paymentConfirmationSection">
       <div class="section-header">
-        <div class="section-icon" style="background: linear-gradient(135deg, var(--primary), #4F46E5);"><i class="fas fa-credit-card"></i></div>
-        <div class="section-title">Métodos de Pagamento</div>
-      </div>
-      
-      <div class="payment-methods">
-        <!-- eMOLA -->
-        <div class="payment-method emola recommended">
-          <div class="method-header">
-            <div class="method-icon"><i class="fas fa-wallet"></i></div>
-            <div class="method-info"><div class="method-title">eMOLA</div><div class="method-subtitle">Mais Usado • Recomendado</div></div>
-          </div>
-          <div class="method-details">
-            <div class="detail-item"><span class="detail-label">Número:</span><span class="detail-value">866890298</span></div>
-            <div class="detail-item"><span class="account-holder"><i class="fas fa-user-check"></i> Titular: <span style="color: var(--primary);">LUCAS JOSÉ</span></span></div>
-          </div>
-          <button class="copy-button" id="emolaBtn" onclick="copyNumber('866890298', this, 'eMola')" disabled><span class="btn-text">COPIAR NÚMERO</span><span class="spinner hidden"></span></button>
-        </div>
-
-        <!-- M-PESA Tradicional -->
-        <div class="payment-method mpesa">
-          <div class="method-header">
-            <div class="method-icon"><i class="fas fa-money-bill-wave"></i></div>
-            <div class="method-info"><div class="method-title">M-PESA</div><div class="method-subtitle">Alternativa • Seguro</div></div>
-          </div>
-          <div class="method-details">
-            <div class="detail-item"><span class="detail-label">Número:</span><span class="detail-value">848750886</span></div>
-            <div class="detail-item"><span class="account-holder"><i class="fas fa-user-check"></i> Titular: <span style="color: var(--primary);">LUCAS JOSÉ</span></span></div>
-          </div>
-          <button class="copy-button" id="mpesaBtn" onclick="copyNumber('848750886', this, 'M-Pesa')" disabled><span class="btn-text">COPIAR NÚMERO</span><span class="spinner hidden"></span></button>
-        </div>
-
-        <!-- NOVO: Pagamento Automático (M-Pesa) -->
-        <div class="payment-method automatic">
-          <div class="method-header">
-            <div class="method-icon"><i class="fas fa-robot"></i></div>
-            <div class="method-info">
-              <div class="method-title">
-                Pagamento Automático
-                <span class="automatic-badge"><i class="fas fa-bolt"></i> Instantâneo</span>
-              </div>
-              <div class="method-subtitle">M-Pesa • Processamento em 30 segundos</div>
-            </div>
-          </div>
-          <div class="method-details" style="background: linear-gradient(145deg, #ECFDF5, #F0FDF4); border-color: #10B981;">
-            <div class="detail-item">
-              <span class="detail-label"><i class="fas fa-clock" style="color: #10B981;"></i> Tempo de processamento</span>
-              <span style="font-weight: 700; color: #059669;">~30 segundos</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label"><i class="fas fa-shield-alt" style="color: #10B981;"></i> Segurança</span>
-              <span style="font-weight: 700; color: #059669;">Criptografado</span>
-            </div>
-            <div class="detail-item" style="border-bottom: none; padding-top: 8px;">
-              <span class="detail-label"><i class="fas fa-check-circle" style="color: #10B981;"></i> Status</span>
-              <span style="font-weight: 700; color: #059669;">Disponível</span>
-            </div>
-          </div>
-          <a href="https://apitest-sand.vercel.app/" target="_blank" rel="noopener noreferrer" class="pay-now-btn">
-            <i class="fas fa-bolt"></i>
-            PAGAR AGORA
-            <i class="fas fa-arrow-right"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="payment-section" id="paymentConfirmationSection">
-      <div class="section-header">
-        <div class="section-icon" style="background: linear-gradient(135deg, var(--success), #00B894);"><i class="fas fa-check-circle"></i></div>
+        <div class="section-icon"><i class="fas fa-check-circle"></i></div>
         <div class="section-title">Enviar Confirmação de Pagamento</div>
       </div>
       
       <div class="confirmation-box">
         <div class="form-group">
-          <label class="form-label">Método utilizado:</label>
-          <div class="method-selection">
-            <div class="method-option" onclick="selectPaymentMethod('emola')" id="methodEmola"><div class="method-option-icon"><i class="fas fa-wallet"></i></div><div class="method-option-text">eMola</div></div>
-            <div class="method-option" onclick="selectPaymentMethod('mpesa')" id="methodMpesa"><div class="method-option-icon"><i class="fas fa-money-bill-wave"></i></div><div class="method-option-text">M-Pesa</div></div>
-          </div>
-          <div class="input-hint"><i class="fas fa-info-circle"></i> Selecione o método que usou para pagar</div>
-          <input type="hidden" id="selectedMethod" value="">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Mensagem de Confirmação / ID da Transação:</label>
-          <textarea id="transactionMessage" class="form-input" rows="4" placeholder="Cole aqui a MENSAGEM COMPLETA de confirmação que recebeu após o pagamento..." oninput="validateConfirmationForm()" style="padding: 12px; min-height: 100px;"></textarea>
+          <label class="form-label">Mensagem de Confirmação / ID da Transação</label>
+          <textarea id="transactionMessage" class="form-input" rows="4" placeholder="Cole aqui a MENSAGEM COMPLETA de confirmação que recebeu após o pagamento..." oninput="validateConfirmationForm()"></textarea>
           <div class="input-hint"><i class="fas fa-info-circle"></i> <span id="charCount">0/100 caracteres mínimos</span> • Cole a mensagem completa</div>
         </div>
         
         <div class="requirements-box">
-          <div class="requirement-item"><i class="fas fa-check-circle" id="methodCheck"></i><span>Método selecionado</span></div>
+          <div class="requirement-item"><i class="fas fa-check-circle" id="whatsappCheck"></i><span>WhatsApp</span></div>
           <div class="requirement-item"><i class="fas fa-check-circle" id="messageCheck"></i><span>Mensagem (Colada)</span></div>
         </div>
         
-        <button class="copy-button" id="submitPaymentBtn" onclick="submitPaymentConfirmation()" disabled><i class="fas fa-paper-plane"></i><span class="btn-text">ENVIAR CONFIRMAÇÃO</span><span class="spinner hidden"></span></button>
+        <button class="copy-button submit-btn" id="submitPaymentBtn" onclick="submitPaymentConfirmation()" disabled>
+          <i class="fas fa-paper-plane"></i>
+          <span class="btn-text">ENVIAR CONFIRMAÇÃO</span>
+          <span class="spinner hidden"></span>
+        </button>
       </div>
     </div>
 
-    <!-- VIDEO CARD -->
+    <!-- ============================================================== -->
+    <!-- VIDEO TUTORIAL - FORMATO GRAVAÇÃO DE TELA (9:16)              -->
+    <!-- ============================================================== -->
     <div class="video-card">
       <div class="video-card-header">
-        <div class="video-badge"><i class="fas fa-play-circle"></i> VIDEO TUTORIAL</div>
-        <h3><i class="fas fa-mobile-alt" style="color: #FFB347;"></i> Como fazer o pagamento?</h3>
-        <p>Assista ao vídeo abaixo e siga o passo a passo</p>
+        <div class="video-icon-wrapper">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="video-title-group">
+          <span class="video-badge"><i class="fas fa-circle"></i> AO VIVO</span>
+          <h3><i class="fas fa-mobile-alt"></i> Como fazer o pagamento?</h3>
+          <p>Assista ao tutorial completo e veja o passo a passo</p>
+        </div>
       </div>
       <div class="video-container">
         <div class="video-wrapper">
@@ -1314,32 +2144,40 @@
           </iframe>
         </div>
       </div>
-      <div class="video-card-footer">
-        <div class="step-item"><i class="fas fa-1"></i><span>Copie o número</span></div>
-        <div class="step-item"><i class="fas fa-2"></i><span>Faça o pagamento</span></div>
-        <div class="step-item"><i class="fas fa-3"></i><span>Cole a confirmação</span></div>
-      </div>
     </div>
 
+    <!-- ===== SUPORTE ===== -->
     <div class="support-section">
       <div class="support-title"><i class="fas fa-headset"></i> PRECISA DE AJUDA?</div>
       <div class="support-desc">Problemas com pagamento ou não recebeu o código? Fale diretamente com nosso suporte Via WhatsApp.</div>
       <div class="support-number">+258 866 890 298</div>
       <button class="support-button" onclick="copySupportNumber()"><i class="fas fa-copy"></i> COPIAR NÚMERO DO SUPORTE</button>
-      <div class="support-hours"><i class="far fa-clock"></i> Atendimento: 8h às 22h</div>
+      <div class="support-hours"><i class="far fa-clock"></i> Atendimento: 8h às 22h • 7 dias por semana</div>
     </div>
+
   </div>
 
+  <!-- ===== FOOTER ===== -->
   <div class="footer">
     <div class="security-grid">
-      <div class="security-item"><i class="fas fa-lock security-icon" style="color: var(--success);"></i><div class="security-text">Pagamento Seguro</div></div>
-      <div class="security-item"><i class="fas fa-bolt security-icon" style="color: var(--warning);"></i><div class="security-text">Entrega Instantânea</div></div>
-      <div class="security-item"><i class="fas fa-shield-alt security-icon" style="color: var(--primary);"></i><div class="security-text">Garantia Total</div></div>
+      <div class="security-item">
+        <i class="fas fa-lock security-icon" style="color: var(--success-light);"></i>
+        <div class="security-text">Pagamento Seguro</div>
+      </div>
+      <div class="security-item">
+        <i class="fas fa-bolt security-icon" style="color: var(--accent-light);"></i>
+        <div class="security-text">Entrega Instantânea</div>
+      </div>
+      <div class="security-item">
+        <i class="fas fa-shield-alt security-icon" style="color: var(--primary-light);"></i>
+        <div class="security-text">Garantia Total</div>
+      </div>
     </div>
     <div class="copyright">© 2025 Predictor App • Todos os direitos reservados</div>
   </div>
 </div>
 
+<!-- ===== MODAL ===== -->
 <div class="modal-overlay" id="confirmationModal" style="display: none;">
   <div class="modal-content">
     <div class="modal-header">
@@ -1349,19 +2187,36 @@
     </div>
     <div class="modal-body">
       <div class="confirmation-message">
-        <div class="confirmation-item"><i class="fas fa-clock"></i><div><strong>⏳ Aguarde a verificação</strong><p>Processaremos seu pagamento em até 5 minutos</p></div></div>
-        <div class="confirmation-item"><i class="fab fa-whatsapp"></i><div><strong>📲 Será notificado no WhatsApp</strong><p>Enviaremos o voucher assim que confirmado</p></div></div>
-        <div class="confirmation-item"><i class="fas fa-mobile-alt"></i><div><strong>📞 Número registrado:</strong><p id="modalWhatsappNumber">+258xxxxxxxx</p></div></div>
-        <div class="confirmation-item"><i class="fas fa-receipt"></i><div><strong>📄 ID da Transação:</strong><p id="modalTransactionId">Não identificado</p></div></div>
+        <div class="confirmation-item">
+          <i class="fas fa-clock"></i>
+          <div><strong>⏳ Aguarde a verificação</strong><p>Processaremos seu pagamento em até 5 minutos</p></div>
+        </div>
+        <div class="confirmation-item">
+          <i class="fab fa-whatsapp"></i>
+          <div><strong>📲 Será notificado no WhatsApp</strong><p>Enviaremos o voucher assim que confirmado</p></div>
+        </div>
+        <div class="confirmation-item">
+          <i class="fas fa-mobile-alt"></i>
+          <div><strong>📞 Número registrado</strong><p id="modalWhatsappNumber">+258xxxxxxxx</p></div>
+        </div>
+        <div class="confirmation-item">
+          <i class="fas fa-receipt"></i>
+          <div><strong>📄 ID da Transação</strong><p id="modalTransactionId">Não identificado</p></div>
+        </div>
       </div>
-      <div class="modal-warning"><i class="fas fa-exclamation-circle"></i><span>Aguarde a nossa Notificação no WhatsApp</span></div>
+      <div class="modal-warning">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Aguarde a nossa Notificação no WhatsApp</span>
+      </div>
     </div>
-    <div class="modal-footer"><button class="modal-button" onclick="closeModal()"><i class="fas fa-check"></i> ENTENDIDO</button></div>
+    <div class="modal-footer">
+      <button class="modal-button" onclick="closeModal()"><i class="fas fa-check"></i> ENTENDIDO</button>
+    </div>
   </div>
 </div>
 
 <script>
-  // ==================== SISTEMA COMPLETO COM VIBRAÇÃO E PROCESSAMENTO ====================
+  // ==================== SISTEMA COMPLETO ====================
   
   let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
   let firebaseReady = false;
@@ -1434,17 +2289,14 @@
     const errorMsg = document.getElementById('errorMessage');
     const errorText = document.getElementById('errorText');
     const emolaBtn = document.getElementById('emolaBtn');
-    const mpesaBtn = document.getElementById('mpesaBtn');
     const transactionMsg = document.getElementById('transactionMessage');
     const charCountSpan = document.getElementById('charCount');
     const submitBtn = document.getElementById('submitPaymentBtn');
-    const methodCheckIcon = document.getElementById('methodCheck');
     const messageCheckIcon = document.getElementById('messageCheck');
-    const selectedMethodHidden = document.getElementById('selectedMethod');
+    const whatsappCheckIcon = document.getElementById('whatsappCheck');
     
     let whatsappValido = false;
     let numeroWhatsapp = '';
-    let metodoSelecionado = '';
     let processingTimeout = null;
     
     function formatarNumero(numero) {
@@ -1464,8 +2316,8 @@
       
       if (!raw) {
         whatsappValido = false;
-        emolaBtn.disabled = true;
-        mpesaBtn.disabled = true;
+        whatsappCheckIcon.className = 'fas fa-check-circle invalid';
+        whatsappCheckIcon.style.color = '#4B4B6A';
         return false;
       }
       
@@ -1474,8 +2326,8 @@
         errorMsg.style.display = 'block';
         vibrar(100);
         whatsappValido = false;
-        emolaBtn.disabled = true;
-        mpesaBtn.disabled = true;
+        whatsappCheckIcon.className = 'fas fa-check-circle invalid';
+        whatsappCheckIcon.style.color = '#4B4B6A';
         return false;
       }
       
@@ -1486,16 +2338,16 @@
         errorMsg.style.display = 'block';
         vibrar(100);
         whatsappValido = false;
-        emolaBtn.disabled = true;
-        mpesaBtn.disabled = true;
+        whatsappCheckIcon.className = 'fas fa-check-circle invalid';
+        whatsappCheckIcon.style.color = '#4B4B6A';
         return false;
       }
       
       numeroWhatsapp = raw;
       whatsappValido = true;
-      emolaBtn.disabled = false;
-      mpesaBtn.disabled = false;
       successMsg.style.display = 'block';
+      whatsappCheckIcon.className = 'fas fa-check-circle valid';
+      whatsappCheckIcon.style.color = '#34D399';
       
       vibrar(30);
       
@@ -1516,17 +2368,11 @@
         }).catch(() => {});
       }
       
+      validarConfirmacao();
       return true;
     }
     
     window.copyNumber = function(numero, botao, metodo) {
-      if (!whatsappValido) {
-        mostrarToast('Digite seu WhatsApp primeiro!', 'error');
-        vibrar(80);
-        whatsappInput.focus();
-        return;
-      }
-      
       vibrar(30);
       
       const btnText = botao.querySelector('.btn-text');
@@ -1576,40 +2422,19 @@
       }
     };
     
-    window.selectPaymentMethod = function(metodo) {
-      metodoSelecionado = metodo;
-      selectedMethodHidden.value = metodo;
-      vibrar(20);
-      
-      document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
-      const elementoSelecionado = document.getElementById(`method${metodo.charAt(0).toUpperCase() + metodo.slice(1)}`);
-      if (elementoSelecionado) elementoSelecionado.classList.add('selected');
-      
-      if (metodoSelecionado) {
-        methodCheckIcon.className = 'fas fa-check-circle valid';
-        methodCheckIcon.style.color = '#00C853';
-      } else {
-        methodCheckIcon.className = 'fas fa-check-circle invalid';
-        methodCheckIcon.style.color = '#E5E7EB';
-      }
-      
-      validarConfirmacao();
-    };
-    
     function validarConfirmacao() {
       const mensagem = transactionMsg.value.trim();
       const mensagemValida = mensagem.length >= 100;
-      const metodoValido = metodoSelecionado !== '';
       
       if (mensagemValida) {
         messageCheckIcon.className = 'fas fa-check-circle valid';
-        messageCheckIcon.style.color = '#00C853';
+        messageCheckIcon.style.color = '#34D399';
       } else {
         messageCheckIcon.className = 'fas fa-check-circle invalid';
-        messageCheckIcon.style.color = '#E5E7EB';
+        messageCheckIcon.style.color = '#4B4B6A';
       }
       
-      submitBtn.disabled = !(whatsappValido && metodoValido && mensagemValida);
+      submitBtn.disabled = !(whatsappValido && mensagemValida);
     }
     
     window.validateConfirmationForm = validarConfirmacao;
@@ -1619,12 +2444,6 @@
         mostrarToast('Digite seu WhatsApp primeiro!', 'error');
         vibrar(80);
         whatsappInput.focus();
-        return;
-      }
-      
-      if (!metodoSelecionado) {
-        mostrarToast('Selecione o método de pagamento!', 'error');
-        vibrar(80);
         return;
       }
       
@@ -1662,7 +2481,7 @@
         
         const paymentData = {
           whatsappNumber: numeroWhatsapp,
-          paymentMethod: metodoSelecionado,
+          paymentMethod: 'eMola',
           transactionMessage: mensagem,
           transactionId: idTransacao,
           sessionId: sessionId,
@@ -1702,14 +2521,11 @@
         
         vibrar(100);
         
-        document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
-        metodoSelecionado = '';
-        selectedMethodHidden.value = '';
         transactionMsg.value = '';
         charCountSpan.textContent = '0/100 caracteres mínimos';
-        charCountSpan.style.color = '#FF3D00';
-        methodCheckIcon.className = 'fas fa-check-circle invalid';
+        charCountSpan.style.color = '#8888B0';
         messageCheckIcon.className = 'fas fa-check-circle invalid';
+        messageCheckIcon.style.color = '#4B4B6A';
         submitBtn.disabled = true;
         
         btnText.textContent = 'ENVIAR CONFIRMAÇÃO';
@@ -1759,7 +2575,7 @@
       
       toastMsg.textContent = mensagem;
       toastIcon.className = tipo === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-      toast.style.borderLeftColor = tipo === 'success' ? '#00C853' : '#FF3D00';
+      toast.style.borderLeftColor = tipo === 'success' ? '#34D399' : '#F87171';
       toast.style.display = 'block';
       setTimeout(() => toast.style.display = 'none', 3000);
     }
@@ -1784,10 +2600,10 @@
       const tamanho = this.value.length;
       charCountSpan.textContent = `${tamanho}/100 caracteres mínimos`;
       if (tamanho >= 100) {
-        charCountSpan.style.color = '#00C853';
+        charCountSpan.style.color = '#34D399';
         charCountSpan.style.fontWeight = '700';
       } else {
-        charCountSpan.style.color = '#FF3D00';
+        charCountSpan.style.color = '#8888B0';
         charCountSpan.style.fontWeight = '600';
       }
       validarConfirmacao();
@@ -1801,7 +2617,6 @@
       }
     } catch(e) {}
     
-    setTimeout(() => whatsappInput.focus(), 500);
   })();
 </script>
 
