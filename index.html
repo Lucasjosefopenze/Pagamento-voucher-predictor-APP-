@@ -3,12 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>🚀 Predictor App | Ativação Premium via WhatsApp</title>
+  <title>🚀 Predictor App | Ativação Premium Instantânea</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
   <style>
     :root {
@@ -35,12 +31,7 @@
       --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -72,10 +63,8 @@
     .header::before {
       content: '';
       position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
+      top: -50%; right: -50%;
+      width: 200%; height: 200%;
       background: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
       background-size: 25px 25px;
       opacity: 0.4;
@@ -87,29 +76,350 @@
       100% { transform: translate(-30px, -30px) rotate(360deg); }
     }
 
-    .logo-container {
-      position: relative;
-      z-index: 2;
-      margin-bottom: 16px;
-    }
+    .logo-container { position: relative; z-index: 2; margin-bottom: 16px; }
 
     .logo {
-      font-size: 24px;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      letter-spacing: -0.5px;
+      font-size: 24px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; letter-spacing: -0.5px;
     }
 
     .logo-icon {
       background: rgba(255,255,255,0.25);
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(10px);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 8px 18px; border-radius: 50px;
+      font-size: 13px; font-weight: 700; margin-bottom: 12px;
+      position: relative; z-index: 2;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .header h1 {
+      font-size: 26px; font-weight: 900; margin-bottom: 6px;
+      position: relative; z-index: 2; letter-spacing: -0.5px;
+    }
+
+    .subtitle { font-size: 14px; opacity: 0.95; font-weight: 500; position: relative; z-index: 2; }
+
+    .price-card {
+      background: linear-gradient(135deg, #00D4AA, #00B894, #00A67C);
+      margin: -18px 20px 20px; padding: 18px;
+      border-radius: var(--radius-md); color: white; text-align: center;
+      position: relative; z-index: 10;
+      box-shadow: var(--shadow-md);
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .price-label { font-size: 13px; font-weight: 600; opacity: 0.9; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .price { font-size: 38px; font-weight: 900; margin-bottom: 2px; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .price-period { font-size: 14px; font-weight: 600; opacity: 0.9; }
+
+    .benefits {
+      display: flex; justify-content: center; gap: 16px;
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .benefit { display: flex; align-items: center; gap: 5px; font-size: 12px; opacity: 0.9; }
+
+    .content { padding: 0 16px 24px; }
+
+    .social-proof {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; margin-bottom: 16px;
+      padding: 12px; background: var(--gray-50);
+      border-radius: var(--radius-sm); border: 1px solid var(--gray-200);
+      font-size: 12px; color: var(--gray-800); font-weight: 600;
+      text-align: center; flex-wrap: wrap;
+    }
+
+    .social-proof .avatars { display: flex; }
+    .social-proof .avatars span {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: 2px solid white; margin-left: -8px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 10px; font-weight: 800;
+    }
+    .social-proof .avatars span:first-child { margin-left: 0; }
+    .social-proof strong { color: var(--success); }
+
+    .features-card {
+      background: linear-gradient(145deg, #F0F7FF, #FFFFFF);
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 20px; margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .features-title {
+      font-size: 17px; font-weight: 800; color: var(--dark);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+    }
+
+    .features-title i {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--primary), #4F46E5);
+      border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; color: white; font-size: 16px;
+    }
+
+    .feature-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .feature-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px; background: white;
+      border-radius: var(--radius-sm); border: 1px solid var(--gray-200);
+    }
+
+    .feature-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 15px; flex-shrink: 0;
+    }
+
+    .feature-icon.green { background: linear-gradient(135deg, #10B981, #059669); }
+    .feature-icon.blue { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+    .feature-icon.orange { background: linear-gradient(135deg, #FF6B35, #F7931E); }
+    .feature-icon.purple { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+
+    .feature-text strong { display: block; font-size: 14px; font-weight: 800; color: var(--dark); margin-bottom: 2px; }
+    .feature-text span { font-size: 12px; color: var(--gray-600); }
+
+    .cta-section { text-align: center; margin-top: 8px; }
+
+    .cta-button {
+      width: 100%; padding: 20px;
+      border-radius: var(--radius-md); border: none;
+      background: linear-gradient(135deg, #00D4AA, #00B894);
+      color: white; font-size: 18px; font-weight: 900;
+      cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; box-shadow: 0 8px 20px rgba(0, 212, 170, 0.4);
+      letter-spacing: 0.3px; animation: pulseCta 2.5s infinite;
+      text-decoration: none;
+    }
+
+    @keyframes pulseCta {
+      0%,100% { box-shadow: 0 8px 20px rgba(0,212,170,0.4); }
+      50% { box-shadow: 0 8px 30px rgba(0,212,170,0.7); }
+    }
+
+    .cta-button:active { transform: scale(0.98); }
+    .cta-subtext { font-size: 12px; color: var(--gray-600); margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    .support-section {
+      background: linear-gradient(135deg, #0F172A, #1E293B);
+      color: white; padding: 20px; border-radius: var(--radius-md);
+      text-align: center; margin-top: 20px;
+      position: relative; overflow: hidden;
+    }
+
+    .support-section::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #FF6B35, #F7931E, #FFD700);
+    }
+
+    .support-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .support-desc { font-size: 13px; color: #CBD5E1; margin-bottom: 16px; line-height: 1.5; }
+    .support-number { font-size: 22px; font-weight: 900; color: #FFB347; margin: 10px 0; }
+
+    .support-button {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,179,71,0.15); color: #FFB347;
+      padding: 12px 20px; border-radius: 12px;
+      font-weight: 700; font-size: 14px;
+      border: 2px solid rgba(255,179,71,0.3); cursor: pointer;
+    }
+    .support-button:active { transform: scale(0.98); }
+    .support-hours { font-size: 12px; color: #94A3B8; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    .footer { padding: 20px; text-align: center; background: var(--gray-50); border-top: 2px solid var(--gray-200); }
+
+    .security-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+
+    .security-item {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 10px; background: white; border-radius: 10px; border: 1px solid var(--gray-200);
+    }
+    .security-icon { font-size: 18px; }
+    .security-text { font-size: 11px; font-weight: 600; color: var(--gray-800); text-align: center; }
+    .copyright { font-size: 11px; color: var(--gray-600); margin-top: 10px; }
+
+    .toast {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      background: white; color: var(--dark); padding: 12px 18px;
+      border-radius: 12px; font-weight: 700; display: none;
+      z-index: 1000; box-shadow: var(--shadow-lg); border-left: 4px solid;
+      max-width: 85%; text-align: center; font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 8px; }
+      .content { padding: 0 12px 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="toast" id="toast">
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <i class="fas fa-check-circle" id="toastIcon"></i>
+    <span id="toastMessage">Copiado!</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo-container">
+      <div class="logo">
+        <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+        <span>PREDICTOR APP</span>
+      </div>
+    </div>
+    <div class="badge"><i class="fas fa-shield-alt"></i> ATIVAÇÃO INSTANTÂNEA</div>
+    <h1>ATIVAÇÃO PREMIUM</h1>
+    <p class="subtitle">Receba seu código na hora, aqui mesmo</p>
+  </div>
+
+  <div class="price-card">
+    <div class="price-label">Valor Total</div>
+    <div class="price">659 MT</div>
+    <div class="price-period">Acesso por 48 Horas</div>
+    <div class="benefits">
+      <div class="benefit"><i class="fas fa-check"></i><span>Entrega Imediata</span></div>
+      <div class="benefit"><i class="fas fa-headset"></i><span>Suporte 24/7</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- PROVA SOCIAL -->
+    <div class="social-proof">
+      <div class="avatars"><span>J</span><span>M</span><span>A</span><span>+</span></div>
+      <div><strong>+2.847 usuários</strong> já ativaram esta semana</div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="features-card">
+      <div class="features-title"><i class="fas fa-star"></i> Por que escolher o Premium?</div>
+      <div class="feature-list">
+
+        <div class="feature-item">
+          <div class="feature-icon green"><i class="fas fa-bullseye"></i></div>
+          <div class="feature-text">
+            <strong>Altíssima Precisão</strong>
+            <span>Método validado com alta taxa de acerto</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon blue"><i class="fas fa-bolt"></i></div>
+          <div class="feature-text">
+            <strong>Código na Hora</strong>
+            <span>Receba o acesso imediatamente após pagar</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon orange"><i class="fas fa-clock"></i></div>
+          <div class="feature-text">
+            <strong>Suporte 24/7</strong>
+            <span>Atendimento sempre que precisar</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon purple"><i class="fas fa-lock-open"></i></div>
+          <div class="feature-text">
+            <strong>Acesso Total</strong>
+            <span>Desbloqueie todos os recursos premium</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTÃO PRINCIPAL COM LINK -->
+    <div class="cta-section">
+      <a href="https://apitest-sand.vercel.app" class="cta-button">
+        <i class="fas fa-lock"></i> FINALIZAR PAGAMENTO
+      </a>
+      <div class="cta-subtext">
+        <i class="fas fa-shield-alt"></i> Pagamento seguro • Código entregue na hora
+      </div>
+    </div>
+
+    <!-- SUPORTE -->
+    <div class="support-section">
+      <div class="support-title"><i class="fas fa-headset"></i> PRECISA DE AJUDA?</div>
+      <div class="support-desc">Problemas com pagamento? Fale com nosso suporte via WhatsApp.</div>
+      <div class="support-number">+258 866 890 298</div>
+      <button class="support-button" onclick="copySupportNumber()"><i class="fas fa-copy"></i> COPIAR NÚMERO DO SUPORTE</button>
+      <div class="support-hours"><i class="far fa-clock"></i> Atendimento: 8h às 22h</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="security-grid">
+      <div class="security-item"><i class="fas fa-lock security-icon" style="color: var(--success);"></i><div class="security-text">Pagamento Seguro</div></div>
+      <div class="security-item"><i class="fas fa-bolt security-icon" style="color: var(--warning);"></i><div class="security-text">Entrega Instantânea</div></div>
+      <div class="security-item"><i class="fas fa-shield-alt security-icon" style="color: var(--primary);"></i><div class="security-text">Garantia Total</div></div>
+    </div>
+    <div class="copyright">© 2025 Predictor App • Todos os direitos reservados</div>
+  </div>
+
+</div>
+
+<script>
+  function vibrar(d = 40) { if (navigator.vibrate) navigator.vibrate(d); }
+
+  function mostrarToast(msg, tipo = 'success') {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMessage').textContent = msg;
+    document.getElementById('toastIcon').className = tipo === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    toast.style.borderLeftColor = tipo === 'success' ? '#00C853' : '#FF3D00';
+    toast.style.display = 'block';
+    clearTimeout(window._toastT);
+    window._toastT = setTimeout(() => toast.style.display = 'none', 2600);
+  }
+
+  function copySupportNumber() {
+    vibrar(30);
+    const texto = '+258866890298';
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto).then(() => mostrarToast('✅ Número do suporte copiado!')).catch(() => fallback());
+      } else fallback();
+    } catch (e) { fallback(); }
+
+    function fallback() {
+      const inp = document.createElement('input');
+      inp.value = texto;
+      document.body.appendChild(inp);
+      inp.select();
+      document.execCommand('copy');
+      document.body.removeChild(inp);
+      mostrarToast('✅ Número do suporte copiado!');
+    }
+  }
+</script>
+
+</body>
+  </html>
       justify-content: center;
       backdrop-filter: blur(10px);
       animation: pulse 2s infinite;
